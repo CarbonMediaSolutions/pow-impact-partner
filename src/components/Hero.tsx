@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export const Hero = () => {
@@ -32,16 +32,16 @@ export const Hero = () => {
                 ICAEW Chartered Accountants
               </span>
               
-              <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold text-primary leading-[1.1] text-balance">
+              <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-primary leading-[1.05] text-balance">
                 From Strategy<br />
                 <span className="text-foreground">to Impact</span>
               </h1>
               
-              <p className="font-serif text-lg sm:text-xl text-muted-foreground max-w-xl leading-relaxed">
-                We help mission-driven businesses grow their impact while mastering financial complexity.
+              <p className="font-serif text-xl sm:text-2xl text-foreground max-w-xl leading-relaxed">
+                We help businesses create profitable, sustainable growth through clarity, systems, and purpose-driven strategy.
               </p>
               
-              <p className="font-body text-sm text-muted-foreground max-w-md">
+              <p className="font-body text-base text-muted-foreground max-w-md">
                 Tax planning, financial compliance, and growth strategy for startups, SMEs, and not-for-profits.
               </p>
             </motion.div>
@@ -53,18 +53,20 @@ export const Hero = () => {
               className="flex flex-col sm:flex-row gap-4"
             >
               <Button
-                onClick={() => scrollToSection('#assessment')}
-                className="btn-emerald font-body font-medium px-8 py-6 text-base group"
+                onClick={() => scrollToSection('#contact')}
+                className="btn-emerald font-body font-semibold px-10 py-7 text-lg group shadow-lg hover:shadow-xl"
+                size="lg"
               >
-                Start Your Assessment
-                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                Book a Consultation
+                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button
-                onClick={() => scrollToSection('#contact')}
+                onClick={() => scrollToSection('#assessment')}
                 variant="outline"
-                className="btn-outline-primary font-body font-medium px-8 py-6 text-base"
+                className="btn-outline-primary font-body font-semibold px-10 py-7 text-lg"
+                size="lg"
               >
-                Schedule a Consultation
+                Take the Assessment
               </Button>
             </motion.div>
 
@@ -72,15 +74,19 @@ export const Hero = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex items-center gap-8 pt-4"
+              className="flex flex-wrap items-center gap-6 pt-4"
             >
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-emerald animate-pulse" />
-                <span className="font-body text-sm text-muted-foreground">15+ Years Experience</span>
+                <CheckCircle className="w-5 h-5 text-emerald" />
+                <span className="font-body text-sm text-foreground font-medium">15+ Years Experience</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-secondary" />
-                <span className="font-body text-sm text-muted-foreground">ICAEW Regulated</span>
+                <CheckCircle className="w-5 h-5 text-emerald" />
+                <span className="font-body text-sm text-foreground font-medium">ICAEW Regulated</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-emerald" />
+                <span className="font-body text-sm text-foreground font-medium">80+ Businesses Helped</span>
               </div>
             </motion.div>
           </div>
@@ -100,32 +106,32 @@ export const Hero = () => {
                   <motion.div
                     animate={{ y: [-5, 5, -5] }}
                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-32 rounded-full bg-primary/10 border-2 border-primary/30 flex items-center justify-center"
+                    className="absolute top-0 left-1/2 -translate-x-1/2 w-36 h-36 rounded-full bg-primary/10 border-2 border-primary/30 flex items-center justify-center shadow-lg"
                   >
-                    <span className="font-serif text-lg font-semibold text-primary">People</span>
+                    <span className="font-serif text-xl font-bold text-primary">People</span>
                   </motion.div>
                   
                   {/* Planet Circle */}
                   <motion.div
                     animate={{ y: [5, -5, 5] }}
                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                    className="absolute bottom-8 left-4 w-32 h-32 rounded-full bg-emerald/10 border-2 border-emerald/30 flex items-center justify-center"
+                    className="absolute bottom-8 left-4 w-36 h-36 rounded-full bg-emerald/10 border-2 border-emerald/30 flex items-center justify-center shadow-lg"
                   >
-                    <span className="font-serif text-lg font-semibold text-emerald">Planet</span>
+                    <span className="font-serif text-xl font-bold text-emerald">Planet</span>
                   </motion.div>
                   
                   {/* Profit Circle */}
                   <motion.div
                     animate={{ y: [-3, 7, -3] }}
                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                    className="absolute bottom-8 right-4 w-32 h-32 rounded-full bg-secondary/20 border-2 border-secondary/40 flex items-center justify-center"
+                    className="absolute bottom-8 right-4 w-36 h-36 rounded-full bg-secondary/20 border-2 border-secondary/40 flex items-center justify-center shadow-lg"
                   >
-                    <span className="font-serif text-lg font-semibold text-secondary-foreground">Profit</span>
+                    <span className="font-serif text-xl font-bold text-secondary-foreground">Profit</span>
                   </motion.div>
 
                   {/* Center intersection */}
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 backdrop-blur-sm flex items-center justify-center">
-                    <span className="font-serif text-xs font-medium text-primary">Impact</span>
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 backdrop-blur-sm flex items-center justify-center shadow-xl border border-primary/20">
+                    <span className="font-serif text-sm font-semibold text-primary">Impact</span>
                   </div>
 
                   {/* Connecting lines */}

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowLeft, CheckCircle, Download, Calendar } from 'lucide-react';
+import { ArrowRight, ArrowLeft, CheckCircle, Download, Calendar, Shield, Sparkles, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -162,11 +162,11 @@ export const Assessment = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="bg-background rounded-3xl p-8 lg:p-12 shadow-xl border border-border"
+            className="bg-background rounded-3xl p-8 lg:p-12 shadow-2xl border border-border"
           >
             <div className="text-center mb-8">
               <CheckCircle className="w-16 h-16 text-emerald mx-auto mb-4" />
-              <h2 className="font-serif text-3xl font-semibold text-primary mb-2">
+              <h2 className="font-serif text-3xl font-bold text-primary mb-2">
                 Your Financial Health Score
               </h2>
               <p className="font-body text-muted-foreground">
@@ -180,7 +180,7 @@ export const Assessment = () => {
                 <span className="font-serif text-7xl font-bold text-primary">{score}</span>
                 <span className="font-serif text-2xl text-muted-foreground">/10</span>
               </div>
-              <p className={`font-body text-lg font-medium mt-2 ${interpretation.color}`}>
+              <p className={`font-body text-lg font-semibold mt-2 ${interpretation.color}`}>
                 {interpretation.label}
               </p>
             </div>
@@ -199,13 +199,13 @@ export const Assessment = () => {
 
             {/* Recommendations */}
             <div className="mb-8">
-              <h3 className="font-serif text-xl font-semibold text-foreground mb-4">
+              <h3 className="font-serif text-xl font-bold text-foreground mb-4">
                 Top Recommendations
               </h3>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-primary text-sm font-medium">1</span>
+                    <span className="text-primary text-sm font-bold">1</span>
                   </div>
                   <span className="font-body text-muted-foreground">
                     Review your current tax structure for optimization opportunities
@@ -213,7 +213,7 @@ export const Assessment = () => {
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-primary text-sm font-medium">2</span>
+                    <span className="text-primary text-sm font-bold">2</span>
                   </div>
                   <span className="font-body text-muted-foreground">
                     Implement real-time financial dashboards for better visibility
@@ -221,7 +221,7 @@ export const Assessment = () => {
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-primary text-sm font-medium">3</span>
+                    <span className="text-primary text-sm font-bold">3</span>
                   </div>
                   <span className="font-body text-muted-foreground">
                     Create a financial roadmap aligned with your growth plans
@@ -232,12 +232,12 @@ export const Assessment = () => {
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button className="btn-emerald flex-1 py-6">
-                <Calendar className="w-4 h-4 mr-2" />
+              <Button className="btn-emerald flex-1 py-6 text-base font-semibold">
+                <Calendar className="w-5 h-5 mr-2" />
                 Schedule a Consultation
               </Button>
-              <Button variant="outline" className="btn-outline-primary flex-1 py-6">
-                <Download className="w-4 h-4 mr-2" />
+              <Button variant="outline" className="btn-outline-primary flex-1 py-6 text-base font-semibold">
+                <Download className="w-5 h-5 mr-2" />
                 Download Full Report
               </Button>
             </div>
@@ -259,9 +259,9 @@ export const Assessment = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-background rounded-3xl p-8 lg:p-12 shadow-xl border border-border"
+            className="bg-background rounded-3xl p-8 lg:p-12 shadow-2xl border border-border"
           >
-            <h2 className="font-serif text-2xl font-semibold text-primary mb-2 text-center">
+            <h2 className="font-serif text-2xl font-bold text-primary mb-2 text-center">
               Almost there!
             </h2>
             <p className="font-body text-muted-foreground text-center mb-8">
@@ -271,7 +271,7 @@ export const Assessment = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="name" className="font-body">Full Name *</Label>
+                  <Label htmlFor="name" className="font-body font-medium">Full Name *</Label>
                   <Input
                     id="name"
                     value={formData.name}
@@ -282,7 +282,7 @@ export const Assessment = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="font-body">Email *</Label>
+                  <Label htmlFor="email" className="font-body font-medium">Email *</Label>
                   <Input
                     id="email"
                     type="email"
@@ -297,7 +297,7 @@ export const Assessment = () => {
 
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="company" className="font-body">Company Name</Label>
+                  <Label htmlFor="company" className="font-body font-medium">Company Name</Label>
                   <Input
                     id="company"
                     value={formData.company}
@@ -307,7 +307,7 @@ export const Assessment = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="phone" className="font-body">Phone</Label>
+                  <Label htmlFor="phone" className="font-body font-medium">Phone</Label>
                   <Input
                     id="phone"
                     type="tel"
@@ -342,7 +342,7 @@ export const Assessment = () => {
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back
                 </Button>
-                <Button type="submit" className="btn-emerald flex-1 py-6">
+                <Button type="submit" className="btn-emerald flex-1 py-6 font-semibold">
                   Get My Assessment
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
@@ -364,7 +364,7 @@ export const Assessment = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center mb-8"
         >
           <h2 className="section-title mb-4">Assess Your Financial Health</h2>
           <p className="section-subtitle mx-auto">
@@ -372,22 +372,37 @@ export const Assessment = () => {
           </p>
         </motion.div>
 
-        <div className="bg-background rounded-3xl p-8 lg:p-12 shadow-xl border border-border">
+        {/* Title Bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          className="bg-emerald text-emerald-foreground rounded-t-3xl px-6 py-4 flex items-center justify-between"
+        >
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-5 h-5" />
+            <span className="font-body font-bold">Free Assessment Tool</span>
+          </div>
+          <span className="font-body text-sm opacity-90">Instant Score</span>
+        </motion.div>
+
+        <div className="bg-background rounded-b-3xl p-8 lg:p-12 shadow-2xl border border-t-0 border-border">
           {/* Progress Bar */}
           <div className="mb-8">
             <div className="flex justify-between items-center mb-2">
               <span className="font-body text-sm text-muted-foreground">
                 Question {currentStep + 1} of {totalQuestions}
               </span>
-              <span className="font-body text-sm text-primary font-medium">
+              <span className="font-body text-sm text-primary font-semibold">
                 {Math.round(progress)}% complete
               </span>
             </div>
-            <div className="h-2 bg-muted rounded-full overflow-hidden">
+            <div className="h-3 bg-muted rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
-                className="h-full bg-primary rounded-full"
+                className="h-full bg-gradient-to-r from-primary to-emerald rounded-full"
               />
             </div>
           </div>
@@ -401,7 +416,7 @@ export const Assessment = () => {
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <h3 className="font-serif text-xl lg:text-2xl font-semibold text-primary mb-8">
+              <h3 className="font-serif text-xl lg:text-2xl font-bold text-primary mb-8">
                 {currentQuestion.question}
               </h3>
 
@@ -410,22 +425,22 @@ export const Assessment = () => {
                   <button
                     key={index}
                     onClick={() => handleAnswer(currentQuestion.id, index)}
-                    className={`w-full p-4 rounded-xl border-2 text-left transition-all duration-200 font-body ${
+                    className={`w-full p-5 rounded-xl border-2 text-left transition-all duration-200 font-body ${
                       answers[currentQuestion.id] === index
-                        ? 'border-emerald bg-emerald/10 text-foreground'
+                        ? 'border-emerald bg-emerald/10 text-foreground shadow-md'
                         : 'border-border hover:border-primary/50 text-muted-foreground hover:text-foreground'
                     }`}
                   >
                     <span className="flex items-center gap-3">
                       <span
-                        className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                        className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
                           answers[currentQuestion.id] === index
                             ? 'border-emerald bg-emerald'
                             : 'border-border'
                         }`}
                       >
                         {answers[currentQuestion.id] === index && (
-                          <span className="w-2 h-2 rounded-full bg-emerald-foreground" />
+                          <span className="w-2.5 h-2.5 rounded-full bg-emerald-foreground" />
                         )}
                       </span>
                       {option}
@@ -450,11 +465,19 @@ export const Assessment = () => {
             <Button
               onClick={handleNext}
               disabled={answers[currentQuestion.id] === undefined}
-              className="btn-emerald flex-1 py-6"
+              className="btn-emerald flex-1 py-6 font-semibold"
             >
               {currentStep === totalQuestions - 1 ? 'See Results' : 'Next'}
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
+          </div>
+
+          {/* Trust Badge */}
+          <div className="flex items-center justify-center gap-2 mt-8 pt-6 border-t border-border">
+            <Users className="w-4 h-4 text-secondary" />
+            <span className="font-body text-sm text-muted-foreground">
+              Used by <strong className="text-foreground">80+ businesses</strong> to improve their financial health
+            </span>
           </div>
         </div>
       </div>
