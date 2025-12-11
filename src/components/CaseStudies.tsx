@@ -1,13 +1,15 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, Quote } from 'lucide-react';
+import { ArrowRight, Quote, TrendingUp, Clock, Users } from 'lucide-react';
 
 const caseStudies = [
   {
     company: 'Offploy Group',
     type: 'Social Enterprise',
     challenge: 'Navigate cost-of-living crisis while maintaining mission',
-    metric: '£500k+',
-    metricLabel: 'Reinvested in impact',
+    metrics: [
+      { value: '£500k+', label: 'Reinvested' },
+      { value: '100%', label: 'Team retained' },
+    ],
     quote: 'Patric has transformed the way we scale our impact. His strategic approach to tax planning means we can reinvest more into what matters.',
     author: 'Jacob Hill',
     role: 'Managing Director',
@@ -17,8 +19,10 @@ const caseStudies = [
     company: 'City & Guilds Group',
     type: 'Education Organisation',
     challenge: 'Scaling from startup to established organization',
-    metric: '10x',
-    metricLabel: 'Growth achieved',
+    metrics: [
+      { value: '10x', label: 'Growth' },
+      { value: '14 days', label: 'Turnaround' },
+    ],
     quote: 'He is a very passionate and driven individual who genuinely cares about helping businesses succeed.',
     author: 'Kirstie Donnelly',
     role: 'CEO',
@@ -28,8 +32,10 @@ const caseStudies = [
     company: 'The Walcot Foundation',
     type: 'Not-for-Profit',
     challenge: 'Measuring and amplifying social impact',
-    metric: '200%',
-    metricLabel: 'Increase in footprint',
+    metrics: [
+      { value: '+200%', label: 'Impact footprint' },
+      { value: '100%', label: 'Board alignment' },
+    ],
     quote: 'Focused on making a positive difference in the world. Patric helps organizations increase their social and environmental footprint.',
     author: 'Marcia Asare',
     role: 'Executive Director',
@@ -50,7 +56,7 @@ export const CaseStudies = () => {
         >
           <h2 className="section-title mb-4">Impact in Action</h2>
           <p className="section-subtitle mx-auto">
-            See how we've helped mission-driven businesses transform their financial health and amplify their impact.
+            Real results from mission-driven businesses we've helped transform.
           </p>
         </motion.div>
 
@@ -75,42 +81,55 @@ export const CaseStudies = () => {
                       : 'bg-secondary/20'
                   }`}
                 >
-                  <span className="inline-block px-3 py-1 bg-background/80 rounded-full font-body text-xs font-medium text-muted-foreground mb-3">
+                  <span className="inline-block px-3 py-1 bg-background/80 rounded-full font-body text-xs font-semibold text-muted-foreground mb-3">
                     {study.type}
                   </span>
-                  <h3 className="font-serif text-xl font-semibold text-primary">
+                  <h3 className="font-serif text-xl font-bold text-primary">
                     {study.company}
                   </h3>
                 </div>
 
                 {/* Content */}
                 <div className="p-6">
-                  <p className="font-body text-sm text-muted-foreground mb-4">
-                    <span className="font-medium text-foreground">The challenge:</span>{' '}
+                  <p className="font-body text-sm text-muted-foreground mb-5">
+                    <span className="font-semibold text-foreground">The challenge:</span>{' '}
                     {study.challenge}
                   </p>
 
-                  {/* Metric */}
-                  <div className="mb-6 p-4 bg-muted/50 rounded-xl">
-                    <p
-                      className={`font-serif text-3xl font-bold ${
-                        study.color === 'primary'
-                          ? 'text-primary'
-                          : study.color === 'emerald'
-                          ? 'text-emerald'
-                          : 'text-secondary'
-                      }`}
-                    >
-                      {study.metric}
-                    </p>
-                    <p className="font-body text-sm text-muted-foreground">{study.metricLabel}</p>
+                  {/* Metrics - Made Bold and Prominent */}
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    {study.metrics.map((metric, i) => (
+                      <div
+                        key={i}
+                        className={`p-4 rounded-xl text-center ${
+                          study.color === 'primary'
+                            ? 'bg-primary/5'
+                            : study.color === 'emerald'
+                            ? 'bg-emerald/5'
+                            : 'bg-secondary/10'
+                        }`}
+                      >
+                        <p
+                          className={`font-serif text-2xl font-bold ${
+                            study.color === 'primary'
+                              ? 'text-primary'
+                              : study.color === 'emerald'
+                              ? 'text-emerald'
+                              : 'text-secondary'
+                          }`}
+                        >
+                          {metric.value}
+                        </p>
+                        <p className="font-body text-xs text-muted-foreground mt-1">{metric.label}</p>
+                      </div>
+                    ))}
                   </div>
 
                   {/* Quote */}
                   <div className="relative">
-                    <Quote className="absolute -top-2 -left-1 w-6 h-6 text-secondary/30" />
-                    <blockquote className="pl-6">
-                      <p className="font-body text-sm italic text-foreground/80 mb-3">
+                    <Quote className="absolute -top-1 -left-1 w-5 h-5 text-secondary/40" />
+                    <blockquote className="pl-5">
+                      <p className="font-body text-sm italic text-foreground/80 mb-3 leading-relaxed">
                         "{study.quote}"
                       </p>
                       <footer className="font-body text-xs">
@@ -121,11 +140,11 @@ export const CaseStudies = () => {
                   </div>
                 </div>
 
-                {/* Footer */}
+                {/* Footer CTA */}
                 <div className="px-6 pb-6">
-                  <button className="inline-flex items-center font-body text-sm font-medium text-primary hover:text-primary/80 transition-colors group/link">
-                    View full story
-                    <ArrowRight className="ml-1 w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
+                  <button className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-muted/50 font-body text-sm font-semibold text-primary hover:bg-primary/10 transition-colors group/link">
+                    Read Full Case Study
+                    <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
                   </button>
                 </div>
               </div>
