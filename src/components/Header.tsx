@@ -20,10 +20,10 @@ const servicePages = [
 const navItems = [
   { label: 'Home', href: '/', isRoute: true },
   { label: 'Services', href: '#services', hasDropdown: true },
-  { label: 'Impact', href: '#impact' },
-  { label: 'About', href: '#about' },
+  { label: 'Impact', href: '/impact', isRoute: true },
+  { label: 'About', href: '/about', isRoute: true },
   { label: 'Blog', href: '/blog', isRoute: true },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Contact', href: '/contact', isRoute: true },
 ];
 
 export const Header = () => {
