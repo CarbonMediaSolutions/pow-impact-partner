@@ -1,47 +1,7 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, Quote, TrendingUp, Clock, Users } from 'lucide-react';
-
-const caseStudies = [
-  {
-    company: 'Offploy Group',
-    type: 'Social Enterprise',
-    challenge: 'Navigate cost-of-living crisis while maintaining mission',
-    metrics: [
-      { value: '£500k+', label: 'Reinvested' },
-      { value: '100%', label: 'Team retained' },
-    ],
-    quote: 'Patric has transformed the way we scale our impact. His strategic approach to tax planning means we can reinvest more into what matters.',
-    author: 'Jacob Hill',
-    role: 'Managing Director',
-    color: 'primary',
-  },
-  {
-    company: 'City & Guilds Group',
-    type: 'Education Organisation',
-    challenge: 'Scaling from startup to established organization',
-    metrics: [
-      { value: '10x', label: 'Growth' },
-      { value: '14 days', label: 'Turnaround' },
-    ],
-    quote: 'He is a very passionate and driven individual who genuinely cares about helping businesses succeed.',
-    author: 'Kirstie Donnelly',
-    role: 'CEO',
-    color: 'secondary',
-  },
-  {
-    company: 'The Walcot Foundation',
-    type: 'Not-for-Profit',
-    challenge: 'Measuring and amplifying social impact',
-    metrics: [
-      { value: '+200%', label: 'Impact footprint' },
-      { value: '100%', label: 'Board alignment' },
-    ],
-    quote: 'Focused on making a positive difference in the world. Patric helps organizations increase their social and environmental footprint.',
-    author: 'Marcia Asare',
-    role: 'Executive Director',
-    color: 'emerald',
-  },
-];
+import { Link } from 'react-router-dom';
+import { ArrowRight, Quote } from 'lucide-react';
+import { caseStudies } from '@/data/caseStudies';
 
 export const CaseStudies = () => {
   return (
@@ -70,24 +30,25 @@ export const CaseStudies = () => {
               transition={{ duration: 0.6, delay: index * 0.15 }}
               className="group"
             >
-              <div className="h-full bg-background border border-border rounded-2xl overflow-hidden card-hover">
-                {/* Header */}
-                <div
-                  className={`p-6 ${
-                    study.color === 'primary'
-                      ? 'bg-primary/10'
-                      : study.color === 'emerald'
-                      ? 'bg-emerald/10'
-                      : 'bg-secondary/20'
-                  }`}
-                >
-                  <span className="inline-block px-3 py-1 bg-background/80 rounded-full font-body text-xs font-semibold text-muted-foreground mb-3">
-                    {study.type}
-                  </span>
-                  <h3 className="font-serif text-xl font-bold text-primary">
-                    {study.company}
-                  </h3>
-                </div>
+              <Link to={`/case-studies/${study.id}`} className="block h-full">
+                <div className="h-full bg-background border border-border rounded-2xl overflow-hidden card-hover">
+                  {/* Header */}
+                  <div
+                    className={`p-6 ${
+                      study.color === 'primary'
+                        ? 'bg-primary/10'
+                        : study.color === 'emerald'
+                        ? 'bg-emerald/10'
+                        : 'bg-secondary/20'
+                    }`}
+                  >
+                    <span className="inline-block px-3 py-1 bg-background/80 rounded-full font-body text-xs font-semibold text-muted-foreground mb-3">
+                      {study.type}
+                    </span>
+                    <h3 className="font-serif text-xl font-bold text-primary group-hover:text-primary/80 transition-colors">
+                      {study.company}
+                    </h3>
+                  </div>
 
                 {/* Content */}
                 <div className="p-6">
@@ -142,12 +103,13 @@ export const CaseStudies = () => {
 
                 {/* Footer CTA */}
                 <div className="px-6 pb-6">
-                  <button className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-muted/50 font-body text-sm font-semibold text-primary hover:bg-primary/10 transition-colors group/link">
+                  <span className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-muted/50 font-body text-sm font-semibold text-primary group-hover:bg-primary/10 transition-colors">
                     Read Full Case Study
-                    <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
-                  </button>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </span>
                 </div>
               </div>
+              </Link>
             </motion.div>
           ))}
         </div>

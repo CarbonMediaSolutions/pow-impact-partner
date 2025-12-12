@@ -12,6 +12,10 @@ import GrowthStrategy from "./pages/GrowthStrategy";
 import ImpactMeasurement from "./pages/ImpactMeasurement";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
+import Impact from "./pages/Impact";
+import AboutPage from "./pages/AboutPage";
+import Contact from "./pages/Contact";
+import CaseStudyPage from "./pages/CaseStudyPage";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +34,10 @@ const App = () => (
           <Route path="/services/impact-measurement" element={<ImpactMeasurement />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:id" element={<BlogPost />} />
+          <Route path="/impact" element={<Impact />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/case-studies/:id" element={<CaseStudyPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
