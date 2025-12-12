@@ -22,7 +22,7 @@ const navItems = [
   { label: 'Services', href: '#services', hasDropdown: true },
   { label: 'Impact', href: '#impact' },
   { label: 'About', href: '#about' },
-  { label: 'FAQ', href: '#faq' },
+  { label: 'Blog', href: '/blog', isRoute: true },
   { label: 'Contact', href: '#contact' },
 ];
 
