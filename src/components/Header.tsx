@@ -1,11 +1,25 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ArrowRight } from 'lucide-react';
+import { Menu, X, ArrowRight, ChevronDown } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+
+const servicePages = [
+  { label: 'Tax Planning & Optimization', href: '/services/tax-planning' },
+  { label: 'Financial Compliance & Reporting', href: '/services/financial-compliance' },
+  { label: 'Growth & Scale Strategy', href: '/services/growth-strategy' },
+  { label: 'Impact Measurement & Reporting', href: '/services/impact-measurement' },
+];
 
 const navItems = [
-  { label: 'Home', href: '#home' },
-  { label: 'What We Do', href: '#services' },
+  { label: 'Home', href: '/', isRoute: true },
+  { label: 'Services', href: '#services', hasDropdown: true },
   { label: 'Impact', href: '#impact' },
   { label: 'About', href: '#about' },
   { label: 'FAQ', href: '#faq' },
@@ -16,6 +30,10 @@ export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showStickyCTA, setShowStickyCTA] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isHomePage = location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +45,10 @@ export const Header = () => {
   }, []);
 
   const scrollToSection = (href: string) => {
+    if (!isHomePage) {
+      navigate('/' + href);
+      return;
+    }
     const element = document.querySelector(href);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -42,22 +64,48 @@ export const Header = () => {
         }`}
       >
         <div className="container flex items-center justify-between">
-          <a href="#home" className="flex items-center gap-2" onClick={(e) => { e.preventDefault(); scrollToSection('#home'); }}>
+          <Link to="/" className="flex items-center gap-2">
             <span className="font-serif text-2xl font-bold text-primary">Pow</span>
             <span className="font-serif text-2xl font-light text-foreground">Consulting</span>
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-8">
             {navItems.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                onClick={(e) => { e.preventDefault(); scrollToSection(item.href); }}
-                className="font-body text-sm font-medium text-foreground/80 hover:text-primary transition-colors link-underline"
-              >
-                {item.label}
-              </a>
+              item.hasDropdown ? (
+                <DropdownMenu key={item.label}>
+                  <DropdownMenuTrigger className="font-body text-sm font-medium text-foreground/80 hover:text-primary transition-colors flex items-center gap-1 outline-none">
+                    {item.label}
+                    <ChevronDown className="w-4 h-4" />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="w-64">
+                    {servicePages.map((service) => (
+                      <DropdownMenuItem key={service.href} asChild>
+                        <Link to={service.href} className="cursor-pointer">
+                          {service.label}
+                        </Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : item.isRoute ? (
+                <Link
+                  key={item.label}
+                  to={item.href}
+                  className="font-body text-sm font-medium text-foreground/80 hover:text-primary transition-colors link-underline"
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  onClick={(e) => { e.preventDefault(); scrollToSection(item.href); }}
+                  className="font-body text-sm font-medium text-foreground/80 hover:text-primary transition-colors link-underline"
+                >
+                  {item.label}
+                </a>
+              )
             ))}
           </nav>
 
@@ -91,14 +139,49 @@ export const Header = () => {
             >
               <nav className="container py-6 flex flex-col gap-4">
                 {navItems.map((item) => (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    onClick={(e) => { e.preventDefault(); scrollToSection(item.href); }}
-                    className="font-body text-base font-medium text-foreground/80 hover:text-primary transition-colors py-2"
-                  >
-                    {item.label}
-                  </a>
+                  item.hasDropdown ? (
+                    <div key={item.label}>
+                      <button
+                        onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                        className="font-body text-base font-medium text-foreground/80 hover:text-primary transition-colors py-2 flex items-center gap-2 w-full"
+                      >
+                        {item.label}
+                        <ChevronDown className={`w-4 h-4 transition-transform ${mobileServicesOpen ? 'rotate-180' : ''}`} />
+                      </button>
+                      {mobileServicesOpen && (
+                        <div className="pl-4 flex flex-col gap-2 mt-2">
+                          {servicePages.map((service) => (
+                            <Link
+                              key={service.href}
+                              to={service.href}
+                              onClick={() => setIsMobileMenuOpen(false)}
+                              className="font-body text-sm text-foreground/70 hover:text-primary transition-colors py-1"
+                            >
+                              {service.label}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ) : item.isRoute ? (
+                    <Link
+                      key={item.label}
+                      to={item.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="font-body text-base font-medium text-foreground/80 hover:text-primary transition-colors py-2"
+                    >
+                      {item.label}
+                    </Link>
+                  ) : (
+                    <a
+                      key={item.label}
+                      href={item.href}
+                      onClick={(e) => { e.preventDefault(); scrollToSection(item.href); }}
+                      className="font-body text-base font-medium text-foreground/80 hover:text-primary transition-colors py-2"
+                    >
+                      {item.label}
+                    </a>
+                  )
                 ))}
                 <Button
                   onClick={() => scrollToSection('#contact')}
