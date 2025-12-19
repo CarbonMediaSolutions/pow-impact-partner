@@ -63,6 +63,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Compliance',
     tags: ['Compliance', 'Technology', 'Cloud', 'Efficiency'],
     image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800',
+    featured: true,
   },
   {
     id: 'esg-reporting-requirements',
@@ -75,6 +76,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Impact',
     tags: ['ESG', 'Reporting', 'Compliance', 'Sustainability'],
     image: 'https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=800',
+    featured: true,
   },
   {
     id: 'startup-financial-foundations',
