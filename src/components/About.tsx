@@ -3,7 +3,7 @@ import patricPortrait from '@/assets/patric-portrait.jpg';
 
 export const About = () => {
   return (
-    <section id="about" className="py-24 lg:py-32 border-t border-border/30">
+    <section id="about" className="py-16 lg:py-20 border-t border-border/30">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

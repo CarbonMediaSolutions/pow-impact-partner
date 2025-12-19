@@ -20,7 +20,7 @@ const engagements = [
 
 export const CaseStudies = () => {
   return (
-    <section id="impact" className="py-32 lg:py-40">
+    <section id="impact" className="py-20 lg:py-24">
       <div className="container">
         <div className="section-divider" />
         <motion.div
