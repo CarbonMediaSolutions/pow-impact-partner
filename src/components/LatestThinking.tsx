@@ -50,11 +50,11 @@ export const LatestThinking = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <Link to={`/blog/${post.id}`} className="group block">
-                <div className="aspect-[3/4] overflow-hidden bg-muted mb-5">
+                <div className="aspect-[3/4] overflow-hidden bg-muted mb-5 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
                   <img
                     src={postImages[index % postImages.length]}
                     alt=""
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 rounded-lg"
                   />
                 </div>
                 <span className="font-body text-xs text-primary uppercase tracking-wider">

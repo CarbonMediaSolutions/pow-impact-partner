@@ -64,12 +64,12 @@ export const Hero = () => {
         transition={{ duration: 0.6, delay: 0.6 }}
         className="container mt-20"
       >
-        <div className="grid md:grid-cols-3 gap-px bg-border/30">
+        <div className="grid md:grid-cols-3 gap-6">
           {editorialTiles.map((post) => (
             <Link
               key={post.id}
               to={`/blog/${post.id}`}
-              className="group block p-6 lg:p-8 bg-background hover:bg-muted/20 transition-colors duration-300"
+              className="group block p-6 lg:p-8 bg-background hover:bg-muted/20 transition-colors duration-300 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border/20"
             >
               <span className="font-body text-xs text-muted-foreground uppercase tracking-wider">
                 {post.category}

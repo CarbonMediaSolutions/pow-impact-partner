@@ -51,11 +51,11 @@ export const Services = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="group"
             >
-              <div className="aspect-[4/3] overflow-hidden bg-muted mb-6">
+              <div className="aspect-[4/3] overflow-hidden bg-muted mb-6 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
                 <img
                   src={domain.image}
                   alt=""
-                  className="w-full h-full object-cover grayscale opacity-80"
+                  className="w-full h-full object-cover grayscale opacity-80 rounded-lg"
                 />
               </div>
               <h3 className="font-serif text-xl font-medium text-foreground mb-3">
