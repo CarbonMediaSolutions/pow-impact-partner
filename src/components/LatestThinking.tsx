@@ -50,7 +50,7 @@ export const LatestThinking = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <Link to={`/blog/${post.id}`} className="group block">
-                <div className="aspect-[4/3] overflow-hidden bg-muted mb-5">
+                <div className="aspect-[3/4] overflow-hidden bg-muted mb-5">
                   <img
                     src={postImages[index % postImages.length]}
                     alt=""
