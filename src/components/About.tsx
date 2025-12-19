@@ -54,12 +54,10 @@ export const About = () => {
 
             <div className="space-y-4 font-body text-sm text-muted-foreground leading-relaxed">
               <p>
-                Patric advises founders, leadership teams, and boards on strategic and 
-                financial matters across technology, professional services, and social enterprise.
+                Patric advises founders, leadership teams, and boards on strategic, operational, and financial matters.
               </p>
               <p>
-                A Chartered Accountant with experience in high-growth environments, 
-                he works with leaders navigating complexity and transformation.
+                His work focuses on navigating complexity, strengthening decision-making, and long-term organisational performance across mission-driven and commercial contexts.
               </p>
             </div>
           </motion.div>
