@@ -55,6 +55,9 @@
     --teal-light: 174 25% 45%;
     --teal-dark: 174 35% 28%;
 
+    /* Tile background - warm off-white */
+    --tile: 30 13% 94%;
+
     /* Warm clay accent - grounding signal */
     --clay: 28 35% 56%;
     --clay-light: 28 30% 65%;

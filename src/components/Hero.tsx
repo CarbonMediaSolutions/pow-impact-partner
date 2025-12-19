@@ -69,12 +69,12 @@ export const Hero = () => {
             <Link
               key={post.id}
               to={`/blog/${post.id}`}
-              className="group block p-6 lg:p-8 bg-background hover:bg-muted/20 transition-colors duration-300 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border/20"
+              className="group block p-6 lg:p-8 bg-tile hover:bg-tile/80 transition-colors duration-300 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border/20"
             >
-              <span className="font-body text-xs text-muted-foreground uppercase tracking-wider">
+              <span className="font-body text-xs text-teal uppercase tracking-wider font-medium">
                 {post.category}
               </span>
-              <h3 className="font-serif text-base lg:text-lg font-medium text-foreground mt-3 leading-snug group-hover:text-foreground/80 transition-colors">
+              <h3 className="font-serif text-base lg:text-lg font-medium text-foreground mt-3 leading-snug group-hover:text-teal transition-colors">
                 {post.title}
               </h3>
             </Link>
