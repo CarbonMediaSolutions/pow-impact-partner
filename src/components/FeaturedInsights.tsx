@@ -43,13 +43,13 @@ export const FeaturedInsights = () => {
             className="lg:col-span-7"
           >
             <Link to={`/blog/${mainPost.id}`} className="group block">
-              <div className="aspect-[16/10] overflow-hidden bg-muted mb-6 relative">
+              <div className="aspect-[16/10] overflow-hidden bg-muted mb-6 relative rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
                 <img
                   src={featuredHeroImage}
                   alt=""
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 rounded-lg"
                 />
-                <div className="absolute inset-0 bg-primary/[0.06] pointer-events-none" />
+                <div className="absolute inset-0 bg-primary/[0.06] pointer-events-none rounded-lg" />
               </div>
               <span className="font-body text-xs text-primary uppercase tracking-wider">
                 Research
@@ -71,11 +71,11 @@ export const FeaturedInsights = () => {
                 transition={{ duration: 0.5, delay: (index + 1) * 0.1 }}
               >
                 <Link to={`/blog/${post.id}`} className="group flex gap-5">
-                  <div className="w-28 h-28 flex-shrink-0 overflow-hidden bg-muted">
+                  <div className="w-28 h-28 flex-shrink-0 overflow-hidden bg-muted rounded-md shadow-[0_2px_6px_rgba(0,0,0,0.06)]">
                     <img
                       src={tileImages[index] || tileImages[0]}
                       alt=""
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 rounded-md"
                     />
                   </div>
                   <div className="flex-1 py-1">

@@ -32,7 +32,7 @@ export const InsightLed = () => {
           </h2>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-px bg-border/30">
+        <div className="grid md:grid-cols-3 gap-6">
           {themes.map((theme, index) => (
             <motion.div
               key={theme.title}
@@ -40,7 +40,7 @@ export const InsightLed = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="p-8 lg:p-12 bg-background"
+              className="p-8 lg:p-12 bg-background rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border/20"
             >
               <h3 className="font-serif text-xl lg:text-2xl font-medium text-foreground mb-4">
                 {theme.title}
