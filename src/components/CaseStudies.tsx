@@ -20,8 +20,9 @@ const engagements = [
 
 export const CaseStudies = () => {
   return (
-    <section id="impact" className="py-32 lg:py-40 border-t border-border/30">
+    <section id="impact" className="py-32 lg:py-40">
       <div className="container">
+        <div className="section-divider" />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -45,17 +46,20 @@ export const CaseStudies = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="p-8 lg:p-10 bg-background"
+              className="relative p-8 lg:p-10 bg-background"
             >
-              <span className="font-body text-xs font-medium text-muted-foreground uppercase tracking-wider">
+              {/* Warm clay vertical accent */}
+              <div className="absolute left-0 top-8 bottom-8 w-px bg-clay/40" />
+              
+              <span className="font-body text-xs font-medium text-muted-foreground uppercase tracking-wider pl-4">
                 {engagement.type}
               </span>
               
-              <p className="font-body text-muted-foreground mt-6 mb-8 leading-relaxed">
+              <p className="font-body text-muted-foreground mt-6 mb-8 leading-relaxed pl-4">
                 {engagement.challenge}
               </p>
 
-              <p className="font-serif text-foreground leading-relaxed">
+              <p className="font-serif text-foreground leading-relaxed pl-4">
                 {engagement.outcome}
               </p>
             </motion.div>

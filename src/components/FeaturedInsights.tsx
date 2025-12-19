@@ -15,8 +15,9 @@ export const FeaturedInsights = () => {
   if (!mainPost) return null;
 
   return (
-    <section className="py-32 lg:py-40 border-t border-border/30">
+    <section className="py-32 lg:py-40">
       <div className="container">
+        <div className="section-divider" />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -42,14 +43,15 @@ export const FeaturedInsights = () => {
             className="lg:col-span-7"
           >
             <Link to={`/blog/${mainPost.id}`} className="group block">
-              <div className="aspect-[16/10] overflow-hidden bg-muted mb-6">
+              <div className="aspect-[16/10] overflow-hidden bg-muted mb-6 relative">
                 <img
                   src={featuredHeroImage}
                   alt=""
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
+                <div className="absolute inset-0 bg-primary/[0.06] pointer-events-none" />
               </div>
-              <span className="font-body text-xs text-muted-foreground uppercase tracking-wider">
+              <span className="font-body text-xs text-primary uppercase tracking-wider">
                 Research
               </span>
               <h3 className="font-serif text-2xl lg:text-3xl font-medium text-foreground mt-3 leading-tight">
@@ -77,7 +79,7 @@ export const FeaturedInsights = () => {
                     />
                   </div>
                   <div className="flex-1 py-1">
-                    <span className="font-body text-xs text-muted-foreground uppercase tracking-wider">
+                    <span className="font-body text-xs text-primary uppercase tracking-wider">
                       Perspective
                     </span>
                     <h4 className="font-serif text-base lg:text-lg font-medium text-foreground mt-2 leading-snug">

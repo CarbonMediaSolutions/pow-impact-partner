@@ -17,8 +17,9 @@ const themes = [
 
 export const InsightLed = () => {
   return (
-    <section className="py-32 lg:py-40 border-t border-border/30">
+    <section className="py-32 lg:py-40">
       <div className="container">
+        <div className="section-divider" />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
