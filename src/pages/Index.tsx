@@ -1,13 +1,13 @@
 import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
+import { InsightLed } from '@/components/InsightLed';
 import { ThreePsFramework } from '@/components/ThreePsFramework';
 import { Services } from '@/components/Services';
-import { Testimonials } from '@/components/Testimonials';
-import { Assessment } from '@/components/Assessment';
 import { CaseStudies } from '@/components/CaseStudies';
 import { About } from '@/components/About';
 import { Process } from '@/components/Process';
 import { FAQ } from '@/components/FAQ';
+import { FinalCTA } from '@/components/FinalCTA';
 import { Footer } from '@/components/Footer';
 
 const Index = () => {
@@ -16,14 +16,14 @@ const Index = () => {
       <Header />
       <main>
         <Hero />
+        <InsightLed />
         <ThreePsFramework />
         <Services />
-        <Testimonials />
-        <Assessment />
         <CaseStudies />
         <About />
         <Process />
         <FAQ />
+        <FinalCTA />
       </main>
       <Footer />
     </div>
