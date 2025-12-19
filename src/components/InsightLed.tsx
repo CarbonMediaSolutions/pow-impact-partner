@@ -3,15 +3,15 @@ import { motion } from 'framer-motion';
 const themes = [
   {
     title: 'Growth & Transformation',
-    description: 'Strategic direction and organisational change at scale.',
+    description: 'Growth strategy, enterprise transformation, and long-term direction.',
   },
   {
     title: 'Organisational Architecture',
-    description: 'Structure, governance, and systems that enable performance.',
+    description: 'Decision structures, operating models, and leadership systems.',
   },
   {
     title: 'Capital & Performance',
-    description: 'Financial strategy and value creation over time.',
+    description: 'Capital allocation, financial performance, and value creation.',
   },
 ];
 

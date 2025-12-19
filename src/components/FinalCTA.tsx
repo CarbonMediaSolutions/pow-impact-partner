@@ -12,12 +12,12 @@ export const FinalCTA = () => {
           className="space-y-8"
         >
           <p className="font-body text-sm text-muted-foreground/80 tracking-wide">
-            For advisory engagements and institutional inquiries
+            For advisory inquiries
           </p>
           
           <a
             href="mailto:hello@plexapartners.com"
-            className="inline-block font-body text-foreground text-sm border-b border-foreground/30 hover:border-foreground pb-1 transition-colors"
+            className="inline-block font-body text-foreground text-sm"
           >
             hello@plexapartners.com
           </a>

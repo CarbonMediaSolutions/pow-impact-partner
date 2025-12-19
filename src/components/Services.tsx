@@ -6,17 +6,17 @@ import capabilityFinancial from '@/assets/capability-financial.jpg';
 const domains = [
   {
     title: 'Growth & Transformation',
-    description: 'Strategic direction, market expansion, and organisational change.',
+    description: 'Enterprise growth strategy and transformation mandates.',
     image: capabilityStrategy,
   },
   {
     title: 'Governance & Operations',
-    description: 'Board effectiveness, operational architecture, and decision systems.',
+    description: 'Governance frameworks, operational architecture, and decision systems.',
     image: capabilityOrganisation,
   },
   {
     title: 'Capital & Performance',
-    description: 'Financial strategy, investment readiness, and value measurement.',
+    description: 'Financial strategy, performance management, and capital structuring.',
     image: capabilityFinancial,
   },
 ];

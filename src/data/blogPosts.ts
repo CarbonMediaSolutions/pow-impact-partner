@@ -15,8 +15,8 @@ export interface BlogPost {
 export const blogPosts: BlogPost[] = [
   {
     id: 'tax-planning-strategies-2024',
-    title: 'Essential Tax Planning Strategies for Mission-Driven Businesses in 2024',
-    excerpt: 'Discover how to optimize your tax position while staying true to your social and environmental mission.',
+    title: 'Tax Strategy in Mission-Driven Organisations',
+    excerpt: 'Considerations for optimising tax position while maintaining organisational mission.',
     content: 'Full article content here...',
     author: 'Patric',
     date: '2024-12-01',
@@ -28,8 +28,8 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: 'impact-measurement-guide',
-    title: 'The Complete Guide to Measuring Social Impact',
-    excerpt: 'Learn how to quantify and communicate your organization\'s impact to stakeholders and funders.',
+    title: 'Measuring Social Impact at Scale',
+    excerpt: 'Frameworks for quantifying and communicating organisational impact.',
     content: 'Full article content here...',
     author: 'Patric',
     date: '2024-11-15',
@@ -41,8 +41,8 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: 'scaling-social-enterprise',
-    title: 'Scaling Your Social Enterprise: Financial Considerations',
-    excerpt: 'Key financial strategies to consider when growing your impact-driven organization.',
+    title: 'Growth Decisions in Social Enterprises',
+    excerpt: 'Financial considerations when scaling impact-driven organisations.',
     content: 'Full article content here...',
     author: 'Patric',
     date: '2024-11-01',
@@ -53,8 +53,8 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: 'cloud-accounting-benefits',
-    title: 'Why Cloud-Based Accounting is Essential for Modern Businesses',
-    excerpt: 'Explore the benefits of moving your financial systems to the cloud for real-time visibility.',
+    title: 'Cloud-Based Financial Systems in Modern Organisations',
+    excerpt: 'Infrastructure considerations for real-time financial visibility.',
     content: 'Full article content here...',
     author: 'Patric',
     date: '2024-10-20',
@@ -65,8 +65,8 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: 'esg-reporting-requirements',
-    title: 'Understanding ESG Reporting Requirements for SMEs',
-    excerpt: 'A practical guide to environmental, social, and governance reporting for small and medium enterprises.',
+    title: 'ESG Reporting Considerations for Emerging Organisations',
+    excerpt: 'Environmental, social, and governance reporting frameworks.',
     content: 'Full article content here...',
     author: 'Patric',
     date: '2024-10-05',
@@ -77,8 +77,8 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: 'startup-financial-foundations',
-    title: 'Building Strong Financial Foundations for Your Startup',
-    excerpt: 'Essential financial practices every startup should implement from day one.',
+    title: 'Financial Foundations in Early-Stage Organisations',
+    excerpt: 'Core financial practices for emerging organisations.',
     content: 'Full article content here...',
     author: 'Patric',
     date: '2024-09-25',
@@ -89,8 +89,8 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: 'charitable-giving-tax-benefits',
-    title: 'Maximizing Tax Benefits Through Strategic Charitable Giving',
-    excerpt: 'How businesses can optimize their charitable contributions for both impact and tax efficiency.',
+    title: 'Tax Considerations in Strategic Charitable Giving',
+    excerpt: 'Approaches to charitable contributions for impact and efficiency.',
     content: 'Full article content here...',
     author: 'Patric',
     date: '2024-09-10',
@@ -101,8 +101,8 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: 'cash-flow-management',
-    title: 'Cash Flow Management for Not-for-Profits',
-    excerpt: 'Practical strategies to maintain healthy cash flow in mission-driven organizations.',
+    title: 'Cash Flow in Mission-Driven Organisations',
+    excerpt: 'Approaches to maintaining liquidity in mission-driven contexts.',
     content: 'Full article content here...',
     author: 'Patric',
     date: '2024-08-28',

@@ -25,9 +25,9 @@ export const Hero = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="font-body text-lg text-muted-foreground tracking-wide"
+            className="font-body text-base text-muted-foreground tracking-wide max-w-xl mx-auto"
           >
-            for Leaders Navigating Growth and Complexity
+            Advisory to founders, leadership teams, and boards on strategy, performance, and long-term value.
           </motion.p>
 
           <motion.div
