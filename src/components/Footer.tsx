@@ -6,9 +6,9 @@ export const Footer = () => {
   return (
     <footer id="contact" className="border-t border-border/30">
       {/* Institutional Closing Statement */}
-      <div className="container py-16 lg:py-20 border-b border-border/30">
-        <p className="font-serif text-lg text-foreground/80 max-w-xl leading-relaxed">
-          Plexa Partners advises leaders navigating growth, transformation, and strategic complexity.
+      <div className="container py-12 lg:py-16 border-b border-border/30">
+        <p className="font-body text-sm text-muted-foreground max-w-lg leading-relaxed">
+          Plexa Partners is an independent advisory firm focused on strategy, governance, and capital decisions.
         </p>
       </div>
 
