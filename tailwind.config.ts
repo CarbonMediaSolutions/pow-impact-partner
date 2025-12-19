@@ -60,6 +60,7 @@ export default {
           light: "hsl(var(--teal-light))",
           dark: "hsl(var(--teal-dark))",
         },
+        tile: "hsl(var(--tile))",
         clay: {
           DEFAULT: "hsl(var(--clay))",
           light: "hsl(var(--clay-light))",

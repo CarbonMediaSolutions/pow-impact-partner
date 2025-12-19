@@ -40,9 +40,9 @@ export const InsightLed = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="p-8 lg:p-12 bg-background rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border/20"
+              className="group p-8 lg:p-12 bg-tile rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border/20 transition-colors duration-300"
             >
-              <h3 className="font-serif text-xl lg:text-2xl font-medium text-foreground mb-4">
+              <h3 className="font-serif text-xl lg:text-2xl font-medium text-foreground mb-4 group-hover:text-teal transition-colors">
                 {theme.title}
               </h3>
               <p className="font-body text-muted-foreground leading-relaxed">
