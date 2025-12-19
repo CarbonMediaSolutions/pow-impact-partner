@@ -1,91 +1,65 @@
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import capabilityStrategy from '@/assets/capability-strategy.jpg';
 import capabilityOrganisation from '@/assets/capability-organisation.jpg';
 import capabilityFinancial from '@/assets/capability-financial.jpg';
 
-const capabilities = [
+const domains = [
   {
-    title: 'Strategy & Growth Advisory',
-    description: 'We work with leadership teams to define strategic direction, identify growth opportunities, and build the capabilities required to execute.',
-    href: '/services/growth-strategy',
+    title: 'Growth & Transformation',
+    description: 'Strategic direction, market expansion, and organisational change.',
     image: capabilityStrategy,
   },
   {
-    title: 'Organisational & Operational Enablement',
-    description: "From governance structures to operational processes, we help organisations build systems and capabilities that enable sustainable scale.",
-    href: '/services/impact-measurement',
+    title: 'Governance & Operations',
+    description: 'Board effectiveness, operational architecture, and decision systems.',
     image: capabilityOrganisation,
   },
   {
-    title: 'Financial Intelligence & Performance',
-    description: 'Strategic finance goes beyond compliance. We transform financial data into decision-ready intelligence for long-term value.',
-    href: '/services/tax-planning',
+    title: 'Capital & Performance',
+    description: 'Financial strategy, investment readiness, and value measurement.',
     image: capabilityFinancial,
   },
 ];
 
 export const Services = () => {
   return (
-    <section id="services" className="py-20 lg:py-28 border-t border-border/50">
+    <section id="services" className="py-32 lg:py-40 border-t border-border/30">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-12"
+          className="mb-16"
         >
-          <span className="font-body text-sm font-medium text-muted-foreground uppercase tracking-wider">
-            Capabilities
-          </span>
-          <h2 className="font-serif text-2xl sm:text-3xl font-medium text-foreground tracking-tight mt-3">
-            How We Partner With Clients
+          <h2 className="font-serif text-2xl sm:text-3xl font-medium text-foreground tracking-tight">
+            Where We Advise
           </h2>
         </motion.div>
 
-        {/* Visual Tile Grid - McKinsey Style */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {capabilities.map((capability, index) => (
+        <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
+          {domains.map((domain, index) => (
             <motion.div
-              key={capability.title}
+              key={domain.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="group"
             >
-              <Link 
-                to={capability.href}
-                className="group block h-full"
-              >
-                <div className="relative h-full min-h-[400px] rounded-lg overflow-hidden border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-xl">
-                  {/* Background Image */}
-                  <img 
-                    src={capability.image} 
-                    alt="" 
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  
-                  {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
-                  
-                  <div className="relative h-full p-8 flex flex-col justify-end">
-                    <h3 className="font-serif text-xl font-medium text-foreground group-hover:text-primary transition-colors mb-4">
-                      {capability.title}
-                    </h3>
-                    <p className="font-body text-muted-foreground text-sm leading-relaxed mb-6">
-                      {capability.description}
-                    </p>
-                    
-                    {/* CTA */}
-                    <div className="flex items-center gap-2 text-sm font-medium text-primary">
-                      <span>Explore this capability</span>
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </div>
-                </div>
-              </Link>
+              <div className="aspect-[4/3] overflow-hidden bg-muted mb-6">
+                <img
+                  src={domain.image}
+                  alt=""
+                  className="w-full h-full object-cover grayscale opacity-80"
+                />
+              </div>
+              <h3 className="font-serif text-xl font-medium text-foreground mb-3">
+                {domain.title}
+              </h3>
+              <p className="font-body text-muted-foreground leading-relaxed">
+                {domain.description}
+              </p>
             </motion.div>
           ))}
         </div>

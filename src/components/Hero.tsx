@@ -1,68 +1,66 @@
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
+import { blogPosts } from '@/data/blogPosts';
 
 export const Hero = () => {
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  // Get latest 3 posts for editorial tiles
+  const editorialTiles = blogPosts.slice(0, 3);
 
   return (
-    <section id="home" className="relative min-h-[90vh] flex items-center pt-24 pb-20 overflow-hidden">
-      {/* Subtle background decoration */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute top-1/4 right-1/4 w-[800px] h-[800px] bg-primary/[0.02] rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 left-1/4 w-[600px] h-[600px] bg-primary/[0.02] rounded-full blur-3xl" />
-      </div>
-
+    <section id="home" className="relative min-h-[70vh] flex flex-col justify-center pt-32 pb-16">
       <div className="container max-w-5xl">
-        <div className="text-center space-y-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="space-y-8"
-          >
-            <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-semibold text-foreground leading-[1.05] tracking-tight">
-              From Strategy
-              <br />
-              <span className="text-primary">to Impact</span>
-            </h1>
-            
-            <p className="font-body text-xl sm:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              We partner with founders and leadership teams to design strategy, 
-              enable growth, and deliver measurable impact.
-            </p>
-          </motion.div>
-
-          <motion.div
+        <div className="text-center space-y-6">
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center pt-4"
+            transition={{ duration: 0.8 }}
+            className="font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-medium text-foreground leading-[1.1] tracking-tight"
           >
-            <Button
-              onClick={() => scrollToSection('#insights')}
-              className="font-body font-medium px-8 py-6 text-base bg-foreground text-background hover:bg-foreground/90"
-              size="lg"
+            Shaping the Decisions
+            <br />
+            That Matter
+          </motion.h1>
+          
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="pt-8"
+          >
+            <Link 
+              to="/blog"
+              className="font-body text-sm text-muted-foreground hover:text-foreground transition-colors border-b border-muted-foreground/30 hover:border-foreground pb-1"
             >
-              Explore Our Thinking
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-            <Button
-              onClick={() => scrollToSection('#approach')}
-              variant="outline"
-              className="font-body font-medium px-8 py-6 text-base border-foreground/20 text-foreground hover:bg-foreground/5"
-              size="lg"
-            >
-              How We Work
-            </Button>
+              Explore our perspectives
+            </Link>
           </motion.div>
         </div>
       </div>
+
+      {/* Editorial Tiles Row */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.6 }}
+        className="container mt-20"
+      >
+        <div className="grid md:grid-cols-3 gap-px bg-border/30">
+          {editorialTiles.map((post) => (
+            <Link
+              key={post.id}
+              to={`/blog/${post.id}`}
+              className="group block p-6 lg:p-8 bg-background hover:bg-muted/20 transition-colors duration-300"
+            >
+              <span className="font-body text-xs text-muted-foreground uppercase tracking-wider">
+                {post.category}
+              </span>
+              <h3 className="font-serif text-base lg:text-lg font-medium text-foreground mt-3 leading-snug group-hover:text-foreground/80 transition-colors">
+                {post.title}
+              </h3>
+            </Link>
+          ))}
+        </div>
+      </motion.div>
     </section>
   );
 };
