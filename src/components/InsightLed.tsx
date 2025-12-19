@@ -3,15 +3,15 @@ import { motion } from 'framer-motion';
 const themes = [
   {
     title: 'Growth & Transformation',
-    description: 'Growth strategy, enterprise transformation, and long-term direction.',
+    description: 'Scaling organisations while preserving strategic coherence, operational discipline, and institutional trust.',
   },
   {
     title: 'Organisational Architecture',
-    description: 'Decision structures, operating models, and leadership systems.',
+    description: 'Designing governance, incentives, and decision systems that reinforce long-term performance.',
   },
   {
     title: 'Capital & Performance',
-    description: 'Capital allocation, financial performance, and value creation.',
+    description: 'Aligning financial strategy, capital allocation, and impact measurement with institutional objectives.',
   },
 ];
 

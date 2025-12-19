@@ -27,6 +27,9 @@ export const FeaturedInsights = () => {
           <h2 className="font-serif text-2xl sm:text-3xl font-medium text-foreground tracking-tight">
             Perspectives
           </h2>
+          <p className="font-body text-sm text-muted-foreground mt-4 max-w-2xl">
+            Original analysis exploring how strategy, governance, and capital decisions translate into measurable outcomes at scale.
+          </p>
         </motion.div>
 
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-12">
