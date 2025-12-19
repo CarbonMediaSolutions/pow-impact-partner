@@ -1,55 +1,51 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { Award, ChevronLeft, ChevronRight, Quote, Users, Leaf, TrendingUp, CheckCircle } from 'lucide-react';
+import { Award, ChevronLeft, ChevronRight, Quote, Users, Leaf, TrendingUp } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { Button } from '@/components/ui/button';
 import patricPortrait from '@/assets/patric-portrait.jpg';
 
 const testimonials = [
   {
-    quote: 'Patric has transformed the way we scale our impact. His strategic approach to tax planning means we can reinvest more into what matters most—our mission.',
-    author: 'Jacob Hill',
-    role: 'Managing Director',
-    company: 'Offploy Group',
+    quote: 'The firm provided clarity on financial structure and governance at a critical stage of growth. Their approach was rigorous and aligned with long-term objectives.',
+    author: 'Managing Director',
+    role: '',
+    company: 'Professional Services Firm',
   },
   {
-    quote: 'He is a very passionate and driven individual who genuinely cares about helping businesses succeed. His expertise goes far beyond numbers.',
-    author: 'Kirstie Donnelly',
-    role: 'CEO',
-    company: 'City & Guilds Group',
+    quote: 'A highly capable advisory partner. Their work on organisational strategy helped refine decision-making across the leadership team.',
+    author: 'Chief Executive',
+    role: '',
+    company: 'National Skills Organisation',
   },
   {
-    quote: 'Focused on making a positive difference in the world. Patric helps organizations increase their social and environmental footprint while maintaining financial health.',
-    author: 'Marcia Asare',
-    role: 'Executive Director',
-    company: 'The Walcot Foundation',
+    quote: 'Plexa Partners brought strategic and financial discipline to a complex transformation. The engagement delivered measurable outcomes.',
+    author: 'Executive Director',
+    role: '',
+    company: 'Grant-Making Foundation',
   },
 ];
 
 const credentials = [
   'ICAEW Chartered Accountant',
   'Regulated by ICAEW',
-  '15+ years experience',
-  '80+ businesses helped',
 ];
 
 const values = [
   {
     icon: Users,
-    title: 'People First',
-    description: 'We believe the best businesses invest in their teams. Every decision we help you make considers the human impact.'
+    title: 'People',
+    description: 'Leadership effectiveness, organisational alignment, and decision quality.'
   },
   {
     icon: Leaf,
-    title: 'Planet Conscious',
-    description: 'Environmental responsibility is woven into our approach. We help you measure and amplify your positive footprint.'
+    title: 'Planet',
+    description: 'Long-term resilience, responsible growth, and sustainable value creation.'
   },
   {
     icon: TrendingUp,
-    title: 'Purposeful Profit',
-    description: 'Sustainable profit enables everything else. We ensure your financial health supports your mission long-term.'
+    title: 'Performance',
+    description: 'Capital discipline, operational clarity, and measurable outcomes.'
   },
 ];
 
@@ -91,13 +87,13 @@ export default function AboutPage() {
                 <div className="relative overflow-hidden rounded-2xl border-4 border-background shadow-2xl">
                   <img
                     src={patricPortrait}
-                    alt="Patric - Founder of Pow Consulting"
+                    alt="Patric - Founder, Plexa Partners"
                     className="w-full h-auto object-cover"
                   />
                 </div>
                 <div className="absolute -bottom-4 -right-4 lg:right-auto lg:-left-4 bg-secondary text-secondary-foreground px-5 py-3 rounded-xl shadow-lg flex items-center gap-2">
                   <Award className="w-5 h-5" />
-                  <span className="font-body text-sm font-bold">ICAEW Chartered</span>
+                  <span className="font-body text-sm font-medium">ICAEW Chartered</span>
                 </div>
               </div>
             </motion.div>
@@ -109,25 +105,12 @@ export default function AboutPage() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="order-1 lg:order-2"
             >
-              <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
-                Meet Patric
+              <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-medium text-foreground mb-6">
+                About Plexa Partners
               </h1>
-              <p className="font-serif text-xl text-primary mb-6">
-                "I started Pow because I believe the best businesses aren't built by optimizing profit alone—they're built by optimizing purpose."
+              <p className="font-body text-lg text-muted-foreground leading-relaxed">
+                Plexa Partners is an independent advisory firm operating at the intersection of strategy, governance, and long-term performance.
               </p>
-              <div className="space-y-4 font-body text-muted-foreground leading-relaxed mb-8">
-                <p>
-                  After years in corporate finance, I saw that most accountants focus only on the numbers. But mission-driven businesses need more—they need a partner who understands that financial strategy should amplify impact, not constrain it.
-                </p>
-                <p>
-                  Whether you're a startup founder, a scaling SME, or a not-for-profit leader, I'm here to help you master financial complexity while staying true to your values.
-                </p>
-              </div>
-              <Link to="/contact">
-                <Button className="btn-emerald font-body font-semibold px-8 py-6 text-lg">
-                  Let's Talk
-                </Button>
-              </Link>
             </motion.div>
           </div>
         </div>
@@ -154,22 +137,45 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Values */}
+      {/* The Firm */}
       <section className="py-20">
+        <div className="container max-w-4xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="section-divider" />
+            <h2 className="font-serif text-2xl md:text-3xl font-medium text-foreground mb-8">
+              The Firm
+            </h2>
+            <div className="font-body text-lg text-muted-foreground space-y-4 leading-relaxed">
+              <p>
+                Plexa Partners advises founders, leadership teams, and boards navigating growth, transformation, and strategic complexity.
+              </p>
+              <p>
+                The firm works across organisational design, governance, and financial strategy, supporting decision-making where clarity, judgment, and long-term perspective matter most.
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* How We Think */}
+      <section className="py-20 bg-muted/30">
         <div className="container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-16"
+            className="mb-16"
           >
-            <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Our Guiding Principles
+            <div className="section-divider" />
+            <h2 className="font-serif text-2xl md:text-3xl font-medium text-foreground">
+              How We Think
             </h2>
-            <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto">
-              Everything we do is guided by the 3Ps: People, Planet, and Profit working in harmony.
-            </p>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -185,7 +191,7 @@ export default function AboutPage() {
                 <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
                   <value.icon className="w-8 h-8 text-primary" />
                 </div>
-                <h3 className="font-serif text-xl font-bold text-foreground mb-3">{value.title}</h3>
+                <h3 className="font-serif text-xl font-medium text-foreground mb-3">{value.title}</h3>
                 <p className="font-body text-muted-foreground">{value.description}</p>
               </motion.div>
             ))}
@@ -193,8 +199,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Story */}
-      <section className="py-20 bg-muted/30">
+      {/* Firm Origins */}
+      <section className="py-20">
         <div className="container max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -202,42 +208,35 @@ export default function AboutPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-8 text-center">
-              The Pow Story
+            <div className="section-divider" />
+            <h2 className="font-serif text-2xl md:text-3xl font-medium text-foreground mb-8">
+              Firm Origins
             </h2>
-            <div className="font-body text-lg text-foreground/80 space-y-6">
+            <div className="font-body text-lg text-muted-foreground space-y-4 leading-relaxed">
               <p>
-                Pow Consulting was born from a simple observation: too many mission-driven businesses were getting generic financial advice that didn't account for their unique challenges and aspirations.
+                Plexa Partners was established to address the growing gap between financial expertise and strategic decision-making in complex organisations.
               </p>
               <p>
-                Traditional accountants focus on compliance and cost reduction. But what about the startup that wants to offer living wages? The social enterprise that needs to measure impact alongside profit? The not-for-profit navigating complex funding requirements?
-              </p>
-              <p>
-                These organizations needed a different kind of partner—one who could speak the language of purpose as fluently as the language of finance. That's why I created Pow.
-              </p>
-              <p>
-                Today, we've helped over 80 businesses navigate financial complexity while staying true to their values. Every engagement is guided by the 3Ps: People, Planet, and Profit working in harmony.
-              </p>
-              <p>
-                Whether you're a startup finding your footing, an SME ready to scale, or a not-for-profit seeking to amplify your impact, we're here to help you build something that matters.
+                Many mission-driven, growth-stage, and professional services organisations face challenges that cannot be solved through compliance or transactional advice alone. The firm was created to provide senior-level strategic and financial counsel aligned with long-term objectives.
               </p>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-20">
+      {/* Client Perspectives */}
+      <section className="py-20 bg-muted/30">
         <div className="container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-12"
+            className="mb-12"
           >
-            <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-4">
-              What Our Clients Say
+            <div className="section-divider" />
+            <h2 className="font-serif text-2xl md:text-3xl font-medium text-foreground">
+              Client Perspectives
             </h2>
           </motion.div>
 
@@ -257,11 +256,11 @@ export default function AboutPage() {
                   "{testimonials[currentTestimonial].quote}"
                 </blockquote>
                 <footer>
-                  <p className="font-serif text-lg font-bold text-primary">
+                  <p className="font-serif text-lg font-medium text-primary">
                     {testimonials[currentTestimonial].author}
                   </p>
                   <p className="font-body text-sm text-muted-foreground">
-                    {testimonials[currentTestimonial].role}, {testimonials[currentTestimonial].company}
+                    {testimonials[currentTestimonial].company}
                   </p>
                 </footer>
               </motion.div>
@@ -299,26 +298,52 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20 bg-primary">
-        <div className="container text-center">
+      {/* Leadership */}
+      <section className="py-20">
+        <div className="container max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="font-serif text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
-              Ready to Work Together?
+            <div className="section-divider" />
+            <h2 className="font-serif text-2xl md:text-3xl font-medium text-foreground mb-8">
+              Leadership
             </h2>
-            <p className="font-body text-lg text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
-              Let's discuss how Pow Consulting can help your organization thrive.
+            <div className="font-body text-lg text-muted-foreground space-y-4 leading-relaxed">
+              <p>
+                Patric is the Founder and Principal Advisor at Plexa Partners.
+              </p>
+              <p>
+                He advises founders, leadership teams, and boards on strategic finance, governance, and organisational decision-making. His work spans growth strategy, capital structure, and operational performance across a range of sectors.
+              </p>
+              <p>
+                Patric is a Chartered Accountant and has advised organisations at various stages of scale and complexity.
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Closing CTA */}
+      <section className="py-20 bg-muted/30">
+        <div className="container max-w-4xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <p className="font-body text-muted-foreground mb-4">
+              For enquiries regarding advisory engagements, please contact the firm directly.
             </p>
-            <Link to="/contact">
-              <Button className="bg-emerald hover:bg-emerald/90 text-emerald-foreground font-body font-semibold px-10 py-6 text-lg">
-                Book Your Free Consultation
-              </Button>
-            </Link>
+            <a 
+              href="mailto:hello@plexapartners.com" 
+              className="font-body text-teal hover:underline underline-offset-2"
+            >
+              hello@plexapartners.com
+            </a>
           </motion.div>
         </div>
       </section>
