@@ -15,7 +15,7 @@ export const FeaturedInsights = () => {
   if (!mainPost) return null;
 
   return (
-    <section className="py-32 lg:py-40">
+    <section className="py-20 lg:py-24">
       <div className="container">
         <div className="section-divider" />
         <motion.div
