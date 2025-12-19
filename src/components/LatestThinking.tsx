@@ -9,7 +9,7 @@ import capabilityOrganisation from '@/assets/capability-organisation.jpg';
 const postImages = [insightTile1, insightTile2, capabilityStrategy, capabilityOrganisation];
 
 export const LatestThinking = () => {
-  const latestPosts = blogPosts.filter(post => !post.featured).slice(0, 4);
+  const latestPosts = blogPosts.filter(post => !post.featured).slice(0, 3);
 
   return (
     <section className="py-32 lg:py-40">
@@ -40,7 +40,7 @@ export const LatestThinking = () => {
           </div>
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {latestPosts.map((post, index) => (
             <motion.article
               key={post.id}
