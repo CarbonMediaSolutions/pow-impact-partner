@@ -3,18 +3,18 @@ import { motion } from 'framer-motion';
 const engagements = [
   {
     type: 'Technology Founder',
-    challenge: 'Navigating transition from growth-stage to sustainable scale.',
-    outcome: 'Accelerated revenue trajectory and strengthened operational foundation.',
+    challenge: 'Advising through transition from growth-stage to institutional scale.',
+    outcome: 'Accelerated revenue trajectory. Reinforced operational foundation.',
   },
   {
     type: 'Professional Services Firm',
-    challenge: 'Building financial systems to support rapid expansion.',
-    outcome: 'Transformed reporting capability and secured growth capital.',
+    challenge: 'Guiding financial architecture during rapid expansion.',
+    outcome: 'Redesigned reporting capability. Growth capital secured.',
   },
   {
     type: 'Social Enterprise Leadership',
-    challenge: 'Aligning impact measurement with stakeholder expectations.',
-    outcome: 'Established rigorous impact framework and attracted new funding.',
+    challenge: 'Shaping impact measurement frameworks for stakeholder alignment.',
+    outcome: 'Rigorous impact framework established. New funding realised.',
   },
 ];
 

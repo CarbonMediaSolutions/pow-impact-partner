@@ -21,10 +21,30 @@ export const Hero = () => {
             That Matter
           </motion.h1>
           
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="font-body text-lg text-muted-foreground tracking-wide"
+          >
+            for Leaders Navigating Growth and Complexity
+          </motion.p>
+
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="pt-6"
+          >
+            <p className="font-body text-xs text-muted-foreground/70 tracking-[0.2em] uppercase">
+              Independent Advisory • Strategy • Governance • Capital
+            </p>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.7 }}
             className="pt-8"
           >
             <Link 
