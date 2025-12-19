@@ -5,7 +5,6 @@ import { InsightLed } from '@/components/InsightLed';
 import { LatestThinking } from '@/components/LatestThinking';
 import { Services } from '@/components/Services';
 import { CaseStudies } from '@/components/CaseStudies';
-import { About } from '@/components/About';
 import { FinalCTA } from '@/components/FinalCTA';
 import { Footer } from '@/components/Footer';
 
@@ -20,7 +19,6 @@ const Index = () => {
         <LatestThinking />
         <Services />
         <CaseStudies />
-        <About />
         <FinalCTA />
       </main>
       <Footer />
