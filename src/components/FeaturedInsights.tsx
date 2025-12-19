@@ -2,6 +2,11 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { blogPosts } from '@/data/blogPosts';
+import featuredHeroImage from '@/assets/featured-insight-hero.jpg';
+import insightTile1 from '@/assets/insight-tile-1.jpg';
+import insightTile2 from '@/assets/insight-tile-2.jpg';
+
+const tileImages = [insightTile1, insightTile2];
 
 export const FeaturedInsights = () => {
   const featuredPosts = blogPosts.filter(post => post.featured).slice(0, 3);
@@ -48,15 +53,18 @@ export const FeaturedInsights = () => {
               to={`/blog/${displayPosts[0]?.id}`}
               className="group block h-full"
             >
-              <div className="relative h-full min-h-[400px] lg:min-h-[500px] rounded-lg overflow-hidden bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-border/50">
-                {/* Abstract Background Pattern */}
-                <div className="absolute inset-0 opacity-30">
-                  <div className="absolute top-0 right-0 w-96 h-96 bg-primary/20 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2" />
-                  <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/10 rounded-full blur-2xl transform -translate-x-1/4 translate-y-1/4" />
-                </div>
+              <div className="relative h-full min-h-[400px] lg:min-h-[500px] rounded-lg overflow-hidden border border-border/50 hover:border-primary/30 transition-colors">
+                {/* Background Image */}
+                <img 
+                  src={featuredHeroImage} 
+                  alt="" 
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
                 
                 <div className="relative h-full p-8 lg:p-12 flex flex-col justify-end">
-                  <span className="inline-block px-3 py-1 text-xs font-medium text-primary bg-primary/10 rounded-full w-fit mb-4">
+                  <span className="inline-block px-3 py-1 text-xs font-medium text-primary bg-background/90 rounded-full w-fit mb-4">
                     {displayPosts[0]?.category}
                   </span>
                   <h3 className="font-serif text-2xl lg:text-3xl font-medium text-foreground mb-4 group-hover:text-primary transition-colors leading-tight">
@@ -88,18 +96,28 @@ export const FeaturedInsights = () => {
                 to={`/blog/${post.id}`}
                 className="group block h-full"
               >
-                <div className="h-full min-h-[240px] rounded-lg overflow-hidden bg-card border border-border/50 hover:border-primary/30 transition-colors p-6 flex flex-col justify-between">
-                  <div>
+                <div className="h-full min-h-[240px] rounded-lg overflow-hidden bg-card border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg">
+                  {/* Image Header */}
+                  <div className="h-28 relative overflow-hidden">
+                    <img 
+                      src={tileImages[index]} 
+                      alt="" 
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent" />
+                  </div>
+                  
+                  <div className="p-6">
                     <span className="inline-block px-3 py-1 text-xs font-medium text-primary bg-primary/10 rounded-full mb-4">
                       {post.category}
                     </span>
                     <h3 className="font-serif text-lg font-medium text-foreground group-hover:text-primary transition-colors leading-snug">
                       {post.title}
                     </h3>
-                  </div>
-                  <div className="flex items-center justify-between mt-4">
-                    <span className="text-sm text-muted-foreground">{post.readTime}</span>
-                    <ArrowRight className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                    <div className="flex items-center justify-between mt-4">
+                      <span className="text-sm text-muted-foreground">{post.readTime}</span>
+                      <ArrowRight className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                    </div>
                   </div>
                 </div>
               </Link>

@@ -2,6 +2,12 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { blogPosts } from '@/data/blogPosts';
+import insightTile1 from '@/assets/insight-tile-1.jpg';
+import insightTile2 from '@/assets/insight-tile-2.jpg';
+import capabilityStrategy from '@/assets/capability-strategy.jpg';
+import capabilityOrganisation from '@/assets/capability-organisation.jpg';
+
+const tileImages = [insightTile1, insightTile2, capabilityStrategy, capabilityOrganisation];
 
 export const LatestThinking = () => {
   // Get the most recent non-featured posts
@@ -51,15 +57,15 @@ export const LatestThinking = () => {
                 className="group block h-full"
               >
                 <article className="h-full rounded-lg overflow-hidden bg-background border border-border/50 hover:border-primary/30 hover:shadow-lg transition-all duration-300">
-                  {/* Abstract Visual Header */}
-                  <div className="h-32 relative overflow-hidden bg-gradient-to-br from-primary/5 to-primary/10">
-                    <div 
-                      className="absolute inset-0 opacity-50"
-                      style={{
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23166534' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-                      }}
+                  {/* Image Header */}
+                  <div className="h-36 relative overflow-hidden">
+                    <img 
+                      src={tileImages[index % tileImages.length]} 
+                      alt="" 
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
-                    <div className="absolute bottom-4 left-4">
+                    <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
+                    <div className="absolute bottom-3 left-4">
                       <span className="inline-block px-2 py-1 text-xs font-medium text-primary bg-background/90 rounded">
                         {post.category}
                       </span>
