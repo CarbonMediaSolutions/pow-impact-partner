@@ -60,10 +60,11 @@ export default {
           light: "hsl(var(--teal-light))",
           dark: "hsl(var(--teal-dark))",
         },
-        gold: {
-          DEFAULT: "hsl(var(--gold))",
-          light: "hsl(var(--gold-light))",
+        clay: {
+          DEFAULT: "hsl(var(--clay))",
+          light: "hsl(var(--clay-light))",
         },
+        divider: "hsl(var(--divider))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

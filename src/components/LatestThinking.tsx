@@ -12,8 +12,9 @@ export const LatestThinking = () => {
   const latestPosts = blogPosts.filter(post => !post.featured).slice(0, 4);
 
   return (
-    <section className="py-32 lg:py-40 border-t border-border/30">
+    <section className="py-32 lg:py-40">
       <div className="container">
+        <div className="section-divider" />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -32,7 +33,7 @@ export const LatestThinking = () => {
             </div>
             <Link 
               to="/blog" 
-              className="hidden md:block font-body text-sm text-muted-foreground hover:text-foreground transition-colors border-b border-muted-foreground/30 hover:border-foreground pb-1"
+              className="hidden md:block font-body text-sm text-primary hover:text-teal-dark transition-colors hover:underline underline-offset-2"
             >
               View archive
             </Link>
@@ -56,7 +57,7 @@ export const LatestThinking = () => {
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
-                <span className="font-body text-xs text-muted-foreground uppercase tracking-wider">
+                <span className="font-body text-xs text-primary uppercase tracking-wider">
                   {post.category}
                 </span>
                 <h3 className="font-serif text-base lg:text-lg font-medium text-foreground mt-2 leading-snug">
@@ -70,7 +71,7 @@ export const LatestThinking = () => {
         <div className="mt-10 text-center md:hidden">
           <Link 
             to="/blog" 
-            className="font-body text-sm text-muted-foreground hover:text-foreground transition-colors border-b border-muted-foreground/30 hover:border-foreground pb-1"
+            className="font-body text-sm text-primary hover:text-teal-dark transition-colors hover:underline underline-offset-2"
           >
             View archive
           </Link>

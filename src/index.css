@@ -12,48 +12,52 @@
 
 @layer base {
   :root {
-    /* Clean, editorial color palette */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 13%;
+    /* Institutional color palette - warm neutrals */
+    --background: 36 20% 96%;
+    --foreground: 0 0% 12%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 13%;
+    --card: 36 15% 94%;
+    --card-foreground: 0 0% 12%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 13%;
+    --popover: 36 20% 96%;
+    --popover-foreground: 0 0% 12%;
 
-    /* Sophisticated Teal Primary */
-    --primary: 174 55% 32%;
-    --primary-foreground: 0 0% 100%;
+    /* Deep desaturated teal - authority signal */
+    --primary: 174 31% 33%;
+    --primary-foreground: 36 20% 96%;
 
     /* Neutral Secondary */
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 13%;
+    --secondary: 36 15% 94%;
+    --secondary-foreground: 0 0% 12%;
 
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
+    --muted: 36 15% 94%;
+    --muted-foreground: 0 0% 44%;
 
     /* Subtle accent */
-    --accent: 0 0% 96%;
-    --accent-foreground: 0 0% 13%;
+    --accent: 36 15% 94%;
+    --accent-foreground: 0 0% 12%;
 
-    /* Teal for CTAs */
-    --emerald: 174 55% 32%;
-    --emerald-foreground: 0 0% 100%;
+    /* Teal for links and emphasis */
+    --emerald: 174 31% 33%;
+    --emerald-foreground: 36 20% 96%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 92%;
-    --input: 0 0% 92%;
-    --ring: 174 55% 32%;
+    --border: 36 10% 88%;
+    --input: 36 10% 88%;
+    --ring: 174 31% 33%;
 
     --radius: 0.25rem;
 
-    /* Custom Variables */
-    --teal: 174 55% 32%;
-    --teal-light: 174 45% 45%;
-    --teal-dark: 174 60% 25%;
+    /* Custom Variables - Institutional Teal */
+    --teal: 174 31% 33%;
+    --teal-light: 174 25% 45%;
+    --teal-dark: 174 35% 28%;
+
+    /* Warm clay accent - grounding signal */
+    --clay: 28 35% 56%;
+    --clay-light: 28 30% 65%;
 
     /* Shadows - minimal and clean */
     --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.03);
@@ -62,15 +66,18 @@
     --shadow-card: 0 1px 3px 0 hsl(0 0% 0% / 0.03);
     --shadow-lift: 0 4px 12px -2px hsl(0 0% 0% / 0.08);
 
+    /* Section divider */
+    --divider: 174 31% 33%;
+
     /* Sidebar */
-    --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 0 0% 13%;
-    --sidebar-primary: 174 55% 32%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 96%;
-    --sidebar-accent-foreground: 0 0% 13%;
-    --sidebar-border: 0 0% 92%;
-    --sidebar-ring: 174 55% 32%;
+    --sidebar-background: 36 20% 96%;
+    --sidebar-foreground: 0 0% 12%;
+    --sidebar-primary: 174 31% 33%;
+    --sidebar-primary-foreground: 36 20% 96%;
+    --sidebar-accent: 36 15% 94%;
+    --sidebar-accent-foreground: 0 0% 12%;
+    --sidebar-border: 36 10% 88%;
+    --sidebar-ring: 174 31% 33%;
   }
 
   .dark {
@@ -138,7 +145,19 @@
   }
 
   .link-underline {
-    @apply relative inline-block after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-px after:bottom-0 after:left-0 after:bg-foreground after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left;
+    @apply relative inline-block after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-px after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left;
+  }
+
+  .link-teal {
+    @apply text-primary no-underline transition-colors duration-200 hover:text-teal-dark;
+  }
+
+  .link-teal:hover {
+    @apply underline underline-offset-2;
+  }
+
+  .section-divider {
+    @apply w-12 lg:w-16 h-px bg-primary/[0.12] mb-12;
   }
 
   .btn-emerald {

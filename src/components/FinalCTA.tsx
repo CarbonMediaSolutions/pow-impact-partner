@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 
 export const FinalCTA = () => {
   return (
-    <section className="py-32 lg:py-40 border-t border-border/30">
+    <section className="py-32 lg:py-40">
       <div className="container max-w-2xl text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -17,7 +17,7 @@ export const FinalCTA = () => {
           
           <a
             href="mailto:hello@plexapartners.com"
-            className="inline-block font-body text-foreground text-sm"
+            className="inline-block font-body text-primary text-sm hover:text-teal-dark transition-colors hover:underline underline-offset-2"
           >
             hello@plexapartners.com
           </a>
