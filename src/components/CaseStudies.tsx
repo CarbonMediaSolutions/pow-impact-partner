@@ -2,19 +2,19 @@ import { motion } from 'framer-motion';
 
 const engagements = [
   {
-    type: 'Technology Founder',
-    challenge: 'Advising through transition from growth-stage to institutional scale.',
-    outcome: 'Accelerated revenue trajectory. Reinforced operational foundation.',
+    type: 'Technology Organisation',
+    challenge: 'Advising executive leadership on strategic repositioning during transition from growth-stage to institutional scale.',
+    outcome: 'Revenue trajectory realigned. Operational foundations restructured.',
   },
   {
     type: 'Professional Services Firm',
-    challenge: 'Guiding financial architecture during rapid expansion.',
-    outcome: 'Redesigned reporting capability. Growth capital secured.',
+    challenge: 'Guiding financial architecture and reporting capability during a period of rapid expansion and capital formation.',
+    outcome: 'Governance systems redesigned. Growth capital secured.',
   },
   {
-    type: 'Social Enterprise Leadership',
-    challenge: 'Shaping impact measurement frameworks for stakeholder alignment.',
-    outcome: 'Rigorous impact framework established. New funding realised.',
+    type: 'National Social Enterprise',
+    challenge: 'Advising leadership on impact measurement frameworks and stakeholder alignment in a regulated funding environment.',
+    outcome: 'Institutional credibility strengthened. New funding realised.',
   },
 ];
 
@@ -32,6 +32,9 @@ export const CaseStudies = () => {
           <h2 className="font-serif text-2xl sm:text-3xl font-medium text-foreground tracking-tight">
             Selected Engagements
           </h2>
+          <p className="font-body text-sm text-muted-foreground mt-4 max-w-2xl">
+            A selection of advisory engagements illustrating the scope and complexity of our work.
+          </p>
         </motion.div>
 
         <div className="grid lg:grid-cols-3 gap-px bg-border/30">

@@ -54,10 +54,10 @@ export const About = () => {
 
             <div className="space-y-4 font-body text-sm text-muted-foreground leading-relaxed">
               <p>
-                Patric advises founders, leadership teams, and boards on strategic, operational, and financial matters.
+                Patric advises organisations across strategy, governance, and performance contexts.
               </p>
               <p>
-                His work focuses on navigating complexity, strengthening decision-making, and long-term organisational performance across mission-driven and commercial contexts.
+                His work focuses on complex decision-making environments where institutional clarity, long-term thinking, and disciplined execution are required.
               </p>
             </div>
           </motion.div>

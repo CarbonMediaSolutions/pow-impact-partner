@@ -15,7 +15,7 @@ export interface BlogPost {
 export const blogPosts: BlogPost[] = [
   {
     id: 'tax-planning-strategies-2024',
-    title: 'Tax Strategy in Mission-Driven Organisations',
+    title: 'Tax Strategy as a Governance Lever in Mission-Driven Organisations',
     excerpt: 'Considerations for optimising tax position while maintaining organisational mission.',
     content: 'Full article content here...',
     author: 'Patric',
@@ -28,7 +28,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: 'impact-measurement-guide',
-    title: 'Measuring Social Impact at Scale',
+    title: 'Measuring Social Impact as a Strategic Function',
     excerpt: 'Frameworks for quantifying and communicating organisational impact.',
     content: 'Full article content here...',
     author: 'Patric',
@@ -41,7 +41,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: 'scaling-social-enterprise',
-    title: 'Growth Decisions in Social Enterprises',
+    title: 'Growth Decisions and Institutional Coherence in Social Enterprises',
     excerpt: 'Financial considerations when scaling impact-driven organisations.',
     content: 'Full article content here...',
     author: 'Patric',
@@ -53,7 +53,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: 'cloud-accounting-benefits',
-    title: 'Cloud-Based Financial Systems in Modern Organisations',
+    title: 'Financial Infrastructure and Real-Time Decision Systems',
     excerpt: 'Infrastructure considerations for real-time financial visibility.',
     content: 'Full article content here...',
     author: 'Patric',
@@ -65,7 +65,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: 'esg-reporting-requirements',
-    title: 'ESG Reporting Considerations for Emerging Organisations',
+    title: 'ESG Reporting as an Institutional Signal',
     excerpt: 'Environmental, social, and governance reporting frameworks.',
     content: 'Full article content here...',
     author: 'Patric',
@@ -77,7 +77,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: 'startup-financial-foundations',
-    title: 'Financial Foundations in Early-Stage Organisations',
+    title: 'Building Institutional Foundations in Early-Stage Organisations',
     excerpt: 'Core financial practices for emerging organisations.',
     content: 'Full article content here...',
     author: 'Patric',
@@ -89,7 +89,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: 'charitable-giving-tax-benefits',
-    title: 'Tax Considerations in Strategic Charitable Giving',
+    title: 'Charitable Strategy and Tax Efficiency in Governance Contexts',
     excerpt: 'Approaches to charitable contributions for impact and efficiency.',
     content: 'Full article content here...',
     author: 'Patric',
@@ -101,7 +101,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: 'cash-flow-management',
-    title: 'Cash Flow in Mission-Driven Organisations',
+    title: 'Liquidity Management in Mission-Driven Operating Environments',
     excerpt: 'Approaches to maintaining liquidity in mission-driven contexts.',
     content: 'Full article content here...',
     author: 'Patric',

@@ -18,26 +18,26 @@ export const Hero = () => {
           >
             Shaping the Decisions
             <br />
-            That Matter
+            That Shape Systems
           </motion.h1>
           
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="font-body text-base text-muted-foreground tracking-wide max-w-xl mx-auto"
+            className="font-body text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed"
           >
-            Advisory to founders, leadership teams, and boards on strategy, performance, and long-term value.
+            Advising leaders, institutions, and mission-driven organisations on choices with long-term economic, social, and regulatory consequences.
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="pt-6"
+            className="pt-4"
           >
-            <p className="font-body text-xs text-muted-foreground/70 tracking-[0.2em] uppercase">
-              Independent Advisory • Strategy • Governance • Capital
+            <p className="font-body text-xs text-muted-foreground/60 tracking-[0.25em] uppercase">
+              Strategy · Governance · Impact · Capital Allocation
             </p>
           </motion.div>
           
@@ -45,14 +45,14 @@ export const Hero = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.7 }}
-            className="pt-8"
+            className="pt-12 max-w-2xl mx-auto space-y-4"
           >
-            <Link 
-              to="/blog"
-              className="font-body text-sm text-muted-foreground hover:text-foreground transition-colors border-b border-muted-foreground/30 hover:border-foreground pb-1"
-            >
-              Explore our perspectives
-            </Link>
+            <p className="font-body text-sm text-muted-foreground leading-relaxed">
+              We work at the intersection of strategy, policy, and performance — supporting organisations whose decisions influence markets, institutions, and communities.
+            </p>
+            <p className="font-body text-sm text-muted-foreground/80 leading-relaxed">
+              Our work is confidential, research-led, and grounded in real operating environments.
+            </p>
           </motion.div>
         </div>
       </div>

@@ -6,17 +6,17 @@ import capabilityFinancial from '@/assets/capability-financial.jpg';
 const domains = [
   {
     title: 'Growth & Transformation',
-    description: 'Enterprise growth strategy and transformation mandates.',
+    description: 'Strategic expansion, institutional transition, and organisational change in complex operating environments.',
     image: capabilityStrategy,
   },
   {
     title: 'Governance & Operations',
-    description: 'Governance frameworks, operational architecture, and decision systems.',
+    description: 'Board effectiveness, executive decision systems, and operational architecture across regulatory contexts.',
     image: capabilityOrganisation,
   },
   {
     title: 'Capital & Performance',
-    description: 'Financial strategy, performance management, and capital structuring.',
+    description: 'Capital allocation, financial discipline, and performance frameworks aligned with long-term institutional objectives.',
     image: capabilityFinancial,
   },
 ];
@@ -35,6 +35,9 @@ export const Services = () => {
           <h2 className="font-serif text-2xl sm:text-3xl font-medium text-foreground tracking-tight">
             Where We Advise
           </h2>
+          <p className="font-body text-sm text-muted-foreground mt-4 max-w-2xl">
+            We advise organisations operating in complex environments where strategic decisions carry financial, regulatory, and societal implications.
+          </p>
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-8 lg:gap-12">

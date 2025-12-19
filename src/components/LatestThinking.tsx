@@ -19,17 +19,24 @@ export const LatestThinking = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="flex justify-between items-end mb-16"
+          className="mb-16"
         >
-          <h2 className="font-serif text-2xl sm:text-3xl font-medium text-foreground tracking-tight">
-            Recent Perspectives
-          </h2>
-          <Link 
-            to="/blog" 
-            className="hidden md:block font-body text-sm text-muted-foreground hover:text-foreground transition-colors border-b border-muted-foreground/30 hover:border-foreground pb-1"
-          >
-            View archive
-          </Link>
+          <div className="flex justify-between items-end">
+            <div>
+              <h2 className="font-serif text-2xl sm:text-3xl font-medium text-foreground tracking-tight">
+                Recent Analysis
+              </h2>
+              <p className="font-body text-sm text-muted-foreground mt-3">
+                Selected publications addressing complex organisational and policy challenges.
+              </p>
+            </div>
+            <Link 
+              to="/blog" 
+              className="hidden md:block font-body text-sm text-muted-foreground hover:text-foreground transition-colors border-b border-muted-foreground/30 hover:border-foreground pb-1"
+            >
+              View archive
+            </Link>
+          </div>
         </motion.div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
