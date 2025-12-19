@@ -1,34 +1,23 @@
 import { motion } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
 
-const insights = [
+const themes = [
   {
-    title: 'Strategy & Growth',
-    insight: 'Clarity precedes growth. We help leaders define direction before accelerating pace.',
-    href: '#services',
+    title: 'Growth & Transformation',
+    description: 'Strategic direction and organisational change at scale.',
   },
   {
-    title: 'Organisational Design',
-    insight: 'Structure shapes outcomes. Align teams, incentives, and governance for scale.',
-    href: '#services',
+    title: 'Organisational Architecture',
+    description: 'Structure, governance, and systems that enable performance.',
   },
   {
-    title: 'Financial Intelligence',
-    insight: 'Numbers inform decisions. Transform data into strategic advantage.',
-    href: '#services',
+    title: 'Capital & Performance',
+    description: 'Financial strategy and value creation over time.',
   },
 ];
 
 export const InsightLed = () => {
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return (
-    <section id="insights" className="py-24 lg:py-32 border-t border-border/50">
+    <section className="py-32 lg:py-40 border-t border-border/30">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -38,33 +27,26 @@ export const InsightLed = () => {
           className="mb-16"
         >
           <h2 className="font-serif text-2xl sm:text-3xl font-medium text-foreground tracking-tight">
-            How Leaders Create Impact
+            Strategic Themes
           </h2>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-px bg-border/50">
-          {insights.map((item, index) => (
+        <div className="grid md:grid-cols-3 gap-px bg-border/30">
+          {themes.map((theme, index) => (
             <motion.div
-              key={item.title}
+              key={theme.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="p-8 lg:p-12 bg-background"
             >
-              <button
-                onClick={() => scrollToSection(item.href)}
-                className="group block w-full h-full p-8 lg:p-10 bg-background text-left hover:bg-muted/30 transition-colors duration-300"
-              >
-                <div className="flex items-start justify-between mb-6">
-                  <h3 className="font-serif text-xl font-medium text-foreground">
-                    {item.title}
-                  </h3>
-                  <ArrowUpRight className="w-5 h-5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
-                <p className="font-body text-muted-foreground leading-relaxed">
-                  {item.insight}
-                </p>
-              </button>
+              <h3 className="font-serif text-xl lg:text-2xl font-medium text-foreground mb-4">
+                {theme.title}
+              </h3>
+              <p className="font-body text-muted-foreground leading-relaxed">
+                {theme.description}
+              </p>
             </motion.div>
           ))}
         </div>
