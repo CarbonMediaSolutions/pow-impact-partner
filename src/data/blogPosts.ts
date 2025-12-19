@@ -50,6 +50,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Growth',
     tags: ['Growth', 'Scaling', 'Finance', 'Strategy'],
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800',
+    featured: true,
   },
   {
     id: 'cloud-accounting-benefits',
