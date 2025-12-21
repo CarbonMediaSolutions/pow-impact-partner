@@ -18,6 +18,8 @@ import Contact from "./pages/Contact";
 import CaseStudyPage from "./pages/CaseStudyPage";
 import Perspectives from "./pages/Perspectives";
 import Analysis from "./pages/Analysis";
+import PerspectiveDetail from "./pages/PerspectiveDetail";
+import AnalysisDetail from "./pages/AnalysisDetail";
 
 const queryClient = new QueryClient();
 
