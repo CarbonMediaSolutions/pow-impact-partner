@@ -16,6 +16,8 @@ import Impact from "./pages/Impact";
 import AboutPage from "./pages/AboutPage";
 import Contact from "./pages/Contact";
 import CaseStudyPage from "./pages/CaseStudyPage";
+import Perspectives from "./pages/Perspectives";
+import Analysis from "./pages/Analysis";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +30,8 @@ const App = () => (
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/perspectives" element={<Perspectives />} />
+          <Route path="/analysis" element={<Analysis />} />
           <Route path="/services/tax-planning" element={<TaxPlanning />} />
           <Route path="/services/financial-compliance" element={<FinancialCompliance />} />
           <Route path="/services/growth-strategy" element={<GrowthStrategy />} />

@@ -18,8 +18,8 @@ const servicePages = [
 
 const navItems = [
   { label: 'Home', href: '/', isRoute: true },
-  { label: 'Perspectives', href: '/blog', isRoute: true },
-  { label: 'Analysis', href: '#services', isSection: true },
+  { label: 'Perspectives', href: '/perspectives', isRoute: true },
+  { label: 'Analysis', href: '/analysis', isRoute: true },
   { label: 'About', href: '/about', isRoute: true },
   { label: 'Contact', href: '/contact', isRoute: true },
 ];
