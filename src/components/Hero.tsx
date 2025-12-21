@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
 
 export const Hero = () => {
   return (
@@ -35,21 +34,6 @@ export const Hero = () => {
           />
         </div>
       </div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.8 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-      >
-        <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <ChevronDown className="w-5 h-5 text-muted-foreground/40" />
-        </motion.div>
-      </motion.div>
     </section>
   );
 };
