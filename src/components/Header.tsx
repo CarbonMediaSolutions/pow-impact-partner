@@ -17,9 +17,9 @@ const servicePages = [
 ];
 
 const navItems = [
-  { label: 'Thinking', href: '#insights', isSection: true },
-  { label: 'Capabilities', href: '#services', isSection: true },
-  { label: 'Impact', href: '#impact', isSection: true },
+  { label: 'Home', href: '/', isRoute: true },
+  { label: 'Perspectives', href: '/blog', isRoute: true },
+  { label: 'Analysis', href: '#services', isSection: true },
   { label: 'About', href: '/about', isRoute: true },
   { label: 'Contact', href: '/contact', isRoute: true },
 ];
