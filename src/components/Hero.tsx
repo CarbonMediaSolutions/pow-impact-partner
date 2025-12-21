@@ -1,15 +1,11 @@
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { blogPosts } from '@/data/blogPosts';
+import { ChevronDown } from 'lucide-react';
 
 export const Hero = () => {
-  // Get latest 3 posts for editorial tiles
-  const editorialTiles = blogPosts.slice(0, 3);
-
   return (
-    <section id="home" className="relative min-h-[70vh] flex flex-col justify-center pt-32 pb-16">
-      <div className="container max-w-5xl">
-        <div className="text-center space-y-6">
+    <section id="home" className="relative min-h-[90vh] flex flex-col justify-center items-center pt-20">
+      <div className="container max-w-5xl flex-1 flex items-center justify-center">
+        <div className="text-center">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -21,65 +17,29 @@ export const Hero = () => {
             That Shape Systems
           </motion.h1>
           
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="font-body text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed"
-          >
-            Advising leaders, institutions, and mission-driven organisations on choices with long-term economic, social, and regulatory consequences.
-          </motion.p>
-
+          {/* Subtle horizontal rule */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={{ opacity: 0, scaleX: 0 }}
+            animate={{ opacity: 1, scaleX: 1 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="pt-4"
-          >
-            <p className="font-body text-xs text-muted-foreground/60 tracking-[0.25em] uppercase">
-              Strategy · Governance · Impact · Capital Allocation
-            </p>
-          </motion.div>
-          
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.7 }}
-            className="pt-12 max-w-2xl mx-auto space-y-4"
-          >
-            <p className="font-body text-sm text-muted-foreground leading-relaxed">
-              We work at the intersection of strategy, policy, and performance — supporting organisations whose decisions influence markets, institutions, and communities.
-            </p>
-            <p className="font-body text-sm text-muted-foreground/80 leading-relaxed">
-              Our work is confidential, research-led, and grounded in real operating environments.
-            </p>
-          </motion.div>
+            className="mx-auto mt-10 w-16 h-px bg-foreground/10"
+          />
         </div>
       </div>
 
-      {/* Editorial Tiles Row */}
+      {/* Scroll indicator */}
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.6 }}
-        className="container mt-20"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.8 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
-        <div className="grid md:grid-cols-3 gap-6">
-          {editorialTiles.map((post) => (
-            <Link
-              key={post.id}
-              to={`/blog/${post.id}`}
-              className="group block p-6 lg:p-8 bg-tile hover:bg-tile/80 transition-colors duration-300 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border/20"
-            >
-              <span className="font-body text-xs text-teal uppercase tracking-wider font-medium">
-                {post.category}
-              </span>
-              <h3 className="font-serif text-base lg:text-lg font-medium text-foreground mt-3 leading-snug group-hover:text-teal transition-colors">
-                {post.title}
-              </h3>
-            </Link>
-          ))}
-        </div>
+        <motion.div
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <ChevronDown className="w-5 h-5 text-muted-foreground/40" />
+        </motion.div>
       </motion.div>
     </section>
   );
