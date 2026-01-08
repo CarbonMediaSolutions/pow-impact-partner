@@ -1,14 +1,66 @@
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { perspectives } from '@/data/perspectives';
+import { supabase } from '@/integrations/supabase/client';
+import { perspectives as staticPerspectives } from '@/data/perspectives';
 import { ArrowLeft } from 'lucide-react';
+
+interface Perspective {
+  id: string;
+  title: string;
+  summary: string;
+  topic: string;
+  content: string[];
+}
 
 const PerspectiveDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const perspective = perspectives.find(p => p.id === id);
+  const [perspective, setPerspective] = useState<Perspective | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
-  if (!perspective) {
+  useEffect(() => {
+    const fetchPerspective = async () => {
+      // First try database
+      const { data, error } = await supabase
+        .from('perspectives')
+        .select('*')
+        .eq('id', id!)
+        .maybeSingle();
+
+      if (data) {
+        setPerspective(data as Perspective);
+      } else {
+        // Fallback to static data
+        const staticPerspective = staticPerspectives.find(p => p.id === id);
+        if (staticPerspective) {
+          setPerspective(staticPerspective);
+        } else {
+          setNotFound(true);
+        }
+      }
+      setLoading(false);
+    };
+
+    if (id) {
+      fetchPerspective();
+    }
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="pt-32 pb-20 px-6 text-center">
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (notFound || !perspective) {
     return (
       <div className="min-h-screen bg-background">
         <Header />

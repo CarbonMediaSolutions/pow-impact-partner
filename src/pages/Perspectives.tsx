@@ -1,12 +1,60 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { perspectives } from '@/data/perspectives';
+import { supabase } from '@/integrations/supabase/client';
+import { perspectives as staticPerspectives } from '@/data/perspectives';
+
+interface Perspective {
+  id: string;
+  title: string;
+  summary: string;
+  topic: string;
+  featured: boolean | null;
+  content: string[];
+}
 
 const Perspectives = () => {
+  const [perspectives, setPerspectives] = useState<Perspective[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPerspectives = async () => {
+      const { data, error } = await supabase
+        .from('perspectives')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error || !data || data.length === 0) {
+        // Fallback to static data if no database entries
+        setPerspectives(staticPerspectives.map(p => ({
+          ...p,
+          featured: p.featured || null
+        })));
+      } else {
+        setPerspectives(data as Perspective[]);
+      }
+      setLoading(false);
+    };
+
+    fetchPerspectives();
+  }, []);
+
   const featuredPerspective = perspectives.find((p) => p.featured);
   const otherPerspectives = perspectives.filter((p) => !p.featured);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="pt-40 pb-20 px-6 text-center">
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
