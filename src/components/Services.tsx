@@ -34,10 +34,10 @@ export const Services = () => {
           className="mb-16"
         >
           <h2 className="font-serif text-2xl sm:text-3xl font-medium text-foreground tracking-tight">
-            Where We Advise
+            Perspective Solutions
           </h2>
           <p className="font-body text-sm text-muted-foreground mt-4 max-w-2xl">
-            We advise organisations operating in complex environments where strategic decisions carry financial, regulatory, and societal implications.
+            Each engagement begins with a perspective—a way of seeing your challenge that reveals new paths forward.
           </p>
         </motion.div>
 

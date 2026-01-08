@@ -25,8 +25,9 @@ export const Footer = () => {
           <div className="lg:col-span-2 space-y-4">
             <nav className="space-y-3">
               <Link to="/about" className="block font-body text-sm text-muted-foreground hover:text-foreground transition-colors">About</Link>
-              <Link to="/blog" className="block font-body text-sm text-muted-foreground hover:text-foreground transition-colors">Perspectives</Link>
-              <Link to="/contact" className="block font-body text-sm text-muted-foreground hover:text-foreground transition-colors">Contact</Link>
+              <Link to="/perspectives" className="block font-body text-sm text-muted-foreground hover:text-foreground transition-colors">Perspectives</Link>
+              <Link to="/solutions" className="block font-body text-sm text-muted-foreground hover:text-foreground transition-colors">Solutions</Link>
+              <Link to="/submit-perspective" className="block font-body text-sm text-muted-foreground hover:text-foreground transition-colors">Share Your Perspective</Link>
             </nav>
           </div>
 

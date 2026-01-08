@@ -20,8 +20,8 @@ const navItems = [
   { label: 'Home', href: '/', isRoute: true },
   { label: 'Perspectives', href: '/perspectives', isRoute: true },
   { label: 'Analysis', href: '/analysis', isRoute: true },
+  { label: 'Solutions', href: '/solutions', isRoute: true },
   { label: 'About', href: '/about', isRoute: true },
-  { label: 'Contact', href: '/contact', isRoute: true },
 ];
 
 export const Header = () => {
@@ -89,11 +89,11 @@ export const Header = () => {
 
         <div className="hidden lg:block">
           <Button
-            onClick={() => scrollToSection('#contact')}
+            asChild
             variant="outline"
             className="font-body text-sm font-medium border-foreground/20 text-foreground hover:bg-foreground hover:text-background px-6"
           >
-            Get in Touch
+            <Link to="/book">Book a Consultation</Link>
           </Button>
         </div>
 
@@ -138,11 +138,11 @@ export const Header = () => {
                 )
               ))}
               <Button
-                onClick={() => scrollToSection('#contact')}
+                asChild
                 variant="outline"
                 className="font-body text-sm font-medium border-foreground/20 text-foreground hover:bg-foreground hover:text-background mt-4"
               >
-                Get in Touch
+                <Link to="/book">Book a Consultation</Link>
               </Button>
             </nav>
           </motion.div>
