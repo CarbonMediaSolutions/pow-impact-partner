@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      analyses: {
+        Row: {
+          category: string
+          content: Json
+          created_at: string
+          date: string | null
+          featured: boolean | null
+          id: string
+          summary: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          content?: Json
+          created_at?: string
+          date?: string | null
+          featured?: boolean | null
+          id?: string
+          summary: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          content?: Json
+          created_at?: string
+          date?: string | null
+          featured?: boolean | null
+          id?: string
+          summary?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       consultation_leads: {
         Row: {
           created_at: string
@@ -98,6 +134,42 @@ export type Database = {
           organisation?: string | null
           perspective_text?: string
           topic?: string
+        }
+        Relationships: []
+      }
+      perspectives: {
+        Row: {
+          content: string[]
+          created_at: string
+          featured: boolean | null
+          id: string
+          image: string | null
+          summary: string
+          title: string
+          topic: string
+          updated_at: string
+        }
+        Insert: {
+          content?: string[]
+          created_at?: string
+          featured?: boolean | null
+          id?: string
+          image?: string | null
+          summary: string
+          title: string
+          topic: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string[]
+          created_at?: string
+          featured?: boolean | null
+          id?: string
+          image?: string | null
+          summary?: string
+          title?: string
+          topic?: string
+          updated_at?: string
         }
         Relationships: []
       }

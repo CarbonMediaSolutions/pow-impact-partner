@@ -1,12 +1,50 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { analyses, analysisCategories } from '@/data/analyses';
+import { supabase } from '@/integrations/supabase/client';
+import { analyses as staticAnalyses, analysisCategories } from '@/data/analyses';
+
+interface Analysis {
+  id: string;
+  title: string;
+  summary: string;
+  category: string;
+  date: string | null;
+  featured: boolean | null;
+}
 
 const Analysis = () => {
+  const [analyses, setAnalyses] = useState<Analysis[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<string>('All');
+
+  useEffect(() => {
+    const fetchAnalyses = async () => {
+      const { data, error } = await supabase
+        .from('analyses')
+        .select('id, title, summary, category, date, featured')
+        .order('created_at', { ascending: false });
+
+      if (error || !data || data.length === 0) {
+        // Fallback to static data if no database entries
+        setAnalyses(staticAnalyses.map(a => ({
+          id: a.id,
+          title: a.title,
+          summary: a.summary,
+          category: a.category,
+          date: a.date || null,
+          featured: a.featured || null
+        })));
+      } else {
+        setAnalyses(data as Analysis[]);
+      }
+      setLoading(false);
+    };
+
+    fetchAnalyses();
+  }, []);
 
   const filteredAnalyses = activeCategory === 'All' 
     ? analyses 
@@ -14,6 +52,18 @@ const Analysis = () => {
 
   const featuredAnalysis = filteredAnalyses.find((a) => a.featured);
   const otherAnalyses = filteredAnalyses.filter((a) => !a.featured);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="pt-32 pb-20 px-6 text-center">
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">

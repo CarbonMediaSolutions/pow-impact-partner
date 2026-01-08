@@ -1,15 +1,86 @@
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { EmailGate } from '@/components/EmailGate';
-import { analyses } from '@/data/analyses';
+import { supabase } from '@/integrations/supabase/client';
+import { analyses as staticAnalyses } from '@/data/analyses';
 import { ArrowLeft } from 'lucide-react';
+
+interface AnalysisContent {
+  introduction?: string;
+  sections?: { heading: string; paragraphs: string[] }[];
+  methodology?: string;
+  keyFindings?: string[];
+  implications?: string[];
+}
+
+interface Analysis {
+  id: string;
+  title: string;
+  summary: string;
+  category: string;
+  date: string | null;
+  content: AnalysisContent;
+}
 
 const AnalysisDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const analysis = analyses.find(a => a.id === id);
+  const [analysis, setAnalysis] = useState<Analysis | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
-  if (!analysis) {
+  useEffect(() => {
+    const fetchAnalysis = async () => {
+      // First try database
+      const { data, error } = await supabase
+        .from('analyses')
+        .select('*')
+        .eq('id', id!)
+        .maybeSingle();
+
+      if (data) {
+        setAnalysis({
+          ...data,
+          content: data.content as AnalysisContent
+        } as Analysis);
+      } else {
+        // Fallback to static data
+        const staticAnalysis = staticAnalyses.find(a => a.id === id);
+        if (staticAnalysis) {
+          setAnalysis({
+            id: staticAnalysis.id,
+            title: staticAnalysis.title,
+            summary: staticAnalysis.summary,
+            category: staticAnalysis.category,
+            date: staticAnalysis.date || null,
+            content: staticAnalysis.content
+          });
+        } else {
+          setNotFound(true);
+        }
+      }
+      setLoading(false);
+    };
+
+    if (id) {
+      fetchAnalysis();
+    }
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="pt-32 pb-20 px-6 text-center">
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (notFound || !analysis) {
     return (
       <div className="min-h-screen bg-background">
         <Header />
@@ -67,30 +138,34 @@ const AnalysisDetail = () => {
         <EmailGate source={`analysis-${analysis.id}`}>
           {/* Introduction */}
           <article className="max-w-3xl mx-auto px-6">
-            <p className="text-lg text-foreground/90 leading-relaxed font-light mb-12">
-              {analysis.content.introduction}
-            </p>
+            {analysis.content.introduction && (
+              <p className="text-lg text-foreground/90 leading-relaxed font-light mb-12">
+                {analysis.content.introduction}
+              </p>
+            )}
 
             {/* Sections */}
-            <div className="space-y-12">
-              {analysis.content.sections.map((section, index) => (
-                <section key={index}>
-                  <h2 className="text-2xl font-serif text-foreground mb-6">
-                    {section.heading}
-                  </h2>
-                  <div className="space-y-6">
-                    {section.paragraphs.map((paragraph, pIndex) => (
-                      <p 
-                        key={pIndex} 
-                        className="text-lg text-foreground/90 leading-relaxed font-light"
-                      >
-                        {paragraph}
-                      </p>
-                    ))}
-                  </div>
-                </section>
-              ))}
-            </div>
+            {analysis.content.sections && analysis.content.sections.length > 0 && (
+              <div className="space-y-12">
+                {analysis.content.sections.map((section, index) => (
+                  <section key={index}>
+                    <h2 className="text-2xl font-serif text-foreground mb-6">
+                      {section.heading}
+                    </h2>
+                    <div className="space-y-6">
+                      {section.paragraphs.map((paragraph, pIndex) => (
+                        <p 
+                          key={pIndex} 
+                          className="text-lg text-foreground/90 leading-relaxed font-light"
+                        >
+                          {paragraph}
+                        </p>
+                      ))}
+                    </div>
+                  </section>
+                ))}
+              </div>
+            )}
 
             {/* Methodology */}
             {analysis.content.methodology && (
