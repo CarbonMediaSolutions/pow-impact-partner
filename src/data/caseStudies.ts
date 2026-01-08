@@ -3,6 +3,7 @@ export interface CaseStudy {
   company: string;
   type: string;
   challenge: string;
+  perspective: string;
   solution: string;
   results: string[];
   metrics: { value: string; label: string }[];
@@ -12,6 +13,7 @@ export interface CaseStudy {
   fullStory: string;
   image: string;
   color: 'primary' | 'secondary' | 'emerald';
+  validationLinks?: { label: string; url: string }[];
 }
 
 export const caseStudies: CaseStudy[] = [
@@ -20,6 +22,7 @@ export const caseStudies: CaseStudy[] = [
     company: 'Offploy Group',
     type: 'Social Enterprise',
     challenge: 'Navigate cost-of-living crisis while maintaining mission',
+    perspective: 'Financial resilience as a mission enabler—seeing tax strategy not as compliance, but as a tool to protect purpose during economic turbulence.',
     solution: 'Strategic tax planning and financial restructuring to maximize reinvestment capacity while protecting the team.',
     results: [
       'Restructured finances to absorb cost increases without layoffs',
@@ -51,6 +54,7 @@ The result? Not a single team member was let go. Every impact program continued.
     company: 'City & Guilds Group',
     type: 'Education Organisation',
     challenge: 'Scaling from startup to established organization',
+    perspective: 'Financial infrastructure as competitive advantage—recognising that investor confidence is built on operational clarity, not just commercial promise.',
     solution: 'Comprehensive financial systems implementation and growth strategy development.',
     results: [
       'Implemented cloud-based financial systems',
@@ -82,6 +86,7 @@ The robust financial framework also made them investor-ready. When they went to 
     company: 'The Walcot Foundation',
     type: 'Not-for-Profit',
     challenge: 'Measuring and amplifying social impact',
+    perspective: 'Impact visibility as a funding mechanism—understanding that funders invest in clarity, and that measurement is not bureaucracy but storytelling.',
     solution: 'Impact measurement framework design and stakeholder reporting systems.',
     results: [
       'Designed comprehensive impact metrics',

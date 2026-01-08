@@ -14,7 +14,93 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      consultation_leads: {
+        Row: {
+          created_at: string
+          desired_outcome: string | null
+          email: string
+          id: string
+          name: string
+          organisation: string | null
+          problem_statement: string
+          role: string | null
+        }
+        Insert: {
+          created_at?: string
+          desired_outcome?: string | null
+          email: string
+          id?: string
+          name: string
+          organisation?: string | null
+          problem_statement: string
+          role?: string | null
+        }
+        Update: {
+          created_at?: string
+          desired_outcome?: string | null
+          email?: string
+          id?: string
+          name?: string
+          organisation?: string | null
+          problem_statement?: string
+          role?: string | null
+        }
+        Relationships: []
+      }
+      email_captures: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          name: string | null
+          source: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          name?: string | null
+          source: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string | null
+          source?: string
+        }
+        Relationships: []
+      }
+      perspective_submissions: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          name: string
+          organisation: string | null
+          perspective_text: string
+          topic: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          name: string
+          organisation?: string | null
+          perspective_text: string
+          topic: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          organisation?: string | null
+          perspective_text?: string
+          topic?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

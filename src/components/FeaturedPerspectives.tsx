@@ -9,7 +9,7 @@ import insightTile4 from '@/assets/insight-tile-4.jpg';
 
 const tileImages = [insightTile1, insightTile2, insightTile3, insightTile4];
 
-export const FeaturedInsights = () => {
+export const FeaturedPerspectives = () => {
   const featuredPosts = blogPosts.filter(post => post.featured).slice(0, 5);
   const mainPost = featuredPosts[0];
   const sidePosts = featuredPosts.slice(1, 5);

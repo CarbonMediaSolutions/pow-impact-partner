@@ -20,6 +20,9 @@ import Perspectives from "./pages/Perspectives";
 import Analysis from "./pages/Analysis";
 import PerspectiveDetail from "./pages/PerspectiveDetail";
 import AnalysisDetail from "./pages/AnalysisDetail";
+import Solutions from "./pages/Solutions";
+import BookConsultation from "./pages/BookConsultation";
+import SubmitPerspective from "./pages/SubmitPerspective";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +49,9 @@ const App = () => (
           <Route path="/case-studies/:id" element={<CaseStudyPage />} />
           <Route path="/perspectives/:id" element={<PerspectiveDetail />} />
           <Route path="/analysis/:id" element={<AnalysisDetail />} />
+          <Route path="/solutions" element={<Solutions />} />
+          <Route path="/book" element={<BookConsultation />} />
+          <Route path="/submit-perspective" element={<SubmitPerspective />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

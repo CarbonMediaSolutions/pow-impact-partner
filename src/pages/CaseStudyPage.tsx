@@ -125,7 +125,12 @@ export default function CaseStudyPage() {
               {study.challenge}
             </p>
 
-            <h2 className="font-serif text-2xl font-bold text-foreground mb-6">Our Approach</h2>
+            <h2 className="font-serif text-2xl font-bold text-foreground mb-6">Our Perspective</h2>
+            <p className="font-body text-lg text-teal italic mb-8">
+              "{study.perspective}"
+            </p>
+
+            <h2 className="font-serif text-2xl font-bold text-foreground mb-6">The Solution</h2>
             <p className="font-body text-lg text-muted-foreground mb-8">
               {study.solution}
             </p>
@@ -178,7 +183,7 @@ export default function CaseStudyPage() {
           <p className="font-body text-primary-foreground/80 mb-6">
             Book a free consultation to discuss how we can help your organization achieve its goals.
           </p>
-          <Link to="/contact">
+          <Link to="/book">
             <Button className="bg-emerald hover:bg-emerald/90 text-emerald-foreground font-body font-semibold px-8 py-6">
               Book Your Free Consultation
             </Button>
