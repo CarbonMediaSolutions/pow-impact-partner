@@ -298,7 +298,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Leadership */}
+      {/* Thought Leaders */}
       <section className="py-20">
         <div className="container max-w-4xl">
           <motion.div
@@ -309,7 +309,7 @@ export default function AboutPage() {
           >
             <div className="section-divider" />
             <h2 className="font-serif text-2xl md:text-3xl font-medium text-foreground mb-8">
-              Leadership
+              Thought Leaders
             </h2>
             <div className="font-body text-lg text-muted-foreground space-y-4 leading-relaxed">
               <p>

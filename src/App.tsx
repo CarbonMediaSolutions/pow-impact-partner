@@ -23,6 +23,7 @@ import AnalysisDetail from "./pages/AnalysisDetail";
 import Solutions from "./pages/Solutions";
 import BookConsultation from "./pages/BookConsultation";
 import SubmitPerspective from "./pages/SubmitPerspective";
+import Admin from "./pages/Admin";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +53,7 @@ const App = () => (
           <Route path="/solutions" element={<Solutions />} />
           <Route path="/book" element={<BookConsultation />} />
           <Route path="/submit-perspective" element={<SubmitPerspective />} />
+          <Route path="/admin" element={<Admin />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
