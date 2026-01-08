@@ -13,7 +13,7 @@ export const About = () => {
           className="mb-12"
         >
           <h2 className="font-serif text-2xl font-medium text-foreground tracking-tight">
-            Leadership
+            Thought Leaders
           </h2>
         </motion.div>
 
