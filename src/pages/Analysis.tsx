@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { ArrowRight, Database, FileText, BarChart3 } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { analyses as staticAnalyses, analysisCategories } from '@/data/analyses';
 
@@ -14,6 +16,24 @@ interface Analysis {
   date: string | null;
   featured: boolean | null;
 }
+
+const dataProducts = [
+  {
+    icon: FileText,
+    title: 'Request a Benchmark Pack',
+    description: 'Sector-specific performance benchmarks and comparison data.',
+  },
+  {
+    icon: Database,
+    title: 'Ask About Sector Datasets',
+    description: 'Access structured data for strategic planning and analysis.',
+  },
+  {
+    icon: BarChart3,
+    title: 'Commission an Analysis',
+    description: 'Bespoke research and analysis tailored to your context.',
+  },
+];
 
 const Analysis = () => {
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
@@ -28,7 +48,6 @@ const Analysis = () => {
         .order('created_at', { ascending: false });
 
       if (error || !data || data.length === 0) {
-        // Fallback to static data if no database entries
         setAnalyses(staticAnalyses.map(a => ({
           id: a.id,
           title: a.title,
@@ -69,7 +88,7 @@ const Analysis = () => {
     <div className="min-h-screen bg-background">
       <Header />
 
-      {/* Hero Section - More compact than Perspectives */}
+      {/* Hero Section */}
       <section className="pt-32 pb-16 px-6 md:px-12 lg:px-20">
         <div className="max-w-4xl mx-auto text-center">
           <motion.h1
@@ -78,7 +97,7 @@ const Analysis = () => {
             transition={{ duration: 0.6 }}
             className="font-serif text-5xl md:text-6xl font-light text-foreground tracking-tight mb-6"
           >
-            Analysis
+            Data & Analysis
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -96,6 +115,53 @@ const Analysis = () => {
           >
             Evidence-led insights grounded in real operating environments.
           </motion.p>
+        </div>
+      </section>
+
+      {/* Data & Benchmarks Section */}
+      <section className="pb-16 px-6 md:px-12 lg:px-20">
+        <div className="max-w-5xl mx-auto">
+          <div className="bg-tile rounded-lg border border-border/20 p-8 lg:p-10">
+            <div className="text-center mb-8">
+              <h2 className="font-serif text-xl lg:text-2xl font-medium text-foreground mb-2">
+                Data & Benchmarks
+              </h2>
+              <p className="font-body text-sm text-muted-foreground">
+                Access structured data, sector benchmarks, and commissioned analysis.
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-3 gap-6 mb-8">
+              {dataProducts.map((product, index) => (
+                <motion.div
+                  key={product.title}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  className="text-center"
+                >
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
+                    <product.icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <h3 className="font-body text-sm font-medium text-foreground mb-1">
+                    {product.title}
+                  </h3>
+                  <p className="font-body text-xs text-muted-foreground">
+                    {product.description}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+            
+            <div className="text-center">
+              <Button asChild className="btn-emerald font-body">
+                <Link to="/book?type=data">
+                  Request Data / Commission Analysis
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Link>
+              </Button>
+            </div>
+          </div>
         </div>
       </section>
 

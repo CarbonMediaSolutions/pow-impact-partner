@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Send, CheckCircle, Calendar } from 'lucide-react';
+import { Send, CheckCircle, Calendar, Shield, Clock, Globe } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -75,19 +75,36 @@ export default function BookConsultation() {
       <Header />
       
       {/* Hero Section */}
-      <section className="pt-32 pb-16">
+      <section className="pt-32 pb-12">
         <div className="container max-w-3xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="font-serif text-4xl md:text-5xl font-medium text-foreground mb-8">
+            <h1 className="font-serif text-4xl md:text-5xl font-medium text-foreground mb-6">
               Book a Consultation
             </h1>
-            <p className="font-body text-lg text-muted-foreground leading-relaxed">
+            <p className="font-body text-lg text-muted-foreground leading-relaxed mb-6">
               We offer a complimentary 30-minute discovery session to understand your challenges and explore how we might help.
             </p>
+            
+            {/* Trust Indicators */}
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground/70 font-body">
+              <span className="flex items-center gap-1.5">
+                <Shield className="w-4 h-4" />
+                Confidential
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Clock className="w-4 h-4" />
+                Response within 1 business day
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Globe className="w-4 h-4" />
+                Timezone: London (GMT)
+              </span>
+            </div>
+
             {selectedSolution && (
               <div className="mt-6 p-4 bg-muted/50 rounded-lg border border-border">
                 <p className="font-body text-sm text-muted-foreground">
@@ -99,7 +116,54 @@ export default function BookConsultation() {
         </div>
       </section>
 
-      {/* Form Section */}
+      {/* Schedule Directly Section - Primary */}
+      <section className="pb-12">
+        <div className="container max-w-3xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <div className="bg-tile rounded-lg border border-border/20 p-8 text-center">
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                <Calendar className="w-6 h-6 text-primary" />
+              </div>
+              <h2 className="font-serif text-xl font-medium text-foreground mb-2">
+                Schedule a Time
+              </h2>
+              <p className="font-body text-muted-foreground mb-6 max-w-md mx-auto">
+                Book a 30-minute consultation directly in our calendar.
+              </p>
+              <Button
+                asChild
+                className="btn-emerald font-body px-8"
+              >
+                <a 
+                  href="https://cal.com/patric-wong" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                >
+                  <Calendar className="w-4 h-4 mr-2" />
+                  Open Calendar
+                </a>
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Or Divider */}
+      <section className="pb-8">
+        <div className="container max-w-3xl">
+          <div className="flex items-center gap-4">
+            <div className="flex-1 h-px bg-border" />
+            <span className="font-body text-sm text-muted-foreground">or submit a request</span>
+            <div className="flex-1 h-px bg-border" />
+          </div>
+        </div>
+      </section>
+
+      {/* Form Section - Secondary */}
       <section className="pb-16">
         <div className="container max-w-3xl">
           <motion.div
@@ -107,9 +171,7 @@ export default function BookConsultation() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <div className="section-divider" />
-            
-            <h2 className="font-serif text-xl font-medium text-foreground mb-8">
+            <h2 className="font-serif text-lg font-medium text-foreground mb-6">
               Tell us about your challenge
             </h2>
 
@@ -117,16 +179,16 @@ export default function BookConsultation() {
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="py-12"
+                className="py-12 bg-tile rounded-lg border border-border/20 text-center"
               >
-                <div className="w-12 h-12 rounded-full bg-teal/10 flex items-center justify-center mb-6">
-                  <CheckCircle className="w-6 h-6 text-teal" />
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
+                  <CheckCircle className="w-6 h-6 text-primary" />
                 </div>
                 <h3 className="font-serif text-xl font-medium text-foreground mb-3">
                   Request Received
                 </h3>
-                <p className="font-body text-muted-foreground mb-8">
-                  We'll review your inquiry and be in touch within 2 business days to schedule your consultation.
+                <p className="font-body text-muted-foreground mb-8 max-w-md mx-auto">
+                  We'll review your inquiry and be in touch within 1 business day to schedule your consultation.
                 </p>
                 <Button
                   onClick={() => {
@@ -233,49 +295,12 @@ export default function BookConsultation() {
                   ) : (
                     <>
                       <Send className="w-4 h-4 mr-2" />
-                      Submit Request
+                      Request Consultation
                     </>
                   )}
                 </Button>
               </form>
             )}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Cal.com Embed Section */}
-      <section className="pb-24">
-        <div className="container max-w-3xl">
-          <div className="section-divider" />
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="flex items-center gap-3 mb-6">
-              <Calendar className="w-5 h-5 text-teal" />
-              <h2 className="font-serif text-xl font-medium text-foreground">
-                Or schedule directly
-              </h2>
-            </div>
-            <p className="font-body text-muted-foreground mb-6">
-              If you prefer, you can book a time directly in our calendar.
-            </p>
-            <Button
-              asChild
-              variant="outline"
-              className="font-body"
-            >
-              <a 
-                href="https://cal.com/patric-wong" 
-                target="_blank" 
-                rel="noopener noreferrer"
-              >
-                <Calendar className="w-4 h-4 mr-2" />
-                Open Calendar
-              </a>
-            </Button>
           </motion.div>
         </div>
       </section>

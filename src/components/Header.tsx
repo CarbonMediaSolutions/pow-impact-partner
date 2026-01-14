@@ -20,8 +20,8 @@ const navItems = [
   { label: 'Home', href: '/', isRoute: true },
   { label: 'About', href: '/about', isRoute: true },
   { label: 'Perspectives', href: '/perspectives', isRoute: true },
-  { label: 'Analysis', href: '/analysis', isRoute: true },
-  { label: 'Submit A Perspective', href: '/submit-perspective', isRoute: true },
+  { label: 'Data & Analysis', href: '/analysis', isRoute: true },
+  { label: 'Solutions', href: '/solutions', isRoute: true },
 ];
 
 export const Header = () => {
