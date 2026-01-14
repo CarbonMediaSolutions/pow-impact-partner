@@ -62,7 +62,7 @@ export default function BookConsultation() {
     } catch (error) {
       toast({
         title: "Something went wrong",
-        description: "Please try again or contact us directly.",
+        description: "Please try again or email paddi@predawncodex.com directly.",
         variant: "destructive",
       });
     } finally {
@@ -139,7 +139,7 @@ export default function BookConsultation() {
                 className="btn-emerald font-body px-8"
               >
                 <a 
-                  href="https://cal.com/patric-wong" 
+                  href="https://calendar.app.google/WMyDAedTAtZgvFEf7" 
                   target="_blank" 
                   rel="noopener noreferrer"
                 >
