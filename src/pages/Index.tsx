@@ -1,8 +1,7 @@
 import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
-import { FeaturedPerspectives } from '@/components/FeaturedPerspectives';
+import { ThreePillars } from '@/components/ThreePillars';
 import { InsightLed } from '@/components/InsightLed';
-import { Services } from '@/components/Services';
 import { CaseStudies } from '@/components/CaseStudies';
 import { FinalCTA } from '@/components/FinalCTA';
 import { Footer } from '@/components/Footer';
@@ -13,9 +12,8 @@ const Index = () => {
       <Header />
       <main>
         <Hero />
-        <FeaturedPerspectives />
+        <ThreePillars />
         <InsightLed />
-        <Services />
         <CaseStudies />
         <FinalCTA />
       </main>

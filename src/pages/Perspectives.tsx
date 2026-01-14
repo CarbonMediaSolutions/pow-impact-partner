@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { ArrowRight, Send } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { perspectives as staticPerspectives } from '@/data/perspectives';
 
@@ -15,9 +19,15 @@ interface Perspective {
   content: string[];
 }
 
+const topics = ['All', 'Governance', 'Growth', 'Impact', 'Risk', 'Strategy'];
+
 const Perspectives = () => {
   const [perspectives, setPerspectives] = useState<Perspective[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeTopic, setActiveTopic] = useState('All');
+  const [email, setEmail] = useState('');
+  const [isSubscribing, setIsSubscribing] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchPerspectives = async () => {
@@ -27,7 +37,6 @@ const Perspectives = () => {
         .order('created_at', { ascending: false });
 
       if (error || !data || data.length === 0) {
-        // Fallback to static data if no database entries
         setPerspectives(staticPerspectives.map(p => ({
           ...p,
           featured: p.featured || null
@@ -41,8 +50,40 @@ const Perspectives = () => {
     fetchPerspectives();
   }, []);
 
-  const featuredPerspective = perspectives.find((p) => p.featured);
-  const otherPerspectives = perspectives.filter((p) => !p.featured);
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    
+    setIsSubscribing(true);
+    try {
+      const { error } = await supabase
+        .from('email_captures')
+        .insert([{ email, source: 'newsletter_perspectives' }]);
+
+      if (error) throw error;
+
+      toast({
+        title: "Subscribed",
+        description: "You'll receive new Perspectives monthly.",
+      });
+      setEmail('');
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubscribing(false);
+    }
+  };
+
+  const filteredPerspectives = activeTopic === 'All' 
+    ? perspectives 
+    : perspectives.filter(p => p.topic.toLowerCase().includes(activeTopic.toLowerCase()));
+
+  const featuredPerspective = filteredPerspectives.find((p) => p.featured);
+  const otherPerspectives = filteredPerspectives.filter((p) => !p.featured);
 
   if (loading) {
     return (
@@ -61,7 +102,7 @@ const Perspectives = () => {
       <Header />
 
       {/* Hero Section */}
-      <section className="pt-40 pb-20 px-6 md:px-12 lg:px-20">
+      <section className="pt-40 pb-16 px-6 md:px-12 lg:px-20">
         <div className="max-w-4xl mx-auto text-center">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -87,6 +128,27 @@ const Perspectives = () => {
           >
             How we frame complexity, risk, and institutional choice.
           </motion.p>
+        </div>
+      </section>
+
+      {/* Topic Filters */}
+      <section className="pb-12 px-6 md:px-12 lg:px-20">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex flex-wrap justify-center gap-2">
+            {topics.map((topic) => (
+              <button
+                key={topic}
+                onClick={() => setActiveTopic(topic)}
+                className={`px-4 py-2 text-xs uppercase tracking-widest transition-colors ${
+                  activeTopic === topic
+                    ? 'text-foreground border-b border-foreground'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                {topic}
+              </button>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -127,7 +189,7 @@ const Perspectives = () => {
       )}
 
       {/* Additional Perspectives */}
-      <section className="pb-24 px-6 md:px-12 lg:px-20">
+      <section className="pb-16 px-6 md:px-12 lg:px-20">
         <div className="max-w-4xl mx-auto">
           <div className="space-y-0">
             {otherPerspectives.map((perspective, index) => (
@@ -152,6 +214,48 @@ const Perspectives = () => {
               </motion.article>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Newsletter Signup */}
+      <section className="pb-16 px-6 md:px-12 lg:px-20">
+        <div className="max-w-xl mx-auto">
+          <div className="bg-tile rounded-lg p-8 border border-border/20 text-center">
+            <h3 className="font-serif text-xl font-medium text-foreground mb-2">
+              Receive New Perspectives
+            </h3>
+            <p className="font-body text-sm text-muted-foreground mb-6">
+              Monthly essays on strategy, governance, and long-term impact.
+            </p>
+            <form onSubmit={handleSubscribe} className="flex gap-3 max-w-sm mx-auto">
+              <Input
+                type="email"
+                placeholder="Your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="font-body flex-1"
+                required
+              />
+              <Button type="submit" disabled={isSubscribing} className="btn-emerald font-body">
+                {isSubscribing ? '...' : 'Subscribe'}
+              </Button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      {/* Service CTA */}
+      <section className="pb-16 px-6 md:px-12 lg:px-20">
+        <div className="max-w-xl mx-auto text-center">
+          <p className="font-body text-muted-foreground mb-4">
+            If this matches what you're navigating, we'd welcome a conversation.
+          </p>
+          <Button asChild className="btn-emerald font-body">
+            <Link to="/book">
+              Book a Consultation
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Link>
+          </Button>
         </div>
       </section>
 

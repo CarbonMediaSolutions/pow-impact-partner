@@ -1,10 +1,28 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, Check } from 'lucide-react';
+import { ArrowRight, Check, Clock, MessageSquare, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { solutions } from '@/data/solutions';
+
+const supportFeatures = [
+  {
+    icon: MessageSquare,
+    title: 'Direct Partner Access',
+    description: 'Work directly with senior advisors throughout your engagement.',
+  },
+  {
+    icon: Clock,
+    title: 'Response Expectations',
+    description: 'Clear communication timelines and regular progress updates.',
+  },
+  {
+    icon: Users,
+    title: 'Specialists as Needed',
+    description: 'Access to domain specialists engaged for specific requirements.',
+  },
+];
 
 export default function Solutions() {
   return (
@@ -20,7 +38,7 @@ export default function Solutions() {
             transition={{ duration: 0.6 }}
           >
             <h1 className="font-serif text-4xl md:text-5xl font-medium text-foreground mb-8">
-              Perspective Solutions
+              Engagement Models
             </h1>
             <p className="font-body text-lg text-muted-foreground leading-relaxed max-w-2xl">
               Each engagement begins with a perspective—a way of seeing your challenge that reveals new paths forward. Our solutions are designed to meet organisations at every stage of their journey.
@@ -45,7 +63,7 @@ export default function Solutions() {
                   <h2 className="font-serif text-xl font-medium text-foreground mb-2">
                     {solution.title}
                   </h2>
-                  <p className="font-body text-sm text-teal italic">
+                  <p className="font-body text-sm text-primary italic">
                     "{solution.perspective}"
                   </p>
                 </div>
@@ -57,7 +75,7 @@ export default function Solutions() {
                 <div className="space-y-2 mb-6 flex-grow">
                   {solution.services.slice(0, 4).map((service, i) => (
                     <div key={i} className="flex items-start gap-2">
-                      <Check className="w-4 h-4 text-teal mt-0.5 flex-shrink-0" />
+                      <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
                       <span className="font-body text-sm text-muted-foreground">{service}</span>
                     </div>
                   ))}
@@ -69,7 +87,7 @@ export default function Solutions() {
                 </div>
 
                 <div className="border-t border-border pt-6 mt-auto">
-                  <p className="font-serif text-lg font-medium text-foreground mb-1">
+                  <p className="font-serif text-base font-medium text-foreground mb-1">
                     {solution.price}
                   </p>
                   {solution.priceNote && (
@@ -90,9 +108,9 @@ export default function Solutions() {
         </div>
       </section>
 
-      {/* Dedicated Partner Support */}
+      {/* Partner Support */}
       <section className="pb-24">
-        <div className="container max-w-3xl">
+        <div className="container max-w-4xl">
           <div className="section-divider" />
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -100,15 +118,32 @@ export default function Solutions() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="font-serif text-2xl font-medium text-foreground mb-6">
-              Dedicated Partner Support
+            <h2 className="font-serif text-2xl font-medium text-foreground mb-8">
+              How We Work With You
             </h2>
-            <p className="font-body text-muted-foreground leading-relaxed mb-6">
-              We are committed to providing exceptional service to our clients. Each engagement includes a dedicated Partner Success Manager who will keep you fully informed and answer any questions you may have.
-            </p>
-            <p className="font-body text-muted-foreground leading-relaxed mb-8">
-              Our team of professionals—including bookkeeping, payroll, taxation, and compliance specialists led by a qualified chartered accountant—ensures that all of your regulatory compliance needs are met with the highest level of care and attention.
-            </p>
+            
+            <div className="grid md:grid-cols-3 gap-8 mb-10">
+              {supportFeatures.map((feature, index) => (
+                <motion.div
+                  key={feature.title}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                >
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                    <feature.icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <h3 className="font-body text-sm font-medium text-foreground mb-2">
+                    {feature.title}
+                  </h3>
+                  <p className="font-body text-sm text-muted-foreground leading-relaxed">
+                    {feature.description}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+            
             <Button asChild className="btn-emerald font-body">
               <Link to="/book">
                 Book a Consultation
