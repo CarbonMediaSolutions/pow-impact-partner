@@ -12,12 +12,14 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
-import { Lock, Users, FileText, Mail, Eye, Plus, Pencil, Trash2, BookOpen, BarChart3 } from 'lucide-react';
+import { Lock, Users, FileText, Mail, Eye, Plus, Pencil, Trash2, BookOpen, BarChart3, Copy, Calendar, ExternalLink } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 
 const ADMIN_PASSWORD = 'plexa2025';
+const CALENDAR_LINK = 'https://calendar.app.google/WMyDAedTAtZgvFEf7';
 
 interface ConsultationLead {
   id: string;
@@ -26,8 +28,10 @@ interface ConsultationLead {
   email: string;
   organisation: string | null;
   role: string | null;
+  website_linkedin: string | null;
   problem_statement: string;
   desired_outcome: string | null;
+  status: string;
 }
 
 interface PerspectiveSubmission {
@@ -80,6 +84,18 @@ interface Analysis {
 
 const perspectiveTopics = ['Governance', 'Impact', 'Growth', 'Strategy', 'Risk'];
 const analysisCategories = ['Capital Allocation', 'Governance', 'Performance', 'Operations', 'Impact'];
+const leadStatuses = ['Reviewing', 'Approved', 'Declined'];
+
+const getStatusBadgeVariant = (status: string): "default" | "secondary" | "destructive" | "outline" => {
+  switch (status) {
+    case 'Approved':
+      return 'default';
+    case 'Declined':
+      return 'destructive';
+    default:
+      return 'secondary';
+  }
+};
 
 export default function Admin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -145,7 +161,7 @@ export default function Admin() {
         supabase.from('analyses').select('*').order('created_at', { ascending: false })
       ]);
 
-      if (leadsRes.data) setConsultationLeads(leadsRes.data);
+      if (leadsRes.data) setConsultationLeads(leadsRes.data as ConsultationLead[]);
       if (submissionsRes.data) setPerspectiveSubmissions(submissionsRes.data);
       if (emailsRes.data) setEmailCaptures(emailsRes.data);
       if (perspectivesRes.data) setPerspectives(perspectivesRes.data as Perspective[]);
@@ -155,6 +171,36 @@ export default function Admin() {
     }
     
     setLoading(false);
+  };
+
+  const updateLeadStatus = async (leadId: string, newStatus: string) => {
+    try {
+      const { error } = await supabase
+        .from('consultation_leads')
+        .update({ status: newStatus })
+        .eq('id', leadId);
+      
+      if (error) throw error;
+      
+      // Update local state
+      setConsultationLeads(prev => 
+        prev.map(lead => lead.id === leadId ? { ...lead, status: newStatus } : lead)
+      );
+      
+      if (selectedLead?.id === leadId) {
+        setSelectedLead(prev => prev ? { ...prev, status: newStatus } : null);
+      }
+      
+      toast.success(`Status updated to ${newStatus}`);
+    } catch (err) {
+      console.error('Error updating status:', err);
+      toast.error('Failed to update status');
+    }
+  };
+
+  const copyToClipboard = (text: string, label: string) => {
+    navigator.clipboard.writeText(text);
+    toast.success(`${label} copied to clipboard`);
   };
 
   const resetPerspectiveForm = () => {
@@ -322,6 +368,10 @@ export default function Admin() {
     }
   };
 
+  // Count leads by status
+  const reviewingCount = consultationLeads.filter(l => l.status === 'Reviewing').length;
+  const approvedCount = consultationLeads.filter(l => l.status === 'Approved').length;
+
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-background">
@@ -388,7 +438,7 @@ export default function Admin() {
             </p>
 
             {/* Stats Overview */}
-            <div className="grid md:grid-cols-5 gap-4 mb-8">
+            <div className="grid md:grid-cols-6 gap-4 mb-8">
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                   <CardTitle className="text-sm font-medium">Perspectives</CardTitle>
@@ -409,11 +459,20 @@ export default function Admin() {
               </Card>
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-sm font-medium">Leads</CardTitle>
+                  <CardTitle className="text-sm font-medium">Total Leads</CardTitle>
                   <Users className="w-4 h-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{consultationLeads.length}</div>
+                </CardContent>
+              </Card>
+              <Card className="border-amber-500/20 bg-amber-50/5">
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                  <CardTitle className="text-sm font-medium">Reviewing</CardTitle>
+                  <div className="w-2 h-2 rounded-full bg-amber-500" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-amber-600">{reviewingCount}</div>
                 </CardContent>
               </Card>
               <Card>
@@ -436,14 +495,207 @@ export default function Admin() {
               </Card>
             </div>
 
-            <Tabs defaultValue="perspectives" className="w-full">
+            <Tabs defaultValue="leads" className="w-full">
               <TabsList className="mb-6">
+                <TabsTrigger value="leads" className="relative">
+                  Consultation Leads
+                  {reviewingCount > 0 && (
+                    <span className="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-medium bg-amber-500 text-white rounded-full">
+                      {reviewingCount}
+                    </span>
+                  )}
+                </TabsTrigger>
                 <TabsTrigger value="perspectives">Perspectives</TabsTrigger>
                 <TabsTrigger value="analyses">Analyses</TabsTrigger>
-                <TabsTrigger value="leads">Consultation Leads</TabsTrigger>
                 <TabsTrigger value="submissions">Submissions</TabsTrigger>
                 <TabsTrigger value="emails">Email Captures</TabsTrigger>
               </TabsList>
+
+              {/* Consultation Leads Tab */}
+              <TabsContent value="leads">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Consultation Leads</CardTitle>
+                    <CardDescription>
+                      Review and manage consultation requests. Update status to approve or decline.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {loading ? (
+                      <p className="text-muted-foreground">Loading...</p>
+                    ) : consultationLeads.length === 0 ? (
+                      <p className="text-muted-foreground">No consultation leads yet</p>
+                    ) : (
+                      <div className="overflow-x-auto">
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Status</TableHead>
+                              <TableHead>Date</TableHead>
+                              <TableHead>Name</TableHead>
+                              <TableHead>Email</TableHead>
+                              <TableHead>Organisation</TableHead>
+                              <TableHead>Actions</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {consultationLeads.map((lead) => (
+                              <TableRow key={lead.id}>
+                                <TableCell>
+                                  <Select
+                                    value={lead.status}
+                                    onValueChange={(value) => updateLeadStatus(lead.id, value)}
+                                  >
+                                    <SelectTrigger className="w-[120px]">
+                                      <Badge variant={getStatusBadgeVariant(lead.status)}>
+                                        {lead.status}
+                                      </Badge>
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      {leadStatuses.map((status) => (
+                                        <SelectItem key={status} value={status}>
+                                          {status}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                </TableCell>
+                                <TableCell className="text-sm">
+                                  {format(new Date(lead.created_at), 'dd MMM yyyy')}
+                                </TableCell>
+                                <TableCell className="font-medium">{lead.name}</TableCell>
+                                <TableCell>{lead.email}</TableCell>
+                                <TableCell>{lead.organisation || '-'}</TableCell>
+                                <TableCell>
+                                  <div className="flex gap-1">
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() => setSelectedLead(lead)}
+                                      title="View details"
+                                    >
+                                      <Eye className="w-4 h-4" />
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() => copyToClipboard(lead.email, 'Email')}
+                                      title="Copy email"
+                                    >
+                                      <Copy className="w-4 h-4" />
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() => copyToClipboard(CALENDAR_LINK, 'Calendar link')}
+                                      title="Copy calendar link"
+                                    >
+                                      <Calendar className="w-4 h-4" />
+                                    </Button>
+                                  </div>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Lead Detail Modal */}
+                {selectedLead && (
+                  <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+                    <Card className="max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+                      <CardHeader>
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <div className="flex items-center gap-3 mb-2">
+                              <CardTitle>{selectedLead.name}</CardTitle>
+                              <Badge variant={getStatusBadgeVariant(selectedLead.status)}>
+                                {selectedLead.status}
+                              </Badge>
+                            </div>
+                            <CardDescription>{selectedLead.email}</CardDescription>
+                          </div>
+                          <Button variant="ghost" size="sm" onClick={() => setSelectedLead(null)}>
+                            ✕
+                          </Button>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="flex gap-2 pb-4 border-b">
+                          <Select
+                            value={selectedLead.status}
+                            onValueChange={(value) => updateLeadStatus(selectedLead.id, value)}
+                          >
+                            <SelectTrigger className="w-[140px]">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {leadStatuses.map((status) => (
+                                <SelectItem key={status} value={status}>
+                                  {status}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => copyToClipboard(selectedLead.email, 'Email')}
+                          >
+                            <Copy className="w-4 h-4 mr-2" />
+                            Copy Email
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => copyToClipboard(CALENDAR_LINK, 'Calendar link')}
+                          >
+                            <Calendar className="w-4 h-4 mr-2" />
+                            Copy Calendar Link
+                          </Button>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-muted-foreground">Organisation</p>
+                          <p>{selectedLead.organisation || 'Not provided'}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-muted-foreground">Role</p>
+                          <p>{selectedLead.role || 'Not provided'}</p>
+                        </div>
+                        {selectedLead.website_linkedin && (
+                          <div>
+                            <p className="text-sm font-medium text-muted-foreground">Website / LinkedIn</p>
+                            <a 
+                              href={selectedLead.website_linkedin.startsWith('http') ? selectedLead.website_linkedin : `https://${selectedLead.website_linkedin}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-primary hover:underline flex items-center gap-1"
+                            >
+                              {selectedLead.website_linkedin}
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          </div>
+                        )}
+                        <div>
+                          <p className="text-sm font-medium text-muted-foreground">Challenge</p>
+                          <p className="whitespace-pre-wrap">{selectedLead.problem_statement}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-muted-foreground">Desired Outcome</p>
+                          <p className="whitespace-pre-wrap">{selectedLead.desired_outcome || 'Not provided'}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-muted-foreground">Submitted</p>
+                          <p>{format(new Date(selectedLead.created_at), 'dd MMMM yyyy, HH:mm')}</p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                )}
+              </TabsContent>
 
               {/* Perspectives Tab */}
               <TabsContent value="perspectives">
@@ -502,8 +754,10 @@ export default function Admin() {
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
-                                {perspectiveTopics.map(topic => (
-                                  <SelectItem key={topic} value={topic}>{topic}</SelectItem>
+                                {perspectiveTopics.map((topic) => (
+                                  <SelectItem key={topic} value={topic}>
+                                    {topic}
+                                  </SelectItem>
                                 ))}
                               </SelectContent>
                             </Select>
@@ -522,7 +776,7 @@ export default function Admin() {
                               id="content"
                               value={perspectiveForm.content}
                               onChange={(e) => setPerspectiveForm(prev => ({ ...prev, content: e.target.value }))}
-                              placeholder="Full perspective content..."
+                              placeholder="Write your perspective content here..."
                               rows={10}
                             />
                           </div>
@@ -546,7 +800,6 @@ export default function Admin() {
                               <TableHead>Title</TableHead>
                               <TableHead>Topic</TableHead>
                               <TableHead>Featured</TableHead>
-                              <TableHead>Updated</TableHead>
                               <TableHead>Actions</TableHead>
                             </TableRow>
                           </TableHeader>
@@ -556,9 +809,6 @@ export default function Admin() {
                                 <TableCell className="font-medium">{perspective.title}</TableCell>
                                 <TableCell>{perspective.topic}</TableCell>
                                 <TableCell>{perspective.featured ? 'Yes' : 'No'}</TableCell>
-                                <TableCell className="text-sm">
-                                  {format(new Date(perspective.updated_at), 'dd MMM yyyy')}
-                                </TableCell>
                                 <TableCell>
                                   <div className="flex gap-2">
                                     <Button variant="ghost" size="sm" onClick={() => openEditPerspective(perspective)}>
@@ -608,18 +858,18 @@ export default function Admin() {
                         </DialogHeader>
                         <div className="space-y-4 py-4">
                           <div className="space-y-2">
-                            <Label htmlFor="analysis-title">Title</Label>
+                            <Label htmlFor="analysisTitle">Title</Label>
                             <Input
-                              id="analysis-title"
+                              id="analysisTitle"
                               value={analysisForm.title}
                               onChange={(e) => setAnalysisForm(prev => ({ ...prev, title: e.target.value }))}
                               placeholder="Analysis title"
                             />
                           </div>
                           <div className="space-y-2">
-                            <Label htmlFor="analysis-summary">Summary</Label>
+                            <Label htmlFor="analysisSummary">Summary</Label>
                             <Textarea
-                              id="analysis-summary"
+                              id="analysisSummary"
                               value={analysisForm.summary}
                               onChange={(e) => setAnalysisForm(prev => ({ ...prev, summary: e.target.value }))}
                               placeholder="Brief summary"
@@ -637,8 +887,10 @@ export default function Admin() {
                                   <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
-                                  {analysisCategories.map(cat => (
-                                    <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                                  {analysisCategories.map((cat) => (
+                                    <SelectItem key={cat} value={cat}>
+                                      {cat}
+                                    </SelectItem>
                                   ))}
                                 </SelectContent>
                               </Select>
@@ -649,17 +901,17 @@ export default function Admin() {
                                 id="date"
                                 value={analysisForm.date}
                                 onChange={(e) => setAnalysisForm(prev => ({ ...prev, date: e.target.value }))}
-                                placeholder="2024"
+                                placeholder="2025"
                               />
                             </div>
                           </div>
                           <div className="flex items-center space-x-2">
                             <Checkbox
-                              id="analysis-featured"
+                              id="analysisFeatured"
                               checked={analysisForm.featured}
                               onCheckedChange={(checked) => setAnalysisForm(prev => ({ ...prev, featured: !!checked }))}
                             />
-                            <Label htmlFor="analysis-featured">Featured</Label>
+                            <Label htmlFor="analysisFeatured">Featured</Label>
                           </div>
                           <div className="space-y-2">
                             <Label htmlFor="introduction">Introduction</Label>
@@ -667,8 +919,8 @@ export default function Admin() {
                               id="introduction"
                               value={analysisForm.introduction}
                               onChange={(e) => setAnalysisForm(prev => ({ ...prev, introduction: e.target.value }))}
-                              placeholder="Introduction paragraph..."
-                              rows={4}
+                              placeholder="Introduction paragraph"
+                              rows={3}
                             />
                           </div>
                           <div className="space-y-2">
@@ -677,7 +929,7 @@ export default function Admin() {
                               id="methodology"
                               value={analysisForm.methodology}
                               onChange={(e) => setAnalysisForm(prev => ({ ...prev, methodology: e.target.value }))}
-                              placeholder="Research methodology..."
+                              placeholder="Methodology description"
                               rows={3}
                             />
                           </div>
@@ -687,7 +939,7 @@ export default function Admin() {
                               id="keyFindings"
                               value={analysisForm.keyFindings}
                               onChange={(e) => setAnalysisForm(prev => ({ ...prev, keyFindings: e.target.value }))}
-                              placeholder="Key finding 1&#10;Key finding 2&#10;Key finding 3"
+                              placeholder="Finding 1&#10;Finding 2&#10;Finding 3"
                               rows={4}
                             />
                           </div>
@@ -750,103 +1002,6 @@ export default function Admin() {
                     )}
                   </CardContent>
                 </Card>
-              </TabsContent>
-
-              {/* Consultation Leads Tab */}
-              <TabsContent value="leads">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Consultation Leads</CardTitle>
-                    <CardDescription>
-                      People who have requested a consultation
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    {loading ? (
-                      <p className="text-muted-foreground">Loading...</p>
-                    ) : consultationLeads.length === 0 ? (
-                      <p className="text-muted-foreground">No consultation leads yet</p>
-                    ) : (
-                      <div className="overflow-x-auto">
-                        <Table>
-                          <TableHeader>
-                            <TableRow>
-                              <TableHead>Date</TableHead>
-                              <TableHead>Name</TableHead>
-                              <TableHead>Email</TableHead>
-                              <TableHead>Organisation</TableHead>
-                              <TableHead>Role</TableHead>
-                              <TableHead>Actions</TableHead>
-                            </TableRow>
-                          </TableHeader>
-                          <TableBody>
-                            {consultationLeads.map((lead) => (
-                              <TableRow key={lead.id}>
-                                <TableCell className="text-sm">
-                                  {format(new Date(lead.created_at), 'dd MMM yyyy')}
-                                </TableCell>
-                                <TableCell className="font-medium">{lead.name}</TableCell>
-                                <TableCell>{lead.email}</TableCell>
-                                <TableCell>{lead.organisation || '-'}</TableCell>
-                                <TableCell>{lead.role || '-'}</TableCell>
-                                <TableCell>
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() => setSelectedLead(lead)}
-                                  >
-                                    <Eye className="w-4 h-4" />
-                                  </Button>
-                                </TableCell>
-                              </TableRow>
-                            ))}
-                          </TableBody>
-                        </Table>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-
-                {/* Lead Detail Modal */}
-                {selectedLead && (
-                  <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-                    <Card className="max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-                      <CardHeader>
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <CardTitle>{selectedLead.name}</CardTitle>
-                            <CardDescription>{selectedLead.email}</CardDescription>
-                          </div>
-                          <Button variant="ghost" size="sm" onClick={() => setSelectedLead(null)}>
-                            ✕
-                          </Button>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div>
-                          <p className="text-sm font-medium text-muted-foreground">Organisation</p>
-                          <p>{selectedLead.organisation || 'Not provided'}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-muted-foreground">Role</p>
-                          <p>{selectedLead.role || 'Not provided'}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-muted-foreground">Problem Statement</p>
-                          <p className="whitespace-pre-wrap">{selectedLead.problem_statement}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-muted-foreground">Desired Outcome</p>
-                          <p className="whitespace-pre-wrap">{selectedLead.desired_outcome || 'Not provided'}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-muted-foreground">Submitted</p>
-                          <p>{format(new Date(selectedLead.created_at), 'dd MMMM yyyy, HH:mm')}</p>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                )}
               </TabsContent>
 
               {/* Perspective Submissions Tab */}

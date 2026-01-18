@@ -22,6 +22,7 @@ export default function BookConsultation() {
     email: '',
     organisation: '',
     role: '',
+    website_linkedin: '',
     problem_statement: '',
     desired_outcome: '',
   });
@@ -39,30 +40,54 @@ export default function BookConsultation() {
     setIsSubmitting(true);
     
     try {
-      const { error } = await supabase
+      // Insert into database
+      const { error: dbError } = await supabase
         .from('consultation_leads')
         .insert([{
           name: formData.name,
           email: formData.email,
           organisation: formData.organisation || null,
           role: formData.role || null,
+          website_linkedin: formData.website_linkedin || null,
           problem_statement: selectedSolution 
             ? `[${selectedSolution.title}] ${formData.problem_statement}`
             : formData.problem_statement,
           desired_outcome: formData.desired_outcome || null,
+          status: 'Reviewing',
         }]);
 
-      if (error) throw error;
+      if (dbError) throw dbError;
+
+      // Send email notification
+      try {
+        await supabase.functions.invoke('send-consultation-notification', {
+          body: {
+            name: formData.name,
+            email: formData.email,
+            organisation: formData.organisation,
+            role: formData.role,
+            website_linkedin: formData.website_linkedin,
+            problem_statement: selectedSolution 
+              ? `[${selectedSolution.title}] ${formData.problem_statement}`
+              : formData.problem_statement,
+            desired_outcome: formData.desired_outcome,
+          }
+        });
+      } catch (emailError) {
+        // Log but don't fail the submission if email fails
+        console.error('Email notification failed:', emailError);
+      }
 
       setIsSubmitted(true);
       toast({
-        title: "Request received",
-        description: "We'll be in touch shortly to schedule your consultation.",
+        title: "Request submitted",
+        description: "We'll review your request and respond within 1 business day.",
       });
     } catch (error) {
+      console.error('Submission error:', error);
       toast({
         title: "Something went wrong",
-        description: "Please try again or email paddi@predawncodex.com directly.",
+        description: "Please try again or email hello@plexapartners.com directly.",
         variant: "destructive",
       });
     } finally {
@@ -83,27 +108,31 @@ export default function BookConsultation() {
             transition={{ duration: 0.6 }}
           >
             <h1 className="font-serif text-4xl md:text-5xl font-medium text-foreground mb-6">
-              Book a Consultation
+              Request a Consultation
             </h1>
             <p className="font-body text-lg text-muted-foreground leading-relaxed mb-6">
-              We offer a complimentary 30-minute discovery session to understand your challenges and explore how we might help.
+              We offer a complimentary 30-minute discovery discussion to understand your context and determine whether an engagement would be appropriate.
             </p>
             
             {/* Trust Indicators */}
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground/70 font-body">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground/70 font-body mb-4">
               <span className="flex items-center gap-1.5">
                 <Shield className="w-4 h-4" />
                 Confidential
               </span>
               <span className="flex items-center gap-1.5">
                 <Clock className="w-4 h-4" />
-                Response within 1 business day
+                Reviewed prior to scheduling
               </span>
               <span className="flex items-center gap-1.5">
                 <Globe className="w-4 h-4" />
                 Timezone: London (GMT)
               </span>
             </div>
+            
+            <p className="font-body text-sm text-muted-foreground/60 italic">
+              All consultation requests are reviewed to ensure alignment and relevance.
+            </p>
 
             {selectedSolution && (
               <div className="mt-6 p-4 bg-muted/50 rounded-lg border border-border">
@@ -116,7 +145,7 @@ export default function BookConsultation() {
         </div>
       </section>
 
-      {/* Schedule Directly Section - Primary */}
+      {/* Form Section - Primary */}
       <section className="pb-12">
         <div className="container max-w-3xl">
           <motion.div
@@ -124,57 +153,6 @@ export default function BookConsultation() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <div className="bg-tile rounded-lg border border-border/20 p-8 text-center">
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                <Calendar className="w-6 h-6 text-primary" />
-              </div>
-              <h2 className="font-serif text-xl font-medium text-foreground mb-2">
-                Schedule a Time
-              </h2>
-              <p className="font-body text-muted-foreground mb-6 max-w-md mx-auto">
-                Book a 30-minute consultation directly in our calendar.
-              </p>
-              <Button
-                asChild
-                className="btn-emerald font-body px-8"
-              >
-                <a 
-                  href="https://calendar.app.google/WMyDAedTAtZgvFEf7" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                >
-                  <Calendar className="w-4 h-4 mr-2" />
-                  Open Calendar
-                </a>
-              </Button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Or Divider */}
-      <section className="pb-8">
-        <div className="container max-w-3xl">
-          <div className="flex items-center gap-4">
-            <div className="flex-1 h-px bg-border" />
-            <span className="font-body text-sm text-muted-foreground">or submit a request</span>
-            <div className="flex-1 h-px bg-border" />
-          </div>
-        </div>
-      </section>
-
-      {/* Form Section - Secondary */}
-      <section className="pb-16">
-        <div className="container max-w-3xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <h2 className="font-serif text-lg font-medium text-foreground mb-6">
-              Tell us about your challenge
-            </h2>
-
             {isSubmitted ? (
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -185,15 +163,15 @@ export default function BookConsultation() {
                   <CheckCircle className="w-6 h-6 text-primary" />
                 </div>
                 <h3 className="font-serif text-xl font-medium text-foreground mb-3">
-                  Request Received
+                  Request Submitted
                 </h3>
                 <p className="font-body text-muted-foreground mb-8 max-w-md mx-auto">
-                  We'll review your inquiry and be in touch within 1 business day to schedule your consultation.
+                  We'll review your request and respond within 1 business day. If approved, you'll receive a link to schedule your consultation.
                 </p>
                 <Button
                   onClick={() => {
                     setIsSubmitted(false);
-                    setFormData({ name: '', email: '', organisation: '', role: '', problem_statement: '', desired_outcome: '' });
+                    setFormData({ name: '', email: '', organisation: '', role: '', website_linkedin: '', problem_statement: '', desired_outcome: '' });
                   }}
                   variant="outline"
                   className="font-body"
@@ -205,7 +183,7 @@ export default function BookConsultation() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="name" className="font-body text-sm">Name *</Label>
+                    <Label htmlFor="name" className="font-body text-sm">Full Name *</Label>
                     <Input
                       id="name"
                       name="name"
@@ -217,7 +195,7 @@ export default function BookConsultation() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="font-body text-sm">Email *</Label>
+                    <Label htmlFor="email" className="font-body text-sm">Email Address *</Label>
                     <Input
                       id="email"
                       name="email"
@@ -243,7 +221,7 @@ export default function BookConsultation() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="role" className="font-body text-sm">Role</Label>
+                    <Label htmlFor="role" className="font-body text-sm">Role / Position</Label>
                     <Input
                       id="role"
                       name="role"
@@ -255,8 +233,20 @@ export default function BookConsultation() {
                 </div>
 
                 <div className="space-y-2">
+                  <Label htmlFor="website_linkedin" className="font-body text-sm">Organisation Website or LinkedIn</Label>
+                  <Input
+                    id="website_linkedin"
+                    name="website_linkedin"
+                    value={formData.website_linkedin}
+                    onChange={handleChange}
+                    placeholder="https://..."
+                    className="font-body"
+                  />
+                </div>
+
+                <div className="space-y-2">
                   <Label htmlFor="problem_statement" className="font-body text-sm">
-                    What challenge are you facing? *
+                    What challenge or decision are you currently navigating? *
                   </Label>
                   <Textarea
                     id="problem_statement"
@@ -272,13 +262,14 @@ export default function BookConsultation() {
 
                 <div className="space-y-2">
                   <Label htmlFor="desired_outcome" className="font-body text-sm">
-                    What outcome are you hoping for?
+                    What outcome would success look like for you? *
                   </Label>
                   <Textarea
                     id="desired_outcome"
                     name="desired_outcome"
                     value={formData.desired_outcome}
                     onChange={handleChange}
+                    required
                     rows={3}
                     placeholder="What would success look like for you?"
                     className="font-body resize-none"
@@ -295,12 +286,54 @@ export default function BookConsultation() {
                   ) : (
                     <>
                       <Send className="w-4 h-4 mr-2" />
-                      Request Consultation
+                      Submit Consultation Request
                     </>
                   )}
                 </Button>
               </form>
             )}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Or Divider */}
+      <section className="pb-8">
+        <div className="container max-w-3xl">
+          <div className="flex items-center gap-4">
+            <div className="flex-1 h-px bg-border" />
+            <span className="font-body text-sm text-muted-foreground">or</span>
+            <div className="flex-1 h-px bg-border" />
+          </div>
+        </div>
+      </section>
+
+      {/* Schedule Directly Section - Secondary */}
+      <section className="pb-16">
+        <div className="container max-w-3xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <div className="bg-muted/30 rounded-lg border border-border/20 p-6 text-center">
+              <p className="font-body text-sm text-muted-foreground mb-4">
+                For existing contacts
+              </p>
+              <Button
+                asChild
+                variant="outline"
+                className="font-body"
+              >
+                <a 
+                  href="https://calendar.app.google/WMyDAedTAtZgvFEf7" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                >
+                  <Calendar className="w-4 h-4 mr-2" />
+                  Schedule directly using our calendar
+                </a>
+              </Button>
+            </div>
           </motion.div>
         </div>
       </section>
