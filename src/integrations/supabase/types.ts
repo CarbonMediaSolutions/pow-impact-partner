@@ -60,6 +60,8 @@ export type Database = {
           organisation: string | null
           problem_statement: string
           role: string | null
+          status: string
+          website_linkedin: string | null
         }
         Insert: {
           created_at?: string
@@ -70,6 +72,8 @@ export type Database = {
           organisation?: string | null
           problem_statement: string
           role?: string | null
+          status?: string
+          website_linkedin?: string | null
         }
         Update: {
           created_at?: string
@@ -80,6 +84,8 @@ export type Database = {
           organisation?: string | null
           problem_statement?: string
           role?: string | null
+          status?: string
+          website_linkedin?: string | null
         }
         Relationships: []
       }

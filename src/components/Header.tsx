@@ -93,7 +93,7 @@ export const Header = () => {
             variant="outline"
             className="font-body text-sm font-medium border-foreground/20 text-foreground hover:bg-foreground hover:text-background px-6"
           >
-            <Link to="/book">Book a Consultation</Link>
+            <Link to="/book">Request a Consultation</Link>
           </Button>
         </div>
 
@@ -142,7 +142,7 @@ export const Header = () => {
                 variant="outline"
                 className="font-body text-sm font-medium border-foreground/20 text-foreground hover:bg-foreground hover:text-background mt-4"
               >
-                <Link to="/book">Book a Consultation</Link>
+                <Link to="/book">Request a Consultation</Link>
               </Button>
             </nav>
           </motion.div>
