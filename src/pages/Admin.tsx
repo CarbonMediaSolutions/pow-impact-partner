@@ -14,11 +14,11 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
-import { Lock, Users, FileText, Mail, Eye, Plus, Pencil, Trash2, BookOpen, BarChart3, Copy, Calendar, ExternalLink } from 'lucide-react';
+import { Lock, Users, FileText, Mail, Eye, Plus, Pencil, Trash2, BookOpen, BarChart3, Copy, Calendar, ExternalLink, LogOut, Download } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
+import type { User } from '@supabase/supabase-js';
 
-const ADMIN_PASSWORD = 'plexa2025';
 const CALENDAR_LINK = 'https://calendar.app.google/WMyDAedTAtZgvFEf7';
 
 interface ConsultationLead {
@@ -98,7 +98,10 @@ const getStatusBadgeVariant = (status: string): "default" | "secondary" | "destr
 };
 
 export default function Admin() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [consultationLeads, setConsultationLeads] = useState<ConsultationLead[]>([]);
@@ -138,15 +141,81 @@ export default function Admin() {
     implications: ''
   });
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
-      setIsAuthenticated(true);
-      setError('');
+  // Check auth state on mount
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (session?.user) {
+        setUser(session.user);
+        await checkAdminRole(session.user.id);
+      }
+      setAuthLoading(false);
+    };
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session?.user) {
+        setUser(session.user);
+        await checkAdminRole(session.user.id);
+      } else {
+        setUser(null);
+        setIsAdmin(false);
+      }
+    });
+
+    checkAuth();
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const checkAdminRole = async (userId: string) => {
+    const { data, error } = await supabase.rpc('has_role', {
+      _user_id: userId,
+      _role: 'admin'
+    });
+    
+    if (!error && data) {
+      setIsAdmin(true);
       fetchData();
     } else {
-      setError('Incorrect password');
+      setIsAdmin(false);
     }
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) {
+      setError(error.message);
+      return;
+    }
+
+    if (data.user) {
+      await checkAdminRole(data.user.id);
+      if (!isAdmin) {
+        // Re-check after login
+        const { data: roleData } = await supabase.rpc('has_role', {
+          _user_id: data.user.id,
+          _role: 'admin'
+        });
+        if (!roleData) {
+          setError('You do not have admin access');
+          await supabase.auth.signOut();
+        }
+      }
+    }
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+    setIsAdmin(false);
+    toast.success('Logged out successfully');
   };
 
   const fetchData = async () => {
@@ -201,6 +270,29 @@ export default function Admin() {
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
     toast.success(`${label} copied to clipboard`);
+  };
+
+  const exportLeadsToCSV = () => {
+    const headers = ['Date', 'Status', 'Name', 'Email', 'Organisation', 'Role', 'Website/LinkedIn', 'Challenge', 'Desired Outcome'];
+    const rows = consultationLeads.map(lead => [
+      format(new Date(lead.created_at), 'yyyy-MM-dd'),
+      lead.status,
+      lead.name,
+      lead.email,
+      lead.organisation || '',
+      lead.role || '',
+      lead.website_linkedin || '',
+      `"${(lead.problem_statement || '').replace(/"/g, '""')}"`,
+      `"${(lead.desired_outcome || '').replace(/"/g, '""')}"`
+    ]);
+
+    const csvContent = [headers.join(','), ...rows.map(row => row.join(','))].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `consultation-leads-${format(new Date(), 'yyyy-MM-dd')}.csv`;
+    link.click();
+    toast.success('Leads exported to CSV');
   };
 
   const resetPerspectiveForm = () => {
@@ -370,9 +462,16 @@ export default function Admin() {
 
   // Count leads by status
   const reviewingCount = consultationLeads.filter(l => l.status === 'Reviewing').length;
-  const approvedCount = consultationLeads.filter(l => l.status === 'Approved').length;
 
-  if (!isAuthenticated) {
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <p className="text-muted-foreground">Loading...</p>
+      </div>
+    );
+  }
+
+  if (!user || !isAdmin) {
     return (
       <div className="min-h-screen bg-background">
         <Header />
@@ -390,22 +489,37 @@ export default function Admin() {
                     <Lock className="w-6 h-6 text-muted-foreground" />
                   </div>
                   <CardTitle className="font-serif text-2xl">Admin Access</CardTitle>
-                  <CardDescription>Enter the admin password to continue</CardDescription>
+                  <CardDescription>Sign in with your admin credentials</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleLogin} className="space-y-4">
-                    <Input
-                      type="password"
-                      placeholder="Password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="text-center"
-                    />
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="admin@example.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="password">Password</Label>
+                      <Input
+                        id="password"
+                        type="password"
+                        placeholder="••••••••"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                      />
+                    </div>
                     {error && (
                       <p className="text-sm text-destructive text-center">{error}</p>
                     )}
                     <Button type="submit" className="w-full">
-                      Access Dashboard
+                      Sign In
                     </Button>
                   </form>
                 </CardContent>
@@ -430,12 +544,20 @@ export default function Admin() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="font-serif text-3xl md:text-4xl font-medium text-foreground mb-2">
-              Admin Dashboard
-            </h1>
-            <p className="font-body text-muted-foreground mb-8">
-              Manage content, leads, perspectives, and email captures
-            </p>
+            <div className="flex justify-between items-start mb-8">
+              <div>
+                <h1 className="font-serif text-3xl md:text-4xl font-medium text-foreground mb-2">
+                  Admin Dashboard
+                </h1>
+                <p className="font-body text-muted-foreground">
+                  Signed in as {user.email}
+                </p>
+              </div>
+              <Button variant="outline" onClick={handleLogout}>
+                <LogOut className="w-4 h-4 mr-2" />
+                Sign Out
+              </Button>
+            </div>
 
             {/* Stats Overview */}
             <div className="grid md:grid-cols-6 gap-4 mb-8">
@@ -514,11 +636,17 @@ export default function Admin() {
               {/* Consultation Leads Tab */}
               <TabsContent value="leads">
                 <Card>
-                  <CardHeader>
-                    <CardTitle>Consultation Leads</CardTitle>
-                    <CardDescription>
-                      Review and manage consultation requests. Update status to approve or decline.
-                    </CardDescription>
+                  <CardHeader className="flex flex-row items-center justify-between">
+                    <div>
+                      <CardTitle>Consultation Leads</CardTitle>
+                      <CardDescription>
+                        Review and manage consultation requests. Update status to approve or decline.
+                      </CardDescription>
+                    </div>
+                    <Button variant="outline" size="sm" onClick={exportLeadsToCSV} disabled={consultationLeads.length === 0}>
+                      <Download className="w-4 h-4 mr-2" />
+                      Export CSV
+                    </Button>
                   </CardHeader>
                   <CardContent>
                     {loading ? (
