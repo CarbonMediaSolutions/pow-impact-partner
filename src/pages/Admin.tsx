@@ -104,6 +104,8 @@ export default function Admin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [signUpSuccess, setSignUpSuccess] = useState(false);
   const [consultationLeads, setConsultationLeads] = useState<ConsultationLead[]>([]);
   const [perspectiveSubmissions, setPerspectiveSubmissions] = useState<PerspectiveSubmission[]>([]);
   const [emailCaptures, setEmailCaptures] = useState<EmailCapture[]>([]);
@@ -204,10 +206,33 @@ export default function Admin() {
           _role: 'admin'
         });
         if (!roleData) {
-          setError('You do not have admin access');
+          setError('You do not have admin access. Contact the system administrator.');
           await supabase.auth.signOut();
         }
       }
+    }
+  };
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: window.location.origin + '/admin'
+      }
+    });
+
+    if (error) {
+      setError(error.message);
+      return;
+    }
+
+    if (data.user) {
+      setSignUpSuccess(true);
+      toast.success('Account created! Contact the administrator to grant admin access.');
     }
   };
 
@@ -492,36 +517,67 @@ export default function Admin() {
                   <CardDescription>Sign in with your admin credentials</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <form onSubmit={handleLogin} className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="admin@example.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                      />
+                  {signUpSuccess ? (
+                    <div className="text-center space-y-4">
+                      <p className="text-sm text-muted-foreground">
+                        Account created successfully! Please contact the administrator to grant you admin access, then sign in.
+                      </p>
+                      <Button 
+                        variant="outline" 
+                        onClick={() => { setSignUpSuccess(false); setIsSignUp(false); }}
+                        className="w-full"
+                      >
+                        Back to Sign In
+                      </Button>
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="password">Password</Label>
-                      <Input
-                        id="password"
-                        type="password"
-                        placeholder="••••••••"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                      />
-                    </div>
-                    {error && (
-                      <p className="text-sm text-destructive text-center">{error}</p>
-                    )}
-                    <Button type="submit" className="w-full">
-                      Sign In
-                    </Button>
-                  </form>
+                  ) : (
+                    <form onSubmit={isSignUp ? handleSignUp : handleLogin} className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="email">Email</Label>
+                        <Input
+                          id="email"
+                          type="email"
+                          placeholder="admin@example.com"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="password">Password</Label>
+                        <Input
+                          id="password"
+                          type="password"
+                          placeholder="••••••••"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          required
+                          minLength={6}
+                        />
+                      </div>
+                      {error && (
+                        <p className="text-sm text-destructive text-center">{error}</p>
+                      )}
+                      <Button type="submit" className="w-full">
+                        {isSignUp ? 'Create Account' : 'Sign In'}
+                      </Button>
+                      <p className="text-sm text-center text-muted-foreground">
+                        {isSignUp ? (
+                          <>Already have an account?{' '}
+                            <button type="button" onClick={() => setIsSignUp(false)} className="text-primary hover:underline">
+                              Sign in
+                            </button>
+                          </>
+                        ) : (
+                          <>First time?{' '}
+                            <button type="button" onClick={() => setIsSignUp(true)} className="text-primary hover:underline">
+                              Create account
+                            </button>
+                          </>
+                        )}
+                      </p>
+                    </form>
+                  )}
                 </CardContent>
               </Card>
             </motion.div>
