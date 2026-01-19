@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Send, CheckCircle, Calendar, Shield, Clock, Globe } from 'lucide-react';
+import { Send, CheckCircle, Shield, Clock, Globe } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -13,6 +14,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { solutions } from '@/data/solutions';
 
 export default function BookConsultation() {
+  const { t } = useTranslation(['book', 'common']);
   const [searchParams] = useSearchParams();
   const solutionId = searchParams.get('solution');
   const selectedSolution = solutionId ? solutions.find(s => s.id === solutionId) : null;
@@ -80,14 +82,14 @@ export default function BookConsultation() {
 
       setIsSubmitted(true);
       toast({
-        title: "Request submitted",
-        description: "We'll review your request and respond within 1 business day.",
+        title: t('book:toast.successTitle'),
+        description: t('book:toast.successMessage'),
       });
     } catch (error) {
       console.error('Submission error:', error);
       toast({
-        title: "Something went wrong",
-        description: "Please try again or email hello@plexapartners.com directly.",
+        title: t('book:toast.errorTitle'),
+        description: t('book:toast.errorMessage'),
         variant: "destructive",
       });
     } finally {
@@ -108,36 +110,36 @@ export default function BookConsultation() {
             transition={{ duration: 0.6 }}
           >
             <h1 className="font-serif text-4xl md:text-5xl font-medium text-foreground mb-6">
-              Request a Consultation
+              {t('book:pageTitle')}
             </h1>
             <p className="font-body text-lg text-muted-foreground leading-relaxed mb-6">
-              We offer a complimentary 30-minute discovery discussion to understand your context and determine whether an engagement would be appropriate.
+              {t('book:pageDescription')}
             </p>
             
             {/* Trust Indicators */}
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground/70 font-body mb-4">
               <span className="flex items-center gap-1.5">
                 <Shield className="w-4 h-4" />
-                Confidential
+                {t('book:trustIndicators.confidential')}
               </span>
               <span className="flex items-center gap-1.5">
                 <Clock className="w-4 h-4" />
-                Reviewed prior to scheduling
+                {t('book:trustIndicators.reviewed')}
               </span>
               <span className="flex items-center gap-1.5">
                 <Globe className="w-4 h-4" />
-                Timezone: London (GMT)
+                {t('book:trustIndicators.timezone')}
               </span>
             </div>
             
             <p className="font-body text-sm text-muted-foreground/60 italic">
-              All consultation requests are reviewed to ensure alignment and relevance.
+              {t('book:reviewNote')}
             </p>
 
             {selectedSolution && (
               <div className="mt-6 p-4 bg-muted/50 rounded-lg border border-border">
                 <p className="font-body text-sm text-muted-foreground">
-                  Enquiring about: <span className="font-medium text-foreground">{selectedSolution.title}</span>
+                  {t('book:enquiringAbout')} <span className="font-medium text-foreground">{selectedSolution.title}</span>
                 </p>
               </div>
             )}
@@ -163,10 +165,10 @@ export default function BookConsultation() {
                   <CheckCircle className="w-6 h-6 text-primary" />
                 </div>
                 <h3 className="font-serif text-xl font-medium text-foreground mb-3">
-                  Request Submitted
+                  {t('book:success.title')}
                 </h3>
                 <p className="font-body text-muted-foreground mb-8 max-w-md mx-auto">
-                  We'll review your request and respond within 1 business day. If approved, you'll receive a link to schedule your consultation.
+                  {t('book:success.message')}
                 </p>
                 <Button
                   onClick={() => {
@@ -176,14 +178,14 @@ export default function BookConsultation() {
                   variant="outline"
                   className="font-body"
                 >
-                  Submit Another Request
+                  {t('book:success.submitAnother')}
                 </Button>
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="name" className="font-body text-sm">Full Name *</Label>
+                    <Label htmlFor="name" className="font-body text-sm">{t('book:form.fullName')} *</Label>
                     <Input
                       id="name"
                       name="name"
@@ -195,7 +197,7 @@ export default function BookConsultation() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="font-body text-sm">Email Address *</Label>
+                    <Label htmlFor="email" className="font-body text-sm">{t('book:form.email')} *</Label>
                     <Input
                       id="email"
                       name="email"
@@ -210,7 +212,7 @@ export default function BookConsultation() {
 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="organisation" className="font-body text-sm">Organisation</Label>
+                    <Label htmlFor="organisation" className="font-body text-sm">{t('book:form.organisation')}</Label>
                     <Input
                       id="organisation"
                       name="organisation"
@@ -221,7 +223,7 @@ export default function BookConsultation() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="role" className="font-body text-sm">Role / Position</Label>
+                    <Label htmlFor="role" className="font-body text-sm">{t('book:form.role')}</Label>
                     <Input
                       id="role"
                       name="role"
@@ -233,20 +235,20 @@ export default function BookConsultation() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="website_linkedin" className="font-body text-sm">Organisation Website or LinkedIn</Label>
+                  <Label htmlFor="website_linkedin" className="font-body text-sm">{t('book:form.websiteLinkedin')}</Label>
                   <Input
                     id="website_linkedin"
                     name="website_linkedin"
                     value={formData.website_linkedin}
                     onChange={handleChange}
-                    placeholder="https://..."
+                    placeholder={t('book:form.websiteLinkedinPlaceholder')}
                     className="font-body"
                   />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="problem_statement" className="font-body text-sm">
-                    What challenge or decision are you currently navigating? *
+                    {t('book:form.challengeQuestion')} *
                   </Label>
                   <Textarea
                     id="problem_statement"
@@ -255,14 +257,14 @@ export default function BookConsultation() {
                     onChange={handleChange}
                     required
                     rows={4}
-                    placeholder="Describe the key challenge or opportunity you're navigating..."
+                    placeholder={t('book:form.challengePlaceholder')}
                     className="font-body resize-none"
                   />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="desired_outcome" className="font-body text-sm">
-                    What outcome would success look like for you? *
+                    {t('book:form.outcomeQuestion')} *
                   </Label>
                   <Textarea
                     id="desired_outcome"
@@ -271,7 +273,7 @@ export default function BookConsultation() {
                     onChange={handleChange}
                     required
                     rows={3}
-                    placeholder="What would success look like for you?"
+                    placeholder={t('book:form.outcomePlaceholder')}
                     className="font-body resize-none"
                   />
                 </div>
@@ -282,11 +284,11 @@ export default function BookConsultation() {
                   className="btn-emerald font-body px-8"
                 >
                   {isSubmitting ? (
-                    <span>Submitting...</span>
+                    <span>{t('book:form.submitting')}</span>
                   ) : (
                     <>
                       <Send className="w-4 h-4 mr-2" />
-                      Submit Consultation Request
+                      {t('book:form.submit')}
                     </>
                   )}
                 </Button>

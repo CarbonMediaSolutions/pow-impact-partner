@@ -1,0 +1,49 @@
+{
+  "pageTitle": "分享您的观点",
+  "pageDescription": "我们相信最好的洞察来自业内领导者。分享您对治理、影响力、战略或增长的观点——参与这场对话。",
+  "reward": {
+    "title": "月度奖励",
+    "description": "每月我们会选出最具说服力的观点，并向其作者颁发<bold>100英镑亚马逊礼品卡</bold>。入选的观点也可能在我们的出版物中刊登。"
+  },
+  "form": {
+    "sectionTitle": "您的观点",
+    "name": "姓名",
+    "email": "邮箱",
+    "organisation": "组织机构",
+    "topic": "主题",
+    "topicPlaceholder": "选择主题",
+    "perspectiveLabel": "您的观点",
+    "perspectiveLimit": "（最多500字）",
+    "perspectivePlaceholder": "分享您对当今组织面临挑战的见解、观察或观点...",
+    "wordCount": "{{count}} / 500 字",
+    "submit": "提交观点",
+    "submitting": "提交中..."
+  },
+  "topics": {
+    "governance": "治理",
+    "impact": "影响力",
+    "growth": "增长",
+    "strategy": "战略",
+    "risk": "风险",
+    "finance": "财务",
+    "other": "其他"
+  },
+  "success": {
+    "title": "感谢您",
+    "message": "您的观点已收到。我们每月审核所有提交内容，如果您的见解被选中刊登或获得月度奖励，我们会与您联系。",
+    "submitAnother": "提交另一个观点"
+  },
+  "guidelines": {
+    "title": "提交指南",
+    "g1": "聚焦于具体的见解、挑战或机遇",
+    "g2": "尽可能基于真实经验",
+    "g3": "简洁且具有可操作性",
+    "g4": "仅限原创内容"
+  },
+  "toast": {
+    "successTitle": "观点已收到",
+    "successMessage": "感谢分享您的见解。我们每月审核所有提交内容。",
+    "errorTitle": "出现问题",
+    "errorMessage": "请重试或直接联系我们。"
+  }
+}

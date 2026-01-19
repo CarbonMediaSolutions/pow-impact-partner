@@ -1,0 +1,36 @@
+{
+  "pageTitle": "Request a Consultation",
+  "pageDescription": "We offer a complimentary 30-minute discovery discussion to understand your context and determine whether an engagement would be appropriate.",
+  "trustIndicators": {
+    "confidential": "Confidential",
+    "reviewed": "Reviewed prior to scheduling",
+    "timezone": "Timezone: London (GMT)"
+  },
+  "reviewNote": "All consultation requests are reviewed to ensure alignment and relevance.",
+  "enquiringAbout": "Enquiring about:",
+  "form": {
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "organisation": "Organisation",
+    "role": "Role / Position",
+    "websiteLinkedin": "Organisation Website or LinkedIn",
+    "websiteLinkedinPlaceholder": "https://...",
+    "challengeQuestion": "What challenge or decision are you currently navigating?",
+    "challengePlaceholder": "Describe the key challenge or opportunity you're navigating...",
+    "outcomeQuestion": "What outcome would success look like for you?",
+    "outcomePlaceholder": "What would success look like for you?",
+    "submit": "Submit Consultation Request",
+    "submitting": "Submitting..."
+  },
+  "success": {
+    "title": "Request Submitted",
+    "message": "We'll review your request and respond within 1 business day. If approved, you'll receive a link to schedule your consultation.",
+    "submitAnother": "Submit Another Request"
+  },
+  "toast": {
+    "successTitle": "Request submitted",
+    "successMessage": "We'll review your request and respond within 1 business day.",
+    "errorTitle": "Something went wrong",
+    "errorMessage": "Please try again or email hello@plexapartners.com directly."
+  }
+}

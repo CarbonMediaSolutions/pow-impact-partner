@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Send, CheckCircle, Gift } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -17,17 +18,19 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
-const topics = [
-  { value: 'governance', label: 'Governance' },
-  { value: 'impact', label: 'Impact' },
-  { value: 'growth', label: 'Growth' },
-  { value: 'strategy', label: 'Strategy' },
-  { value: 'risk', label: 'Risk' },
-  { value: 'finance', label: 'Finance' },
-  { value: 'other', label: 'Other' },
-];
-
 export default function SubmitPerspective() {
+  const { t } = useTranslation('submit');
+
+  const topics = [
+    { value: 'governance', labelKey: 'submit:topics.governance' },
+    { value: 'impact', labelKey: 'submit:topics.impact' },
+    { value: 'growth', labelKey: 'submit:topics.growth' },
+    { value: 'strategy', labelKey: 'submit:topics.strategy' },
+    { value: 'risk', labelKey: 'submit:topics.risk' },
+    { value: 'finance', labelKey: 'submit:topics.finance' },
+    { value: 'other', labelKey: 'submit:topics.other' },
+  ];
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -67,13 +70,13 @@ export default function SubmitPerspective() {
 
       setIsSubmitted(true);
       toast({
-        title: "Perspective received",
-        description: "Thank you for sharing your insight. We review all submissions monthly.",
+        title: t('toast.successTitle'),
+        description: t('toast.successMessage'),
       });
     } catch (error) {
       toast({
-        title: "Something went wrong",
-        description: "Please try again or contact us directly.",
+        title: t('toast.errorTitle'),
+        description: t('toast.errorMessage'),
         variant: "destructive",
       });
     } finally {
@@ -94,10 +97,10 @@ export default function SubmitPerspective() {
             transition={{ duration: 0.6 }}
           >
             <h1 className="font-serif text-4xl md:text-5xl font-medium text-foreground mb-8">
-              Share Your Perspective
+              {t('pageTitle')}
             </h1>
             <p className="font-body text-lg text-muted-foreground leading-relaxed mb-6">
-              We believe the best insights come from leaders in the field. Share your perspective on governance, impact, strategy, or growth—and contribute to the conversation.
+              {t('pageDescription')}
             </p>
             
             {/* Reward Banner */}
@@ -105,10 +108,12 @@ export default function SubmitPerspective() {
               <Gift className="w-6 h-6 text-teal flex-shrink-0 mt-0.5" />
               <div>
                 <h3 className="font-serif text-lg font-medium text-foreground mb-2">
-                  Monthly Reward
+                  {t('reward.title')}
                 </h3>
                 <p className="font-body text-sm text-muted-foreground">
-                  Each month, we select the most compelling perspective and award its author a <span className="font-medium text-foreground">£100 Amazon voucher</span>. Selected perspectives may also be featured in our publications.
+                  {t('reward.description').split('<bold>').map((part, i) => 
+                    i === 1 ? <span key={i} className="font-medium text-foreground">{part.split('</bold>')[0]}</span> : part.replace('</bold>', '')
+                  )}
                 </p>
               </div>
             </div>
@@ -127,7 +132,7 @@ export default function SubmitPerspective() {
             <div className="section-divider" />
             
             <h2 className="font-serif text-xl font-medium text-foreground mb-8">
-              Your Perspective
+              {t('form.sectionTitle')}
             </h2>
 
             {isSubmitted ? (
@@ -140,10 +145,10 @@ export default function SubmitPerspective() {
                   <CheckCircle className="w-6 h-6 text-teal" />
                 </div>
                 <h3 className="font-serif text-xl font-medium text-foreground mb-3">
-                  Thank You
+                  {t('success.title')}
                 </h3>
                 <p className="font-body text-muted-foreground mb-8">
-                  Your perspective has been received. We review all submissions monthly and will be in touch if your insight is selected for publication or the monthly reward.
+                  {t('success.message')}
                 </p>
                 <Button
                   onClick={() => {
@@ -153,14 +158,14 @@ export default function SubmitPerspective() {
                   variant="outline"
                   className="font-body"
                 >
-                  Submit Another Perspective
+                  {t('success.submitAnother')}
                 </Button>
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="name" className="font-body text-sm">Name *</Label>
+                    <Label htmlFor="name" className="font-body text-sm">{t('form.name')} *</Label>
                     <Input
                       id="name"
                       name="name"
@@ -172,7 +177,7 @@ export default function SubmitPerspective() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="font-body text-sm">Email *</Label>
+                    <Label htmlFor="email" className="font-body text-sm">{t('form.email')} *</Label>
                     <Input
                       id="email"
                       name="email"
@@ -187,7 +192,7 @@ export default function SubmitPerspective() {
 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="organisation" className="font-body text-sm">Organisation</Label>
+                    <Label htmlFor="organisation" className="font-body text-sm">{t('form.organisation')}</Label>
                     <Input
                       id="organisation"
                       name="organisation"
@@ -198,15 +203,15 @@ export default function SubmitPerspective() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="font-body text-sm">Topic *</Label>
+                    <Label className="font-body text-sm">{t('form.topic')} *</Label>
                     <Select value={formData.topic} onValueChange={handleTopicChange} required>
                       <SelectTrigger className="font-body">
-                        <SelectValue placeholder="Select a topic" />
+                        <SelectValue placeholder={t('form.topicPlaceholder')} />
                       </SelectTrigger>
                       <SelectContent>
                         {topics.map((topic) => (
                           <SelectItem key={topic.value} value={topic.value}>
-                            {topic.label}
+                            {t(topic.labelKey)}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -216,7 +221,7 @@ export default function SubmitPerspective() {
 
                 <div className="space-y-2">
                   <Label htmlFor="perspective_text" className="font-body text-sm">
-                    Your Perspective * <span className="text-muted-foreground">(max 500 words)</span>
+                    {t('form.perspectiveLabel')} * <span className="text-muted-foreground">{t('form.perspectiveLimit')}</span>
                   </Label>
                   <Textarea
                     id="perspective_text"
@@ -225,11 +230,11 @@ export default function SubmitPerspective() {
                     onChange={handleChange}
                     required
                     rows={8}
-                    placeholder="Share your insight, observation, or point of view on a challenge facing organisations today..."
+                    placeholder={t('form.perspectivePlaceholder')}
                     className="font-body resize-none"
                   />
                   <p className="font-body text-xs text-muted-foreground">
-                    {formData.perspective_text.split(/\s+/).filter(Boolean).length} / 500 words
+                    {t('form.wordCount', { count: formData.perspective_text.split(/\s+/).filter(Boolean).length })}
                   </p>
                 </div>
 
@@ -239,11 +244,11 @@ export default function SubmitPerspective() {
                   className="btn-emerald font-body px-8"
                 >
                   {isSubmitting ? (
-                    <span>Submitting...</span>
+                    <span>{t('form.submitting')}</span>
                   ) : (
                     <>
                       <Send className="w-4 h-4 mr-2" />
-                      Submit Perspective
+                      {t('form.submit')}
                     </>
                   )}
                 </Button>
@@ -253,24 +258,24 @@ export default function SubmitPerspective() {
             {/* Guidelines */}
             <div className="mt-12 pt-8 border-t border-border/50">
               <h3 className="font-serif text-lg font-medium text-foreground mb-4">
-                Submission Guidelines
+                {t('guidelines.title')}
               </h3>
               <ul className="space-y-2">
                 <li className="font-body text-sm text-muted-foreground flex items-start gap-2">
                   <span className="text-teal">•</span>
-                  Focus on a specific insight, challenge, or opportunity
+                  {t('guidelines.g1')}
                 </li>
                 <li className="font-body text-sm text-muted-foreground flex items-start gap-2">
                   <span className="text-teal">•</span>
-                  Draw from real experience where possible
+                  {t('guidelines.g2')}
                 </li>
                 <li className="font-body text-sm text-muted-foreground flex items-start gap-2">
                   <span className="text-teal">•</span>
-                  Be concise and actionable
+                  {t('guidelines.g3')}
                 </li>
                 <li className="font-body text-sm text-muted-foreground flex items-start gap-2">
                   <span className="text-teal">•</span>
-                  Original content only
+                  {t('guidelines.g4')}
                 </li>
               </ul>
             </div>

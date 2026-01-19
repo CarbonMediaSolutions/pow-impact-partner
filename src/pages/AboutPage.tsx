@@ -1,63 +1,62 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Award, ChevronLeft, ChevronRight, Quote, Users, Leaf, TrendingUp } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import patricPortrait from '@/assets/patric-portrait.jpg';
-
-const testimonials = [
-  {
-    quote: 'The firm provided clarity on financial structure and governance at a critical stage of growth. Their approach was rigorous and aligned with long-term objectives.',
-    author: 'Managing Director',
-    role: '',
-    company: 'Professional Services Firm',
-  },
-  {
-    quote: 'A highly capable advisory partner. Their work on organisational strategy helped refine decision-making across the leadership team.',
-    author: 'Chief Executive',
-    role: '',
-    company: 'National Skills Organisation',
-  },
-  {
-    quote: 'Plexa Partners brought strategic and financial discipline to a complex transformation. The engagement delivered measurable outcomes.',
-    author: 'Executive Director',
-    role: '',
-    company: 'Grant-Making Foundation',
-  },
-];
 
 const credentials = [
   'ICAEW Chartered Accountant',
   'Regulated by ICAEW',
 ];
 
-const values = [
-  {
-    icon: Users,
-    title: 'People',
-    description: 'Leadership effectiveness, organisational alignment, and decision quality.'
-  },
-  {
-    icon: Leaf,
-    title: 'Planet',
-    description: 'Long-term resilience, responsible growth, and sustainable value creation.'
-  },
-  {
-    icon: TrendingUp,
-    title: 'Performance',
-    description: 'Capital discipline, operational clarity, and measurable outcomes.'
-  },
-];
-
 export default function AboutPage() {
+  const { t } = useTranslation(['about', 'common']);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+
+  const testimonials = [
+    {
+      quote: t('about:clientPerspectives.testimonials.t1.quote'),
+      author: t('about:clientPerspectives.testimonials.t1.author'),
+      company: t('about:clientPerspectives.testimonials.t1.company'),
+    },
+    {
+      quote: t('about:clientPerspectives.testimonials.t2.quote'),
+      author: t('about:clientPerspectives.testimonials.t2.author'),
+      company: t('about:clientPerspectives.testimonials.t2.company'),
+    },
+    {
+      quote: t('about:clientPerspectives.testimonials.t3.quote'),
+      author: t('about:clientPerspectives.testimonials.t3.author'),
+      company: t('about:clientPerspectives.testimonials.t3.company'),
+    },
+  ];
+
+  const values = [
+    {
+      icon: Users,
+      titleKey: 'about:howWeThink.people.title',
+      descriptionKey: 'about:howWeThink.people.description',
+    },
+    {
+      icon: Leaf,
+      titleKey: 'about:howWeThink.planet.title',
+      descriptionKey: 'about:howWeThink.planet.description',
+    },
+    {
+      icon: TrendingUp,
+      titleKey: 'about:howWeThink.performance.title',
+      descriptionKey: 'about:howWeThink.performance.description',
+    },
+  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [testimonials.length]);
 
   const nextTestimonial = () => {
     setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
@@ -93,7 +92,7 @@ export default function AboutPage() {
                 </div>
                 <div className="absolute -bottom-4 -right-4 lg:right-auto lg:-left-4 bg-secondary text-secondary-foreground px-5 py-3 rounded-xl shadow-lg flex items-center gap-2">
                   <Award className="w-5 h-5" />
-                  <span className="font-body text-sm font-medium">ICAEW Chartered</span>
+                  <span className="font-body text-sm font-medium">{t('about:icaewChartered')}</span>
                 </div>
               </div>
             </motion.div>
@@ -106,10 +105,10 @@ export default function AboutPage() {
               className="order-1 lg:order-2"
             >
               <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-medium text-foreground mb-6">
-                About Plexa Partners
+                {t('about:pageTitle')}
               </h1>
               <p className="font-body text-lg text-muted-foreground leading-relaxed">
-                Plexa Partners is an independent advisory firm operating at the intersection of strategy, governance, and long-term performance.
+                {t('about:heroDescription')}
               </p>
             </motion.div>
           </div>
@@ -148,15 +147,11 @@ export default function AboutPage() {
           >
             <div className="section-divider" />
             <h2 className="font-serif text-2xl md:text-3xl font-medium text-foreground mb-8">
-              The Firm
+              {t('about:theFirm.title')}
             </h2>
             <div className="font-body text-lg text-muted-foreground space-y-4 leading-relaxed">
-              <p>
-                Plexa Partners advises founders, leadership teams, and boards navigating growth, transformation, and strategic complexity.
-              </p>
-              <p>
-                The firm works across organisational design, governance, and financial strategy, supporting decision-making where clarity, judgment, and long-term perspective matter most.
-              </p>
+              <p>{t('about:theFirm.p1')}</p>
+              <p>{t('about:theFirm.p2')}</p>
             </div>
           </motion.div>
         </div>
@@ -174,7 +169,7 @@ export default function AboutPage() {
           >
             <div className="section-divider" />
             <h2 className="font-serif text-2xl md:text-3xl font-medium text-foreground">
-              How We Think
+              {t('about:howWeThink.title')}
             </h2>
           </motion.div>
 
@@ -191,8 +186,8 @@ export default function AboutPage() {
                 <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
                   <value.icon className="w-8 h-8 text-primary" />
                 </div>
-                <h3 className="font-serif text-xl font-medium text-foreground mb-3">{value.title}</h3>
-                <p className="font-body text-muted-foreground">{value.description}</p>
+                <h3 className="font-serif text-xl font-medium text-foreground mb-3">{t(value.titleKey)}</h3>
+                <p className="font-body text-muted-foreground">{t(value.descriptionKey)}</p>
               </motion.div>
             ))}
           </div>
@@ -210,15 +205,11 @@ export default function AboutPage() {
           >
             <div className="section-divider" />
             <h2 className="font-serif text-2xl md:text-3xl font-medium text-foreground mb-8">
-              Firm Origins
+              {t('about:firmOrigins.title')}
             </h2>
             <div className="font-body text-lg text-muted-foreground space-y-4 leading-relaxed">
-              <p>
-                Plexa Partners was established to address the growing gap between financial expertise and strategic decision-making in complex organisations.
-              </p>
-              <p>
-                Many mission-driven, growth-stage, and professional services organisations face challenges that cannot be solved through compliance or transactional advice alone. The firm was created to provide senior-level strategic and financial counsel aligned with long-term objectives.
-              </p>
+              <p>{t('about:firmOrigins.p1')}</p>
+              <p>{t('about:firmOrigins.p2')}</p>
             </div>
           </motion.div>
         </div>
@@ -236,7 +227,7 @@ export default function AboutPage() {
           >
             <div className="section-divider" />
             <h2 className="font-serif text-2xl md:text-3xl font-medium text-foreground">
-              Client Perspectives
+              {t('about:clientPerspectives.title')}
             </h2>
           </motion.div>
 
@@ -309,18 +300,12 @@ export default function AboutPage() {
           >
             <div className="section-divider" />
             <h2 className="font-serif text-2xl md:text-3xl font-medium text-foreground mb-8">
-              Founder
+              {t('about:founder.title')}
             </h2>
             <div className="font-body text-lg text-muted-foreground space-y-4 leading-relaxed">
-              <p>
-                Patric is the Founder and Principal Advisor at Plexa Partners.
-              </p>
-              <p>
-                He advises founders, leadership teams, and boards on strategic finance, governance, and organisational decision-making. His work spans growth strategy, capital structure, and operational performance across a range of sectors.
-              </p>
-              <p>
-                Patric is a Chartered Accountant and has advised organisations at various stages of scale and complexity.
-              </p>
+              <p>{t('about:founder.p1')}</p>
+              <p>{t('about:founder.p2')}</p>
+              <p>{t('about:founder.p3')}</p>
             </div>
           </motion.div>
         </div>
@@ -336,7 +321,7 @@ export default function AboutPage() {
             transition={{ duration: 0.6 }}
           >
             <p className="font-body text-muted-foreground mb-4">
-              For enquiries regarding advisory engagements, please contact the firm directly.
+              {t('about:closingCTA.text')}
             </p>
             <a 
               href="mailto:hello@plexapartners.com" 

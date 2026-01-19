@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Database, FileText, BarChart3 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -17,28 +18,29 @@ interface Analysis {
   featured: boolean | null;
 }
 
-const dataProducts = [
-  {
-    icon: FileText,
-    title: 'Request a Benchmark Pack',
-    description: 'Sector-specific performance benchmarks and comparison data.',
-  },
-  {
-    icon: Database,
-    title: 'Ask About Sector Datasets',
-    description: 'Access structured data for strategic planning and analysis.',
-  },
-  {
-    icon: BarChart3,
-    title: 'Commission an Analysis',
-    description: 'Bespoke research and analysis tailored to your context.',
-  },
-];
-
 const Analysis = () => {
+  const { t } = useTranslation(['analysis', 'common']);
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<string>('All');
+
+  const dataProducts = [
+    {
+      icon: FileText,
+      titleKey: 'analysis:dataBenchmarks.benchmark.title',
+      descriptionKey: 'analysis:dataBenchmarks.benchmark.description',
+    },
+    {
+      icon: Database,
+      titleKey: 'analysis:dataBenchmarks.dataset.title',
+      descriptionKey: 'analysis:dataBenchmarks.dataset.description',
+    },
+    {
+      icon: BarChart3,
+      titleKey: 'analysis:dataBenchmarks.commission.title',
+      descriptionKey: 'analysis:dataBenchmarks.commission.description',
+    },
+  ];
 
   useEffect(() => {
     const fetchAnalyses = async () => {
@@ -77,7 +79,7 @@ const Analysis = () => {
       <div className="min-h-screen bg-background">
         <Header />
         <div className="pt-32 pb-20 px-6 text-center">
-          <p className="text-muted-foreground">Loading...</p>
+          <p className="text-muted-foreground">{t('analysis:loading')}</p>
         </div>
         <Footer />
       </div>
@@ -97,7 +99,7 @@ const Analysis = () => {
             transition={{ duration: 0.6 }}
             className="font-serif text-5xl md:text-6xl font-light text-foreground tracking-tight mb-6"
           >
-            Data & Analysis
+            {t('analysis:pageTitle')}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -105,7 +107,7 @@ const Analysis = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-lg text-muted-foreground font-light mb-3"
           >
-            Structured examinations of strategic, institutional, and operational challenges.
+            {t('analysis:pageSubtitle')}
           </motion.p>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -113,7 +115,7 @@ const Analysis = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-sm text-muted-foreground/70 font-light"
           >
-            Evidence-led insights grounded in real operating environments.
+            {t('analysis:pageDescription')}
           </motion.p>
         </div>
       </section>
@@ -124,17 +126,17 @@ const Analysis = () => {
           <div className="bg-tile rounded-lg border border-border/20 p-8 lg:p-10">
             <div className="text-center mb-8">
               <h2 className="font-serif text-xl lg:text-2xl font-medium text-foreground mb-2">
-                Data & Benchmarks
+                {t('analysis:dataBenchmarks.title')}
               </h2>
               <p className="font-body text-sm text-muted-foreground">
-                Access structured data, sector benchmarks, and commissioned analysis.
+                {t('analysis:dataBenchmarks.description')}
               </p>
             </div>
             
             <div className="grid md:grid-cols-3 gap-6 mb-8">
               {dataProducts.map((product, index) => (
                 <motion.div
-                  key={product.title}
+                  key={product.titleKey}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
@@ -144,10 +146,10 @@ const Analysis = () => {
                     <product.icon className="w-5 h-5 text-primary" />
                   </div>
                   <h3 className="font-body text-sm font-medium text-foreground mb-1">
-                    {product.title}
+                    {t(product.titleKey)}
                   </h3>
                   <p className="font-body text-xs text-muted-foreground">
-                    {product.description}
+                    {t(product.descriptionKey)}
                   </p>
                 </motion.div>
               ))}
@@ -156,7 +158,7 @@ const Analysis = () => {
             <div className="text-center">
               <Button asChild className="btn-emerald font-body">
                 <Link to="/book?type=data">
-                  Request Data / Commission Analysis
+                  {t('analysis:dataBenchmarks.cta')}
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
               </Button>
@@ -169,8 +171,7 @@ const Analysis = () => {
       <section className="pb-12 px-6 md:px-12 lg:px-20">
         <div className="max-w-2xl mx-auto text-center">
           <p className="text-foreground/80 font-light leading-relaxed">
-            Our analysis applies disciplined frameworks, empirical reasoning, and contextual 
-            understanding to evaluate decisions, trade-offs, and outcomes.
+            {t('analysis:introText')}
           </p>
         </div>
       </section>
@@ -229,7 +230,7 @@ const Analysis = () => {
                 to={`/analysis/${featuredAnalysis.id}`}
                 className="text-sm text-foreground/70 hover:text-foreground transition-colors"
               >
-                Read analysis →
+                {t('analysis:readAnalysis')}
               </Link>
             </motion.article>
           )}
@@ -266,7 +267,7 @@ const Analysis = () => {
                   to={`/analysis/${analysis.id}`}
                   className="text-xs text-foreground/60 hover:text-foreground transition-colors"
                 >
-                  Read analysis →
+                  {t('analysis:readAnalysis')}
                 </Link>
               </motion.article>
             ))}
@@ -278,7 +279,7 @@ const Analysis = () => {
       <section className="pb-20 px-6 md:px-12 lg:px-20">
         <div className="max-w-5xl mx-auto border-t border-divider pt-12">
           <p className="text-sm text-muted-foreground/60 font-light text-center italic">
-            Analysis reflects our commitment to rigor, discipline, and evidence-based judgment.
+            {t('analysis:footerNote')}
           </p>
         </div>
       </section>

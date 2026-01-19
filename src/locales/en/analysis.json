@@ -1,0 +1,35 @@
+{
+  "pageTitle": "Data & Analysis",
+  "pageSubtitle": "Structured examinations of strategic, institutional, and operational challenges.",
+  "pageDescription": "Evidence-led insights grounded in real operating environments.",
+  "introText": "Our analysis applies disciplined frameworks, empirical reasoning, and contextual understanding to evaluate decisions, trade-offs, and outcomes.",
+  "footerNote": "Analysis reflects our commitment to rigor, discipline, and evidence-based judgment.",
+  "dataBenchmarks": {
+    "title": "Data & Benchmarks",
+    "description": "Access structured data, sector benchmarks, and commissioned analysis.",
+    "benchmark": {
+      "title": "Request a Benchmark Pack",
+      "description": "Sector-specific performance benchmarks and comparison data."
+    },
+    "dataset": {
+      "title": "Ask About Sector Datasets",
+      "description": "Access structured data for strategic planning and analysis."
+    },
+    "commission": {
+      "title": "Commission an Analysis",
+      "description": "Bespoke research and analysis tailored to your context."
+    },
+    "cta": "Request Data / Commission Analysis"
+  },
+  "readAnalysis": "Read analysis →",
+  "loading": "Loading...",
+  "categories": {
+    "all": "All",
+    "governance": "Governance",
+    "growth": "Growth",
+    "impact": "Impact",
+    "performance": "Performance",
+    "risk": "Risk",
+    "strategy": "Strategy"
+  }
+}

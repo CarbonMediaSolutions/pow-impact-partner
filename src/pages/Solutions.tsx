@@ -1,30 +1,33 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Check, Clock, MessageSquare, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { solutions } from '@/data/solutions';
 
-const supportFeatures = [
-  {
-    icon: MessageSquare,
-    title: 'Direct Partner Access',
-    description: 'Work directly with senior advisors throughout your engagement.',
-  },
-  {
-    icon: Clock,
-    title: 'Response Expectations',
-    description: 'Clear communication timelines and regular progress updates.',
-  },
-  {
-    icon: Users,
-    title: 'Specialists as Needed',
-    description: 'Access to domain specialists engaged for specific requirements.',
-  },
-];
-
 export default function Solutions() {
+  const { t } = useTranslation(['solutions', 'common']);
+
+  const supportFeatures = [
+    {
+      icon: MessageSquare,
+      titleKey: 'solutions:howWeWork.directAccess.title',
+      descriptionKey: 'solutions:howWeWork.directAccess.description',
+    },
+    {
+      icon: Clock,
+      titleKey: 'solutions:howWeWork.response.title',
+      descriptionKey: 'solutions:howWeWork.response.description',
+    },
+    {
+      icon: Users,
+      titleKey: 'solutions:howWeWork.specialists.title',
+      descriptionKey: 'solutions:howWeWork.specialists.description',
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -38,10 +41,10 @@ export default function Solutions() {
             transition={{ duration: 0.6 }}
           >
             <h1 className="font-serif text-4xl md:text-5xl font-medium text-foreground mb-8">
-              Engagement Models
+              {t('solutions:pageTitle')}
             </h1>
             <p className="font-body text-lg text-muted-foreground leading-relaxed max-w-2xl">
-              Each engagement begins with a perspective—a way of seeing your challenge that reveals new paths forward. Our solutions are designed to meet organisations at every stage of their journey.
+              {t('solutions:pageDescription')}
             </p>
           </motion.div>
         </div>
@@ -81,7 +84,7 @@ export default function Solutions() {
                   ))}
                   {solution.services.length > 4 && (
                     <p className="font-body text-xs text-muted-foreground/70 pl-6">
-                      + {solution.services.length - 4} more services
+                      {t('solutions:moreServices', { count: solution.services.length - 4 })}
                     </p>
                   )}
                 </div>
@@ -97,7 +100,7 @@ export default function Solutions() {
                   )}
                   <Button asChild variant="outline" className="w-full font-body">
                     <Link to={`/book?solution=${solution.id}`}>
-                      Enquire
+                      {t('solutions:enquire')}
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </Link>
                   </Button>
@@ -119,13 +122,13 @@ export default function Solutions() {
             transition={{ duration: 0.6 }}
           >
             <h2 className="font-serif text-2xl font-medium text-foreground mb-8">
-              How We Work With You
+              {t('solutions:howWeWork.title')}
             </h2>
             
             <div className="grid md:grid-cols-3 gap-8 mb-10">
               {supportFeatures.map((feature, index) => (
                 <motion.div
-                  key={feature.title}
+                  key={feature.titleKey}
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -135,10 +138,10 @@ export default function Solutions() {
                     <feature.icon className="w-5 h-5 text-primary" />
                   </div>
                   <h3 className="font-body text-sm font-medium text-foreground mb-2">
-                    {feature.title}
+                    {t(feature.titleKey)}
                   </h3>
                   <p className="font-body text-sm text-muted-foreground leading-relaxed">
-                    {feature.description}
+                    {t(feature.descriptionKey)}
                   </p>
                 </motion.div>
               ))}
@@ -146,7 +149,7 @@ export default function Solutions() {
             
             <Button asChild className="btn-emerald font-body">
               <Link to="/book">
-                Book a Consultation
+                {t('common:cta.bookConsultation')}
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
             </Button>
