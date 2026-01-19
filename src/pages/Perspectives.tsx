@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Send } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -19,15 +20,23 @@ interface Perspective {
   content: string[];
 }
 
-const topics = ['All', 'Governance', 'Growth', 'Impact', 'Risk', 'Strategy'];
-
 const Perspectives = () => {
+  const { t } = useTranslation(['perspectives', 'common']);
   const [perspectives, setPerspectives] = useState<Perspective[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTopic, setActiveTopic] = useState('All');
   const [email, setEmail] = useState('');
   const [isSubscribing, setIsSubscribing] = useState(false);
   const { toast } = useToast();
+
+  const topics = [
+    { key: 'all', label: t('perspectives:topics.all') },
+    { key: 'governance', label: t('perspectives:topics.governance') },
+    { key: 'growth', label: t('perspectives:topics.growth') },
+    { key: 'impact', label: t('perspectives:topics.impact') },
+    { key: 'risk', label: t('perspectives:topics.risk') },
+    { key: 'strategy', label: t('perspectives:topics.strategy') },
+  ];
 
   useEffect(() => {
     const fetchPerspectives = async () => {
@@ -63,8 +72,8 @@ const Perspectives = () => {
       if (error) throw error;
 
       toast({
-        title: "Subscribed",
-        description: "You'll receive new Perspectives monthly.",
+        title: t('perspectives:newsletter.subscribed'),
+        description: t('perspectives:newsletter.subscribedMessage'),
       });
       setEmail('');
     } catch (error) {
@@ -90,7 +99,7 @@ const Perspectives = () => {
       <div className="min-h-screen bg-background">
         <Header />
         <div className="pt-40 pb-20 px-6 text-center">
-          <p className="text-muted-foreground">Loading...</p>
+          <p className="text-muted-foreground">{t('perspectives:loading')}</p>
         </div>
         <Footer />
       </div>
@@ -110,7 +119,7 @@ const Perspectives = () => {
             transition={{ duration: 0.6 }}
             className="font-serif text-5xl md:text-6xl lg:text-7xl font-light text-foreground tracking-tight mb-8"
           >
-            Perspectives
+            {t('perspectives:pageTitle')}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -118,7 +127,7 @@ const Perspectives = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-lg text-muted-foreground font-light mb-4"
           >
-            Interpretive essays on strategy, governance, and long-term impact.
+            {t('perspectives:pageSubtitle')}
           </motion.p>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -126,7 +135,7 @@ const Perspectives = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-sm text-muted-foreground/70 font-light"
           >
-            How we frame complexity, risk, and institutional choice.
+            {t('perspectives:pageDescription')}
           </motion.p>
         </div>
       </section>
@@ -137,15 +146,15 @@ const Perspectives = () => {
           <div className="flex flex-wrap justify-center gap-2">
             {topics.map((topic) => (
               <button
-                key={topic}
-                onClick={() => setActiveTopic(topic)}
+                key={topic.key}
+                onClick={() => setActiveTopic(topic.key === 'all' ? 'All' : topic.key.charAt(0).toUpperCase() + topic.key.slice(1))}
                 className={`px-4 py-2 text-xs uppercase tracking-widest transition-colors ${
-                  activeTopic === topic
+                  (topic.key === 'all' && activeTopic === 'All') || activeTopic.toLowerCase() === topic.key
                     ? 'text-foreground border-b border-foreground'
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                {topic}
+                {topic.label}
               </button>
             ))}
           </div>
@@ -156,8 +165,7 @@ const Perspectives = () => {
       <section className="pb-16 px-6 md:px-12 lg:px-20">
         <div className="max-w-2xl mx-auto text-center">
           <p className="text-foreground/80 font-light leading-relaxed">
-            Perspectives reflect how we approach decisions that shape systems — offering clarity, 
-            context, and long-range thinking rather than prescriptions.
+            {t('perspectives:introText')}
           </p>
         </div>
       </section>
@@ -222,22 +230,22 @@ const Perspectives = () => {
         <div className="max-w-xl mx-auto">
           <div className="bg-tile rounded-lg p-8 border border-border/20 text-center">
             <h3 className="font-serif text-xl font-medium text-foreground mb-2">
-              Receive New Perspectives
+              {t('perspectives:newsletter.title')}
             </h3>
             <p className="font-body text-sm text-muted-foreground mb-6">
-              Monthly essays on strategy, governance, and long-term impact.
+              {t('perspectives:newsletter.description')}
             </p>
             <form onSubmit={handleSubscribe} className="flex gap-3 max-w-sm mx-auto">
               <Input
                 type="email"
-                placeholder="Your email"
+                placeholder={t('perspectives:newsletter.placeholder')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="font-body flex-1"
                 required
               />
               <Button type="submit" disabled={isSubscribing} className="btn-emerald font-body">
-                {isSubscribing ? '...' : 'Subscribe'}
+                {isSubscribing ? '...' : t('perspectives:newsletter.subscribe')}
               </Button>
             </form>
           </div>
@@ -248,11 +256,11 @@ const Perspectives = () => {
       <section className="pb-16 px-6 md:px-12 lg:px-20">
         <div className="max-w-xl mx-auto text-center">
           <p className="font-body text-muted-foreground mb-4">
-            If this matches what you're navigating, we'd welcome a conversation.
+            {t('perspectives:serviceCTA')}
           </p>
           <Button asChild className="btn-emerald font-body">
             <Link to="/book">
-              Book a Consultation
+              {t('common:cta.bookConsultation')}
               <ArrowRight className="w-4 h-4 ml-2" />
             </Link>
           </Button>
@@ -263,7 +271,7 @@ const Perspectives = () => {
       <section className="pb-20 px-6 md:px-12 lg:px-20">
         <div className="max-w-4xl mx-auto border-t border-divider pt-12">
           <p className="text-sm text-muted-foreground/60 font-light text-center italic">
-            Perspectives are not position papers. They are lenses through which we examine complex decisions.
+            {t('perspectives:footerNote')}
           </p>
         </div>
       </section>

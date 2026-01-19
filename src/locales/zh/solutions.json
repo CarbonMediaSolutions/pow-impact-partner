@@ -1,0 +1,21 @@
+{
+  "pageTitle": "服务模式",
+  "pageDescription": "每个咨询项目都始于一个视角——一种看待您挑战的方式，揭示出前进的新路径。我们的解决方案旨在满足组织在其发展旅程中每个阶段的需求。",
+  "howWeWork": {
+    "title": "我们如何与您合作",
+    "directAccess": {
+      "title": "直接对接合伙人",
+      "description": "在整个咨询过程中直接与高级顾问合作。"
+    },
+    "response": {
+      "title": "响应预期",
+      "description": "明确的沟通时间表和定期进度更新。"
+    },
+    "specialists": {
+      "title": "按需配置专家",
+      "description": "根据特定需求获取领域专家支持。"
+    }
+  },
+  "enquire": "咨询",
+  "moreServices": "+ {{count}} 项更多服务"
+}

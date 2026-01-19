@@ -1,0 +1,59 @@
+{
+  "pageTitle": "About Plexa Partners",
+  "heroDescription": "Plexa Partners is an independent advisory firm operating at the intersection of strategy, governance, and long-term performance.",
+  "icaewChartered": "ICAEW Chartered",
+  "theFirm": {
+    "title": "The Firm",
+    "p1": "Plexa Partners advises founders, leadership teams, and boards navigating growth, transformation, and strategic complexity.",
+    "p2": "The firm works across organisational design, governance, and financial strategy, supporting decision-making where clarity, judgment, and long-term perspective matter most."
+  },
+  "howWeThink": {
+    "title": "How We Think",
+    "people": {
+      "title": "People",
+      "description": "Leadership effectiveness, organisational alignment, and decision quality."
+    },
+    "planet": {
+      "title": "Planet",
+      "description": "Long-term resilience, responsible growth, and sustainable value creation."
+    },
+    "performance": {
+      "title": "Performance",
+      "description": "Capital discipline, operational clarity, and measurable outcomes."
+    }
+  },
+  "firmOrigins": {
+    "title": "Firm Origins",
+    "p1": "Plexa Partners was established to address the growing gap between financial expertise and strategic decision-making in complex organisations.",
+    "p2": "Many mission-driven, growth-stage, and professional services organisations face challenges that cannot be solved through compliance or transactional advice alone. The firm was created to provide senior-level strategic and financial counsel aligned with long-term objectives."
+  },
+  "clientPerspectives": {
+    "title": "Client Perspectives",
+    "testimonials": {
+      "t1": {
+        "quote": "The firm provided clarity on financial structure and governance at a critical stage of growth. Their approach was rigorous and aligned with long-term objectives.",
+        "author": "Managing Director",
+        "company": "Professional Services Firm"
+      },
+      "t2": {
+        "quote": "A highly capable advisory partner. Their work on organisational strategy helped refine decision-making across the leadership team.",
+        "author": "Chief Executive",
+        "company": "National Skills Organisation"
+      },
+      "t3": {
+        "quote": "Plexa Partners brought strategic and financial discipline to a complex transformation. The engagement delivered measurable outcomes.",
+        "author": "Executive Director",
+        "company": "Grant-Making Foundation"
+      }
+    }
+  },
+  "founder": {
+    "title": "Founder",
+    "p1": "Patric is the Founder and Principal Advisor at Plexa Partners.",
+    "p2": "He advises founders, leadership teams, and boards on strategic finance, governance, and organisational decision-making. His work spans growth strategy, capital structure, and operational performance across a range of sectors.",
+    "p3": "Patric is a Chartered Accountant and has advised organisations at various stages of scale and complexity."
+  },
+  "closingCTA": {
+    "text": "For enquiries regarding advisory engagements, please contact the firm directly."
+  }
+}

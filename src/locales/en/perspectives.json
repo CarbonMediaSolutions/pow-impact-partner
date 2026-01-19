@@ -1,0 +1,25 @@
+{
+  "pageTitle": "Perspectives",
+  "pageSubtitle": "Interpretive essays on strategy, governance, and long-term impact.",
+  "pageDescription": "How we frame complexity, risk, and institutional choice.",
+  "introText": "Perspectives reflect how we approach decisions that shape systems — offering clarity, context, and long-range thinking rather than prescriptions.",
+  "newsletter": {
+    "title": "Receive New Perspectives",
+    "description": "Monthly essays on strategy, governance, and long-term impact.",
+    "placeholder": "Your email",
+    "subscribe": "Subscribe",
+    "subscribed": "Subscribed",
+    "subscribedMessage": "You'll receive new Perspectives monthly."
+  },
+  "serviceCTA": "If this matches what you're navigating, we'd welcome a conversation.",
+  "footerNote": "Perspectives are not position papers. They are lenses through which we examine complex decisions.",
+  "loading": "Loading...",
+  "topics": {
+    "all": "All",
+    "governance": "Governance",
+    "growth": "Growth",
+    "impact": "Impact",
+    "risk": "Risk",
+    "strategy": "Strategy"
+  }
+}

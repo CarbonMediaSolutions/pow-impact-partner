@@ -1,0 +1,49 @@
+{
+  "pageTitle": "Share Your Perspective",
+  "pageDescription": "We believe the best insights come from leaders in the field. Share your perspective on governance, impact, strategy, or growth—and contribute to the conversation.",
+  "reward": {
+    "title": "Monthly Reward",
+    "description": "Each month, we select the most compelling perspective and award its author a <bold>£100 Amazon voucher</bold>. Selected perspectives may also be featured in our publications."
+  },
+  "form": {
+    "sectionTitle": "Your Perspective",
+    "name": "Name",
+    "email": "Email",
+    "organisation": "Organisation",
+    "topic": "Topic",
+    "topicPlaceholder": "Select a topic",
+    "perspectiveLabel": "Your Perspective",
+    "perspectiveLimit": "(max 500 words)",
+    "perspectivePlaceholder": "Share your insight, observation, or point of view on a challenge facing organisations today...",
+    "wordCount": "{{count}} / 500 words",
+    "submit": "Submit Perspective",
+    "submitting": "Submitting..."
+  },
+  "topics": {
+    "governance": "Governance",
+    "impact": "Impact",
+    "growth": "Growth",
+    "strategy": "Strategy",
+    "risk": "Risk",
+    "finance": "Finance",
+    "other": "Other"
+  },
+  "success": {
+    "title": "Thank You",
+    "message": "Your perspective has been received. We review all submissions monthly and will be in touch if your insight is selected for publication or the monthly reward.",
+    "submitAnother": "Submit Another Perspective"
+  },
+  "guidelines": {
+    "title": "Submission Guidelines",
+    "g1": "Focus on a specific insight, challenge, or opportunity",
+    "g2": "Draw from real experience where possible",
+    "g3": "Be concise and actionable",
+    "g4": "Original content only"
+  },
+  "toast": {
+    "successTitle": "Perspective received",
+    "successMessage": "Thank you for sharing your insight. We review all submissions monthly.",
+    "errorTitle": "Something went wrong",
+    "errorMessage": "Please try again or contact us directly."
+  }
+}

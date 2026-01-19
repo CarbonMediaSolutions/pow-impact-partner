@@ -1,0 +1,25 @@
+{
+  "pageTitle": "观点",
+  "pageSubtitle": "关于战略、治理与长期影响的深度分析文章。",
+  "pageDescription": "我们如何审视复杂性、风险与机构选择。",
+  "introText": "观点反映了我们处理影响体系决策的方式——提供清晰度、背景和长远思维，而非规定性建议。",
+  "newsletter": {
+    "title": "订阅新观点",
+    "description": "每月关于战略、治理和长期影响的深度文章。",
+    "placeholder": "您的邮箱",
+    "subscribe": "订阅",
+    "subscribed": "已订阅",
+    "subscribedMessage": "您将每月收到新的观点文章。"
+  },
+  "serviceCTA": "如果这与您正在面对的情况相符，我们欢迎与您交流。",
+  "footerNote": "观点不是立场文件。它们是我们审视复杂决策的视角。",
+  "loading": "加载中...",
+  "topics": {
+    "all": "全部",
+    "governance": "治理",
+    "growth": "增长",
+    "impact": "影响力",
+    "risk": "风险",
+    "strategy": "战略"
+  }
+}

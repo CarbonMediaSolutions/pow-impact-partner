@@ -1,0 +1,21 @@
+{
+  "pageTitle": "Engagement Models",
+  "pageDescription": "Each engagement begins with a perspective—a way of seeing your challenge that reveals new paths forward. Our solutions are designed to meet organisations at every stage of their journey.",
+  "howWeWork": {
+    "title": "How We Work With You",
+    "directAccess": {
+      "title": "Direct Partner Access",
+      "description": "Work directly with senior advisors throughout your engagement."
+    },
+    "response": {
+      "title": "Response Expectations",
+      "description": "Clear communication timelines and regular progress updates."
+    },
+    "specialists": {
+      "title": "Specialists as Needed",
+      "description": "Access to domain specialists engaged for specific requirements."
+    }
+  },
+  "enquire": "Enquire",
+  "moreServices": "+ {{count}} more services"
+}
