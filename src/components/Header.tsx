@@ -1,28 +1,10 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-
-const servicePages = [
-  { label: 'Strategy & Growth Advisory', href: '/services/growth-strategy' },
-  { label: 'Organisational Enablement', href: '/services/impact-measurement' },
-  { label: 'Financial Intelligence', href: '/services/tax-planning' },
-];
-
-const navItems = [
-  { label: 'Home', href: '/', isRoute: true },
-  { label: 'About', href: '/about', isRoute: true },
-  { label: 'Perspectives', href: '/perspectives', isRoute: true },
-  { label: 'Data & Analysis', href: '/analysis', isRoute: true },
-  { label: 'Solutions', href: '/solutions', isRoute: true },
-];
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -30,6 +12,15 @@ export const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const isHomePage = location.pathname === '/';
+  const { t } = useTranslation();
+
+  const navItems = [
+    { labelKey: 'nav.home', href: '/', isRoute: true },
+    { labelKey: 'nav.about', href: '/about', isRoute: true },
+    { labelKey: 'nav.perspectives', href: '/perspectives', isRoute: true },
+    { labelKey: 'nav.dataAnalysis', href: '/analysis', isRoute: true },
+    { labelKey: 'nav.solutions', href: '/solutions', isRoute: true },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,7 +51,7 @@ export const Header = () => {
       <div className="container flex items-center justify-between">
         <Link to="/" className="flex items-center">
           <span className="font-serif text-xl font-medium text-foreground tracking-tight">
-            Plexa Partners
+            {t('brand.name')}
           </span>
         </Link>
 
@@ -69,31 +60,32 @@ export const Header = () => {
           {navItems.map((item) => (
             item.isRoute ? (
               <Link
-                key={item.label}
+                key={item.labelKey}
                 to={item.href}
                 className="font-body text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                {item.label}
+                {t(item.labelKey)}
               </Link>
             ) : (
               <button
-                key={item.label}
+                key={item.labelKey}
                 onClick={() => scrollToSection(item.href)}
                 className="font-body text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                {item.label}
+                {t(item.labelKey)}
               </button>
             )
           ))}
         </nav>
 
-        <div className="hidden lg:block">
+        <div className="hidden lg:flex items-center gap-6">
+          <LanguageSwitcher />
           <Button
             asChild
             variant="outline"
             className="font-body text-sm font-medium border-foreground/20 text-foreground hover:bg-foreground hover:text-background px-6"
           >
-            <Link to="/book">Request a Consultation</Link>
+            <Link to="/book">{t('nav.requestConsultation')}</Link>
           </Button>
         </div>
 
@@ -120,29 +112,32 @@ export const Header = () => {
               {navItems.map((item) => (
                 item.isRoute ? (
                   <Link
-                    key={item.label}
+                    key={item.labelKey}
                     to={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="font-body text-base text-muted-foreground hover:text-foreground transition-colors"
                   >
-                    {item.label}
+                    {t(item.labelKey)}
                   </Link>
                 ) : (
                   <button
-                    key={item.label}
+                    key={item.labelKey}
                     onClick={() => scrollToSection(item.href)}
                     className="font-body text-base text-muted-foreground hover:text-foreground transition-colors text-left"
                   >
-                    {item.label}
+                    {t(item.labelKey)}
                   </button>
                 )
               ))}
+              <div className="pt-4 border-t border-border">
+                <LanguageSwitcher />
+              </div>
               <Button
                 asChild
                 variant="outline"
-                className="font-body text-sm font-medium border-foreground/20 text-foreground hover:bg-foreground hover:text-background mt-4"
+                className="font-body text-sm font-medium border-foreground/20 text-foreground hover:bg-foreground hover:text-background mt-2"
               >
-                <Link to="/book">Request a Consultation</Link>
+                <Link to="/book">{t('nav.requestConsultation')}</Link>
               </Button>
             </nav>
           </motion.div>

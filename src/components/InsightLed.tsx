@@ -1,21 +1,24 @@
 import { motion } from 'framer-motion';
-
-const themes = [
-  {
-    title: 'Growth & Transformation',
-    description: 'Scaling organisations while preserving strategic coherence, operational discipline, and institutional trust.',
-  },
-  {
-    title: 'Organisational Architecture',
-    description: 'Designing governance, incentives, and decision systems that reinforce long-term performance.',
-  },
-  {
-    title: 'Capital & Performance',
-    description: 'Aligning financial strategy, capital allocation, and impact measurement with institutional objectives.',
-  },
-];
+import { useTranslation } from 'react-i18next';
 
 export const InsightLed = () => {
+  const { t } = useTranslation('home');
+
+  const themes = [
+    {
+      titleKey: 'themes.growth.title',
+      descriptionKey: 'themes.growth.description',
+    },
+    {
+      titleKey: 'themes.organisation.title',
+      descriptionKey: 'themes.organisation.description',
+    },
+    {
+      titleKey: 'themes.capital.title',
+      descriptionKey: 'themes.capital.description',
+    },
+  ];
+
   return (
     <section className="py-20 lg:py-24">
       <div className="container">
@@ -28,14 +31,14 @@ export const InsightLed = () => {
           className="mb-16"
         >
           <h2 className="font-serif text-2xl sm:text-3xl font-medium text-foreground tracking-tight">
-            Strategic Themes
+            {t('themes.sectionTitle')}
           </h2>
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-6">
           {themes.map((theme, index) => (
             <motion.div
-              key={theme.title}
+              key={theme.titleKey}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -43,10 +46,10 @@ export const InsightLed = () => {
               className="group p-8 lg:p-12 bg-tile rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border/20 transition-colors duration-300"
             >
               <h3 className="font-serif text-xl lg:text-2xl font-medium text-foreground mb-4 group-hover:text-teal transition-colors">
-                {theme.title}
+                {t(theme.titleKey)}
               </h3>
               <p className="font-body text-muted-foreground leading-relaxed">
-                {theme.description}
+                {t(theme.descriptionKey)}
               </p>
             </motion.div>
           ))}

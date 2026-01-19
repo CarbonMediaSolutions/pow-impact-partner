@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import {
   Accordion,
   AccordionContent,
@@ -6,22 +7,24 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 
-const faqs = [
-  {
-    question: 'Who do you typically work with?',
-    answer: 'We work with founders, leadership teams, and boards of mission-driven organisations. Our clients range from growth-stage startups to established SMEs and social enterprises seeking strategic clarity and operational excellence.',
-  },
-  {
-    question: 'How do engagements typically work?',
-    answer: "Most engagements begin with a diagnostic phase to understand your context and priorities. From there, we design a tailored approach—whether that's a focused project or an ongoing advisory relationship. We work collaboratively with your team, not in isolation.",
-  },
-  {
-    question: 'What makes Plexa Partners different?',
-    answer: 'We combine strategic rigour with practical implementation. Many advisory firms deliver recommendations; we stay to help you execute. Our background spans finance, strategy, and operations—giving us a holistic view that pure strategists or accountants often lack.',
-  },
-];
-
 export const FAQ = () => {
+  const { t } = useTranslation('home');
+
+  const faqs = [
+    {
+      questionKey: 'faq.q1.question',
+      answerKey: 'faq.q1.answer',
+    },
+    {
+      questionKey: 'faq.q2.question',
+      answerKey: 'faq.q2.answer',
+    },
+    {
+      questionKey: 'faq.q3.question',
+      answerKey: 'faq.q3.answer',
+    },
+  ];
+
   return (
     <section id="faq" className="py-24 lg:py-32 border-t border-border/50">
       <div className="container max-w-3xl">
@@ -33,7 +36,7 @@ export const FAQ = () => {
           className="mb-12"
         >
           <h2 className="font-serif text-2xl sm:text-3xl font-medium text-foreground tracking-tight">
-            Common Questions
+            {t('faq.sectionTitle')}
           </h2>
         </motion.div>
 
@@ -52,11 +55,11 @@ export const FAQ = () => {
               >
                 <AccordionTrigger className="py-6 hover:no-underline text-left">
                   <span className="font-serif text-lg font-medium text-foreground pr-4">
-                    {faq.question}
+                    {t(faq.questionKey)}
                   </span>
                 </AccordionTrigger>
                 <AccordionContent className="font-body text-muted-foreground pb-6 leading-relaxed">
-                  {faq.answer}
+                  {t(faq.answerKey)}
                 </AccordionContent>
               </AccordionItem>
             ))}

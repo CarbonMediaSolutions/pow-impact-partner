@@ -1,24 +1,27 @@
 import { motion } from 'framer-motion';
-
-const engagements = [
-  {
-    sector: 'Technology Organisation',
-    situation: 'Strategic repositioning during transition from growth-stage to institutional scale.',
-    outcome: 'Revenue trajectory realigned. Operating model restructured.',
-  },
-  {
-    sector: 'Professional Services Firm',
-    situation: 'Financial architecture and reporting capability during rapid expansion.',
-    outcome: 'Governance systems redesigned. Growth capital secured.',
-  },
-  {
-    sector: 'National Social Enterprise',
-    situation: 'Impact measurement frameworks and stakeholder alignment in regulated funding.',
-    outcome: 'Institutional credibility strengthened. New funding realised.',
-  },
-];
+import { useTranslation } from 'react-i18next';
 
 export const CaseStudies = () => {
+  const { t } = useTranslation('home');
+
+  const engagements = [
+    {
+      sectorKey: 'engagements.tech.sector',
+      situationKey: 'engagements.tech.situation',
+      outcomeKey: 'engagements.tech.outcome',
+    },
+    {
+      sectorKey: 'engagements.professional.sector',
+      situationKey: 'engagements.professional.situation',
+      outcomeKey: 'engagements.professional.outcome',
+    },
+    {
+      sectorKey: 'engagements.social.sector',
+      situationKey: 'engagements.social.situation',
+      outcomeKey: 'engagements.social.outcome',
+    },
+  ];
+
   return (
     <section id="impact" className="py-20 lg:py-24">
       <div className="container">
@@ -31,17 +34,17 @@ export const CaseStudies = () => {
           className="mb-12"
         >
           <h2 className="font-serif text-2xl sm:text-3xl font-medium text-foreground tracking-tight">
-            Selected Engagements
+            {t('engagements.sectionTitle')}
           </h2>
           <p className="font-body text-sm text-muted-foreground mt-4 max-w-2xl">
-            Advisory engagements illustrating the scope and complexity of our work.
+            {t('engagements.sectionDescription')}
           </p>
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-6">
           {engagements.map((engagement, index) => (
             <motion.div
-              key={engagement.sector}
+              key={engagement.sectorKey}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -50,18 +53,18 @@ export const CaseStudies = () => {
             >
               {/* Sector label */}
               <span className="inline-block font-body text-xs font-medium text-primary uppercase tracking-wider mb-4">
-                {engagement.sector}
+                {t(engagement.sectorKey)}
               </span>
               
               {/* Situation */}
               <p className="font-body text-muted-foreground text-sm leading-relaxed mb-6">
-                {engagement.situation}
+                {t(engagement.situationKey)}
               </p>
 
               {/* Outcome - punchy and bold */}
               <div className="pt-4 border-t border-border/30">
                 <p className="font-serif text-foreground font-medium leading-relaxed">
-                  {engagement.outcome}
+                  {t(engagement.outcomeKey)}
                 </p>
               </div>
             </motion.div>

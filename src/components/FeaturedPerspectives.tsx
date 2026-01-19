@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { blogPosts } from '@/data/blogPosts';
 import featuredHeroImage from '@/assets/featured-insight-hero.jpg';
 import insightTile1 from '@/assets/insight-tile-1.jpg';
@@ -10,6 +11,7 @@ import insightTile4 from '@/assets/insight-tile-4.jpg';
 const tileImages = [insightTile1, insightTile2, insightTile3, insightTile4];
 
 export const FeaturedPerspectives = () => {
+  const { t } = useTranslation(['home', 'common']);
   const featuredPosts = blogPosts.filter(post => post.featured).slice(0, 5);
   const mainPost = featuredPosts[0];
   const sidePosts = featuredPosts.slice(1, 5);
@@ -28,10 +30,10 @@ export const FeaturedPerspectives = () => {
           className="mb-12"
         >
           <h2 className="font-serif text-2xl sm:text-3xl font-medium text-foreground tracking-tight">
-            Perspectives
+            {t('home:perspectives.sectionTitle')}
           </h2>
           <p className="font-body text-sm text-muted-foreground mt-4 max-w-2xl">
-            Original analysis exploring how strategy, governance, and capital decisions translate into measurable outcomes at scale.
+            {t('home:perspectives.sectionDescription')}
           </p>
         </motion.div>
 
@@ -54,7 +56,7 @@ export const FeaturedPerspectives = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none rounded-2xl" />
               </div>
               <span className="font-body text-xs text-primary uppercase tracking-wider font-medium">
-                Research
+                {t('common:labels.research')}
               </span>
               <h3 className="font-serif text-xl lg:text-2xl font-medium text-foreground mt-2 leading-tight group-hover:text-primary transition-colors">
                 {mainPost.title}
@@ -82,7 +84,7 @@ export const FeaturedPerspectives = () => {
                   </div>
                   <div className="flex-1 py-1">
                     <span className="font-body text-xs text-primary uppercase tracking-wider font-medium">
-                      Perspective
+                      {t('common:labels.perspective')}
                     </span>
                     <h4 className="font-serif text-base lg:text-lg font-medium text-foreground mt-2 leading-snug group-hover:text-primary transition-colors">
                       {post.title}

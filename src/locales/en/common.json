@@ -1,0 +1,40 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "perspectives": "Perspectives",
+    "dataAnalysis": "Data & Analysis",
+    "solutions": "Solutions",
+    "requestConsultation": "Request a Consultation",
+    "shareYourPerspective": "Share Your Perspective",
+    "admin": "Admin"
+  },
+  "brand": {
+    "name": "Plexa Partners"
+  },
+  "footer": {
+    "statement": "Independent advisory firm operating at the intersection of strategy, governance, and impact.",
+    "location": "London, United Kingdom",
+    "linkedin": "LinkedIn",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "copyright": "© 2025 Plexa Partners"
+  },
+  "cta": {
+    "bookConsultation": "Book a Consultation",
+    "viewEngagementModels": "View Engagement Models",
+    "readPerspectives": "Read Perspectives",
+    "exploreAnalysis": "Explore Analysis",
+    "viewSolutions": "View Solutions",
+    "forAdvisoryInquiries": "For advisory inquiries"
+  },
+  "labels": {
+    "research": "Research",
+    "perspective": "Perspective"
+  },
+  "credentials": {
+    "icaewChartered": "ICAEW Chartered Accountant",
+    "regulatedByIcaew": "Regulated by ICAEW",
+    "london": "London, UK"
+  }
+}

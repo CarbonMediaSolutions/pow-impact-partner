@@ -1,0 +1,77 @@
+{
+  "hero": {
+    "headline": "Shaping the Decisions",
+    "headlineLine2": "That Shape Systems",
+    "subheadline": "Strategy, governance, and finance architecture for mission-driven and regulated organisations.",
+    "description": "Advising leaders, institutions, and organisations on choices with long-term economic, social, and regulatory consequences."
+  },
+  "pillars": {
+    "sectionTitle": "How We Work",
+    "sectionDescription": "A unified approach combining perspective, evidence, and practical solutions.",
+    "perspective": {
+      "title": "Perspective",
+      "description": "Interpretive essays on strategy, governance, and long-term impact."
+    },
+    "dataAnalysis": {
+      "title": "Data & Analysis",
+      "description": "Evidence-led insights grounded in real operating environments."
+    },
+    "solutions": {
+      "title": "Solutions",
+      "description": "Engagement models designed to meet organisations at every stage."
+    }
+  },
+  "perspectives": {
+    "sectionTitle": "Perspectives",
+    "sectionDescription": "Original analysis exploring how strategy, governance, and capital decisions translate into measurable outcomes at scale."
+  },
+  "themes": {
+    "sectionTitle": "Strategic Themes",
+    "growth": {
+      "title": "Growth & Transformation",
+      "description": "Scaling organisations while preserving strategic coherence, operational discipline, and institutional trust."
+    },
+    "organisation": {
+      "title": "Organisational Architecture",
+      "description": "Designing governance, incentives, and decision systems that reinforce long-term performance."
+    },
+    "capital": {
+      "title": "Capital & Performance",
+      "description": "Aligning financial strategy, capital allocation, and impact measurement with institutional objectives."
+    }
+  },
+  "engagements": {
+    "sectionTitle": "Selected Engagements",
+    "sectionDescription": "Advisory engagements illustrating the scope and complexity of our work.",
+    "tech": {
+      "sector": "Technology Organisation",
+      "situation": "Strategic repositioning during transition from growth-stage to institutional scale.",
+      "outcome": "Revenue trajectory realigned. Operating model restructured."
+    },
+    "professional": {
+      "sector": "Professional Services Firm",
+      "situation": "Financial architecture and reporting capability during rapid expansion.",
+      "outcome": "Governance systems redesigned. Growth capital secured."
+    },
+    "social": {
+      "sector": "National Social Enterprise",
+      "situation": "Impact measurement frameworks and stakeholder alignment in regulated funding.",
+      "outcome": "Institutional credibility strengthened. New funding realised."
+    }
+  },
+  "faq": {
+    "sectionTitle": "Common Questions",
+    "q1": {
+      "question": "Who do you typically work with?",
+      "answer": "We work with founders, leadership teams, and boards of mission-driven organisations. Our clients range from growth-stage startups to established SMEs and social enterprises seeking strategic clarity and operational excellence."
+    },
+    "q2": {
+      "question": "How do engagements typically work?",
+      "answer": "Most engagements begin with a diagnostic phase to understand your context and priorities. From there, we design a tailored approach—whether that's a focused project or an ongoing advisory relationship. We work collaboratively with your team, not in isolation."
+    },
+    "q3": {
+      "question": "What makes Plexa Partners different?",
+      "answer": "We combine strategic rigour with practical implementation. Many advisory firms deliver recommendations; we stay to help you execute. Our background spans finance, strategy, and operations—giving us a holistic view that pure strategists or accountants often lack."
+    }
+  }
+}

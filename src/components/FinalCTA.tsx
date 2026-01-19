@@ -1,6 +1,9 @@
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 export const FinalCTA = () => {
+  const { t } = useTranslation();
+
   return (
     <section className="py-20 lg:py-24">
       <div className="container max-w-2xl text-center">
@@ -12,7 +15,7 @@ export const FinalCTA = () => {
           className="space-y-8"
         >
           <p className="font-body text-sm text-muted-foreground/80 tracking-wide">
-            For advisory inquiries
+            {t('cta.forAdvisoryInquiries')}
           </p>
           
           <a
