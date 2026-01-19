@@ -296,48 +296,6 @@ export default function BookConsultation() {
         </div>
       </section>
 
-      {/* Or Divider */}
-      <section className="pb-8">
-        <div className="container max-w-3xl">
-          <div className="flex items-center gap-4">
-            <div className="flex-1 h-px bg-border" />
-            <span className="font-body text-sm text-muted-foreground">or</span>
-            <div className="flex-1 h-px bg-border" />
-          </div>
-        </div>
-      </section>
-
-      {/* Schedule Directly Section - Secondary */}
-      <section className="pb-16">
-        <div className="container max-w-3xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <div className="bg-muted/30 rounded-lg border border-border/20 p-6 text-center">
-              <p className="font-body text-sm text-muted-foreground mb-4">
-                For existing contacts
-              </p>
-              <Button
-                asChild
-                variant="outline"
-                className="font-body"
-              >
-                <a 
-                  href="https://calendar.app.google/WMyDAedTAtZgvFEf7" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                >
-                  <Calendar className="w-4 h-4 mr-2" />
-                  Schedule directly using our calendar
-                </a>
-              </Button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
       <Footer />
     </div>
   );
