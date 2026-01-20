@@ -18,34 +18,43 @@ export type Database = {
         Row: {
           category: string
           content: Json
+          content_zh: Json | null
           created_at: string
           date: string | null
           featured: boolean | null
           id: string
           summary: string
+          summary_zh: string | null
           title: string
+          title_zh: string | null
           updated_at: string
         }
         Insert: {
           category: string
           content?: Json
+          content_zh?: Json | null
           created_at?: string
           date?: string | null
           featured?: boolean | null
           id?: string
           summary: string
+          summary_zh?: string | null
           title: string
+          title_zh?: string | null
           updated_at?: string
         }
         Update: {
           category?: string
           content?: Json
+          content_zh?: Json | null
           created_at?: string
           date?: string | null
           featured?: boolean | null
           id?: string
           summary?: string
+          summary_zh?: string | null
           title?: string
+          title_zh?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -146,34 +155,43 @@ export type Database = {
       perspectives: {
         Row: {
           content: string[]
+          content_zh: string[] | null
           created_at: string
           featured: boolean | null
           id: string
           image: string | null
           summary: string
+          summary_zh: string | null
           title: string
+          title_zh: string | null
           topic: string
           updated_at: string
         }
         Insert: {
           content?: string[]
+          content_zh?: string[] | null
           created_at?: string
           featured?: boolean | null
           id?: string
           image?: string | null
           summary: string
+          summary_zh?: string | null
           title: string
+          title_zh?: string | null
           topic: string
           updated_at?: string
         }
         Update: {
           content?: string[]
+          content_zh?: string[] | null
           created_at?: string
           featured?: boolean | null
           id?: string
           image?: string | null
           summary?: string
+          summary_zh?: string | null
           title?: string
+          title_zh?: string | null
           topic?: string
           updated_at?: string
         }

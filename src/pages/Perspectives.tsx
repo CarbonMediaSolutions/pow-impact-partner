@@ -14,20 +14,27 @@ import { perspectives as staticPerspectives } from '@/data/perspectives';
 interface Perspective {
   id: string;
   title: string;
+  title_zh?: string | null;
   summary: string;
+  summary_zh?: string | null;
   topic: string;
   featured: boolean | null;
   content: string[];
+  content_zh?: string[] | null;
 }
 
 const Perspectives = () => {
-  const { t } = useTranslation(['perspectives', 'common']);
+  const { t, i18n } = useTranslation(['perspectives', 'common']);
   const [perspectives, setPerspectives] = useState<Perspective[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTopic, setActiveTopic] = useState('All');
   const [email, setEmail] = useState('');
   const [isSubscribing, setIsSubscribing] = useState(false);
   const { toast } = useToast();
+  const isZh = i18n.language === 'zh';
+
+  const getTitle = (p: Perspective) => (isZh && p.title_zh) ? p.title_zh : p.title;
+  const getSummary = (p: Perspective) => (isZh && p.summary_zh) ? p.summary_zh : p.summary;
 
   const topics = [
     { key: 'all', label: t('perspectives:topics.all') },
@@ -185,11 +192,11 @@ const Perspectives = () => {
               </span>
               <Link to={`/perspectives/${featuredPerspective.id}`}>
                 <h2 className="font-serif text-3xl md:text-4xl font-light text-foreground mb-4 hover:text-foreground/70 transition-colors">
-                  {featuredPerspective.title}
+                  {getTitle(featuredPerspective)}
                 </h2>
               </Link>
               <p className="text-muted-foreground font-light text-lg leading-relaxed max-w-2xl">
-                {featuredPerspective.summary}
+                {getSummary(featuredPerspective)}
               </p>
             </motion.article>
           </div>
@@ -213,11 +220,11 @@ const Perspectives = () => {
                 </span>
                 <Link to={`/perspectives/${perspective.id}`}>
                   <h3 className="font-serif text-xl md:text-2xl font-light text-foreground mb-2 hover:text-foreground/70 transition-colors">
-                    {perspective.title}
+                    {getTitle(perspective)}
                   </h3>
                 </Link>
                 <p className="text-muted-foreground font-light leading-relaxed">
-                  {perspective.summary}
+                  {getSummary(perspective)}
                 </p>
               </motion.article>
             ))}
