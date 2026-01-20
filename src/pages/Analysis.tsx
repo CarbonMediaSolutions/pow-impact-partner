@@ -12,17 +12,23 @@ import { analyses as staticAnalyses, analysisCategories } from '@/data/analyses'
 interface Analysis {
   id: string;
   title: string;
+  title_zh?: string | null;
   summary: string;
+  summary_zh?: string | null;
   category: string;
   date: string | null;
   featured: boolean | null;
 }
 
 const Analysis = () => {
-  const { t } = useTranslation(['analysis', 'common']);
+  const { t, i18n } = useTranslation(['analysis', 'common']);
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<string>('All');
+  const isZh = i18n.language === 'zh';
+
+  const getTitle = (a: Analysis) => (isZh && a.title_zh) ? a.title_zh : a.title;
+  const getSummary = (a: Analysis) => (isZh && a.summary_zh) ? a.summary_zh : a.summary;
 
   const dataProducts = [
     {
@@ -46,7 +52,7 @@ const Analysis = () => {
     const fetchAnalyses = async () => {
       const { data, error } = await supabase
         .from('analyses')
-        .select('id, title, summary, category, date, featured')
+        .select('id, title, title_zh, summary, summary_zh, category, date, featured')
         .order('created_at', { ascending: false });
 
       if (error || !data || data.length === 0) {
@@ -220,11 +226,11 @@ const Analysis = () => {
               </div>
               <Link to={`/analysis/${featuredAnalysis.id}`}>
                 <h2 className="font-serif text-2xl md:text-3xl font-light text-foreground mb-4 hover:text-foreground/70 transition-colors">
-                  {featuredAnalysis.title}
+                  {getTitle(featuredAnalysis)}
                 </h2>
               </Link>
               <p className="text-muted-foreground font-light leading-relaxed max-w-3xl mb-4">
-                {featuredAnalysis.summary}
+                {getSummary(featuredAnalysis)}
               </p>
               <Link 
                 to={`/analysis/${featuredAnalysis.id}`}
@@ -257,13 +263,13 @@ const Analysis = () => {
                 </div>
                 <Link to={`/analysis/${analysis.id}`}>
                   <h3 className="font-serif text-lg md:text-xl font-light text-foreground mb-2 hover:text-foreground/70 transition-colors">
-                    {analysis.title}
+                    {getTitle(analysis)}
                   </h3>
                 </Link>
                 <p className="text-sm text-muted-foreground font-light leading-relaxed mb-3">
-                  {analysis.summary}
+                  {getSummary(analysis)}
                 </p>
-                <Link 
+                <Link
                   to={`/analysis/${analysis.id}`}
                   className="text-xs text-foreground/60 hover:text-foreground transition-colors"
                 >

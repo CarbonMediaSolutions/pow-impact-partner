@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { supabase } from '@/integrations/supabase/client';
@@ -9,16 +10,25 @@ import { ArrowLeft } from 'lucide-react';
 interface Perspective {
   id: string;
   title: string;
+  title_zh?: string | null;
   summary: string;
+  summary_zh?: string | null;
   topic: string;
   content: string[];
+  content_zh?: string[] | null;
 }
 
 const PerspectiveDetail = () => {
   const { id } = useParams<{ id: string }>();
+  const { t, i18n } = useTranslation(['perspectives', 'common']);
   const [perspective, setPerspective] = useState<Perspective | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const isZh = i18n.language === 'zh';
+
+  const getTitle = (p: Perspective) => (isZh && p.title_zh) ? p.title_zh : p.title;
+  const getSummary = (p: Perspective) => (isZh && p.summary_zh) ? p.summary_zh : p.summary;
+  const getContent = (p: Perspective) => (isZh && p.content_zh && p.content_zh.length > 0) ? p.content_zh : p.content;
 
   useEffect(() => {
     const fetchPerspective = async () => {
@@ -66,9 +76,11 @@ const PerspectiveDetail = () => {
         <Header />
         <main className="pt-32 pb-20 px-6">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-2xl font-serif text-foreground mb-4">Perspective not found</h1>
+            <h1 className="text-2xl font-serif text-foreground mb-4">
+              {isZh ? '找不到觀點' : 'Perspective not found'}
+            </h1>
             <Link to="/perspectives" className="text-primary hover:underline">
-              Return to Perspectives
+              {isZh ? '返回觀點' : 'Return to Perspectives'}
             </Link>
           </div>
         </main>
@@ -89,7 +101,7 @@ const PerspectiveDetail = () => {
             className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Perspectives
+            {isZh ? '返回觀點' : 'Back to Perspectives'}
           </Link>
         </div>
 
@@ -99,17 +111,17 @@ const PerspectiveDetail = () => {
             {perspective.topic}
           </span>
           <h1 className="text-4xl md:text-5xl font-serif text-foreground leading-tight mb-6">
-            {perspective.title}
+            {getTitle(perspective)}
           </h1>
           <p className="text-xl text-muted-foreground leading-relaxed">
-            {perspective.summary}
+            {getSummary(perspective)}
           </p>
         </header>
 
         {/* Content */}
         <article className="max-w-3xl mx-auto px-6">
           <div className="space-y-8">
-            {perspective.content.map((paragraph, index) => (
+            {getContent(perspective).map((paragraph, index) => (
               <p 
                 key={index} 
                 className="text-lg text-foreground/90 leading-relaxed font-light"
@@ -124,8 +136,9 @@ const PerspectiveDetail = () => {
         <div className="max-w-3xl mx-auto px-6 mt-20">
           <div className="border-t border-border pt-12">
             <p className="text-sm text-muted-foreground italic">
-              This perspective reflects our approach to understanding complex decisions. 
-              It is offered as a lens for consideration, not a prescription for action.
+              {isZh 
+                ? '此觀點反映了我們理解複雜決策的方式。它作為思考的視角提供，而非行動的處方。'
+                : 'This perspective reflects our approach to understanding complex decisions. It is offered as a lens for consideration, not a prescription for action.'}
             </p>
           </div>
         </div>
