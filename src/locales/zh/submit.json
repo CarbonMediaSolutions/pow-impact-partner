@@ -1,49 +1,49 @@
 {
-  "pageTitle": "分享您的观点",
-  "pageDescription": "我们相信最好的洞察来自业内领导者。分享您对治理、影响力、战略或增长的观点——参与这场对话。",
+  "pageTitle": "分享您的觀點",
+  "pageDescription": "我們相信最好的洞察來自業內領導者。分享您對治理、影響力、戰略或增長的觀點——參與這場對話。",
   "reward": {
-    "title": "月度奖励",
-    "description": "每月我们会选出最具说服力的观点，并向其作者颁发<bold>100英镑亚马逊礼品卡</bold>。入选的观点也可能在我们的出版物中刊登。"
+    "title": "月度獎勵",
+    "description": "每月我們會選出最具說服力的觀點，並向其作者頒發<bold>100英鎊亞馬遜禮品卡</bold>。入選的觀點也可能在我們的出版物中刊登。"
   },
   "form": {
-    "sectionTitle": "您的观点",
+    "sectionTitle": "您的觀點",
     "name": "姓名",
-    "email": "邮箱",
-    "organisation": "组织机构",
-    "topic": "主题",
-    "topicPlaceholder": "选择主题",
-    "perspectiveLabel": "您的观点",
+    "email": "郵箱",
+    "organisation": "組織機構",
+    "topic": "主題",
+    "topicPlaceholder": "選擇主題",
+    "perspectiveLabel": "您的觀點",
     "perspectiveLimit": "（最多500字）",
-    "perspectivePlaceholder": "分享您对当今组织面临挑战的见解、观察或观点...",
+    "perspectivePlaceholder": "分享您對當今組織面臨挑戰的見解、觀察或觀點...",
     "wordCount": "{{count}} / 500 字",
-    "submit": "提交观点",
+    "submit": "提交觀點",
     "submitting": "提交中..."
   },
   "topics": {
     "governance": "治理",
-    "impact": "影响力",
-    "growth": "增长",
-    "strategy": "战略",
-    "risk": "风险",
-    "finance": "财务",
+    "impact": "影響力",
+    "growth": "增長",
+    "strategy": "戰略",
+    "risk": "風險",
+    "finance": "財務",
     "other": "其他"
   },
   "success": {
-    "title": "感谢您",
-    "message": "您的观点已收到。我们每月审核所有提交内容，如果您的见解被选中刊登或获得月度奖励，我们会与您联系。",
-    "submitAnother": "提交另一个观点"
+    "title": "感謝您",
+    "message": "您的觀點已收到。我們每月審核所有提交內容，如果您的見解被選中刊登或獲得月度獎勵，我們會與您聯繫。",
+    "submitAnother": "提交另一個觀點"
   },
   "guidelines": {
     "title": "提交指南",
-    "g1": "聚焦于具体的见解、挑战或机遇",
-    "g2": "尽可能基于真实经验",
-    "g3": "简洁且具有可操作性",
-    "g4": "仅限原创内容"
+    "g1": "聚焦於具體的見解、挑戰或機遇",
+    "g2": "盡可能基於真實經驗",
+    "g3": "簡潔且具有可操作性",
+    "g4": "僅限原創內容"
   },
   "toast": {
-    "successTitle": "观点已收到",
-    "successMessage": "感谢分享您的见解。我们每月审核所有提交内容。",
-    "errorTitle": "出现问题",
-    "errorMessage": "请重试或直接联系我们。"
+    "successTitle": "觀點已收到",
+    "successMessage": "感謝分享您的見解。我們每月審核所有提交內容。",
+    "errorTitle": "出現問題",
+    "errorMessage": "請重試或直接聯繫我們。"
   }
 }
