@@ -1,40 +1,40 @@
 {
   "nav": {
-    "home": "首页",
-    "about": "关于我们",
-    "perspectives": "观点",
-    "dataAnalysis": "数据与分析",
-    "solutions": "解决方案",
-    "requestConsultation": "预约咨询",
-    "shareYourPerspective": "分享您的观点",
+    "home": "首頁",
+    "about": "關於我們",
+    "perspectives": "觀點",
+    "dataAnalysis": "數據與分析",
+    "solutions": "解決方案",
+    "requestConsultation": "預約諮詢",
+    "shareYourPerspective": "分享您的觀點",
     "admin": "管理"
   },
   "brand": {
-    "name": "博睿合伙人"
+    "name": "博睿合夥人"
   },
   "footer": {
-    "statement": "独立咨询公司，专注于战略、治理与影响力的交汇领域。",
-    "location": "英国伦敦",
-    "linkedin": "领英",
-    "privacy": "隐私政策",
-    "terms": "服务条款",
-    "copyright": "© 2025 博睿合伙人"
+    "statement": "獨立諮詢公司，專注於戰略、治理與影響力的交匯領域。",
+    "location": "英國倫敦",
+    "linkedin": "領英",
+    "privacy": "隱私政策",
+    "terms": "服務條款",
+    "copyright": "© 2025 博睿合夥人"
   },
   "cta": {
-    "bookConsultation": "预约咨询",
-    "viewEngagementModels": "查看服务模式",
-    "readPerspectives": "阅读观点",
+    "bookConsultation": "預約諮詢",
+    "viewEngagementModels": "查看服務模式",
+    "readPerspectives": "閱讀觀點",
     "exploreAnalysis": "探索分析",
-    "viewSolutions": "查看解决方案",
-    "forAdvisoryInquiries": "咨询服务联系方式"
+    "viewSolutions": "查看解決方案",
+    "forAdvisoryInquiries": "諮詢服務聯繫方式"
   },
   "labels": {
     "research": "研究",
-    "perspective": "观点"
+    "perspective": "觀點"
   },
   "credentials": {
-    "icaewChartered": "ICAEW特许会计师",
-    "regulatedByIcaew": "受ICAEW监管",
-    "london": "英国伦敦"
+    "icaewChartered": "ICAEW特許會計師",
+    "regulatedByIcaew": "受ICAEW監管",
+    "london": "英國倫敦"
   }
 }

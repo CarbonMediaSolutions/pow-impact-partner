@@ -1,21 +1,21 @@
 {
-  "pageTitle": "服务模式",
-  "pageDescription": "每个咨询项目都始于一个视角——一种看待您挑战的方式，揭示出前进的新路径。我们的解决方案旨在满足组织在其发展旅程中每个阶段的需求。",
+  "pageTitle": "服務模式",
+  "pageDescription": "每個諮詢項目都始於一個視角——一種看待您挑戰的方式，揭示出前進的新路徑。我們的解決方案旨在滿足組織在其發展旅程中每個階段的需求。",
   "howWeWork": {
-    "title": "我们如何与您合作",
+    "title": "我們如何與您合作",
     "directAccess": {
-      "title": "直接对接合伙人",
-      "description": "在整个咨询过程中直接与高级顾问合作。"
+      "title": "直接對接合夥人",
+      "description": "在整個諮詢過程中直接與高級顧問合作。"
     },
     "response": {
-      "title": "响应预期",
-      "description": "明确的沟通时间表和定期进度更新。"
+      "title": "響應預期",
+      "description": "明確的溝通時間表和定期進度更新。"
     },
     "specialists": {
-      "title": "按需配置专家",
-      "description": "根据特定需求获取领域专家支持。"
+      "title": "按需配置專家",
+      "description": "根據特定需求獲取領域專家支持。"
     }
   },
-  "enquire": "咨询",
-  "moreServices": "+ {{count}} 项更多服务"
+  "enquire": "諮詢",
+  "moreServices": "+ {{count}} 項更多服務"
 }

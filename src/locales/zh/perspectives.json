@@ -1,25 +1,25 @@
 {
-  "pageTitle": "观点",
-  "pageSubtitle": "关于战略、治理与长期影响的深度分析文章。",
-  "pageDescription": "我们如何审视复杂性、风险与机构选择。",
-  "introText": "观点反映了我们处理影响体系决策的方式——提供清晰度、背景和长远思维，而非规定性建议。",
+  "pageTitle": "觀點",
+  "pageSubtitle": "關於戰略、治理與長期影響的深度分析文章。",
+  "pageDescription": "我們如何審視複雜性、風險與機構選擇。",
+  "introText": "觀點反映了我們處理影響體系決策的方式——提供清晰度、背景和長遠思維，而非規定性建議。",
   "newsletter": {
-    "title": "订阅新观点",
-    "description": "每月关于战略、治理和长期影响的深度文章。",
-    "placeholder": "您的邮箱",
-    "subscribe": "订阅",
-    "subscribed": "已订阅",
-    "subscribedMessage": "您将每月收到新的观点文章。"
+    "title": "訂閱新觀點",
+    "description": "每月關於戰略、治理和長期影響的深度文章。",
+    "placeholder": "您的郵箱",
+    "subscribe": "訂閱",
+    "subscribed": "已訂閱",
+    "subscribedMessage": "您將每月收到新的觀點文章。"
   },
-  "serviceCTA": "如果这与您正在面对的情况相符，我们欢迎与您交流。",
-  "footerNote": "观点不是立场文件。它们是我们审视复杂决策的视角。",
-  "loading": "加载中...",
+  "serviceCTA": "如果這與您正在面對的情況相符，我們歡迎與您交流。",
+  "footerNote": "觀點不是立場文件。它們是我們審視複雜決策的視角。",
+  "loading": "載入中...",
   "topics": {
     "all": "全部",
     "governance": "治理",
-    "growth": "增长",
-    "impact": "影响力",
-    "risk": "风险",
-    "strategy": "战略"
+    "growth": "增長",
+    "impact": "影響力",
+    "risk": "風險",
+    "strategy": "戰略"
   }
 }
