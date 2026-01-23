@@ -6,7 +6,10 @@ import { Link } from 'react-router-dom';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import patricPortrait from '@/assets/patric-portrait.jpg';
+import patricPortrait from '@/assets/patric-wong.png';
+import rakeshPortrait from '@/assets/rakesh-portrait.png';
+import pengLiPortrait from '@/assets/peng-li-portrait.png';
+import chiaraPortrait from '@/assets/chiara-portrait.png';
 
 // Team member type
 interface TeamMember {
@@ -20,9 +23,9 @@ interface TeamMember {
 // Team members data with translation keys
 const teamMembers: TeamMember[] = [
   { id: 'patric', nameKey: 'patric', roleKey: 'patric', focusKey: 'patric', image: patricPortrait },
-  { id: 'rakesh', nameKey: 'rakesh', roleKey: 'rakesh', focusKey: 'rakesh' },
-  { id: 'pengLi', nameKey: 'pengLi', roleKey: 'pengLi', focusKey: 'pengLi' },
-  { id: 'chiara', nameKey: 'chiara', roleKey: 'chiara', focusKey: 'chiara' },
+  { id: 'rakesh', nameKey: 'rakesh', roleKey: 'rakesh', focusKey: 'rakesh', image: rakeshPortrait },
+  { id: 'pengLi', nameKey: 'pengLi', roleKey: 'pengLi', focusKey: 'pengLi', image: pengLiPortrait },
+  { id: 'chiara', nameKey: 'chiara', roleKey: 'chiara', focusKey: 'chiara', image: chiaraPortrait },
   { id: 'gabriel', nameKey: 'gabriel', roleKey: 'gabriel', focusKey: 'gabriel' },
   { id: 'nicole', nameKey: 'nicole', roleKey: 'nicole', focusKey: 'nicole' },
   { id: 'stephen', nameKey: 'stephen', roleKey: 'stephen', focusKey: 'stephen' },
