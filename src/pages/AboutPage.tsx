@@ -96,7 +96,7 @@ export default function AboutPage() {
       <Header />
       
       {/* Hero Section - Firm-Level Introduction */}
-      <section className="pt-32 pb-20">
+      <section className="pt-40 pb-24">
         <div className="container max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -104,22 +104,18 @@ export default function AboutPage() {
             transition={{ duration: 0.6 }}
             className="text-center"
           >
-            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-medium text-foreground mb-8">
+            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-medium text-foreground mb-10">
               {t('about:pageTitle')}
             </h1>
-            <div className="space-y-4 font-body text-lg text-muted-foreground leading-relaxed">
-              <p>{t('about:hero.intro')}</p>
-              <p>{t('about:hero.intro2')}</p>
-            </div>
-            <p className="mt-8 font-body text-base text-muted-foreground/80 leading-relaxed max-w-3xl mx-auto">
-              {t('about:hero.supporting')}
+            <p className="font-body text-lg text-muted-foreground leading-relaxed whitespace-pre-line">
+              {t('about:hero.intro')}
             </p>
           </motion.div>
         </div>
       </section>
 
       {/* How We Think - Philosophy */}
-      <section className="py-20 bg-muted/30">
+      <section className="py-24 bg-muted/30">
         <div className="container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -144,11 +140,11 @@ export default function AboutPage() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="bg-card p-8 rounded-2xl border border-border text-center"
               >
-                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
-                  <value.icon className="w-8 h-8 text-primary" />
+                <div className="w-14 h-14 rounded-full bg-primary/5 flex items-center justify-center mx-auto mb-6">
+                  <value.icon className="w-7 h-7 text-primary/60" />
                 </div>
                 <h3 className="font-serif text-xl font-medium text-foreground mb-3">{t(value.titleKey)}</h3>
-                <p className="font-body text-muted-foreground">{t(value.descriptionKey)}</p>
+                <p className="font-body text-muted-foreground/90">{t(value.descriptionKey)}</p>
               </motion.div>
             ))}
           </div>
@@ -201,7 +197,7 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.05 }}
-                className="group bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                className="bg-card rounded-xl border border-border overflow-hidden"
               >
                 {/* Photo */}
                 <div className="aspect-[4/5] bg-muted overflow-hidden">
@@ -209,7 +205,7 @@ export default function AboutPage() {
                     <img
                       src={member.image}
                       alt={t(`about:leadershipTeam.members.${member.nameKey}.name`)}
-                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                      className="w-full h-full object-cover grayscale"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center bg-muted/50">
@@ -223,10 +219,10 @@ export default function AboutPage() {
                   <h3 className="font-serif text-lg font-medium text-foreground mb-1">
                     {t(`about:leadershipTeam.members.${member.nameKey}.name`)}
                   </h3>
-                  <p className="font-body text-sm text-muted-foreground mb-2">
+                  <p className="font-body text-sm text-muted-foreground/80 mb-2">
                     {t(`about:leadershipTeam.members.${member.roleKey}.role`)}
                   </p>
-                  <p className="font-body text-xs text-primary/80">
+                  <p className="font-body text-xs text-primary/70">
                     {t(`about:leadershipTeam.members.${member.focusKey}.focus`)}
                   </p>
                 </div>
@@ -249,7 +245,7 @@ export default function AboutPage() {
             <h2 className="font-serif text-2xl md:text-3xl font-medium text-foreground mb-8">
               {t('about:professionalStandards.title')}
             </h2>
-            <ul className="space-y-3">
+            <ul className="space-y-2">
               {professionalStandards.map((standard, index) => (
                 <motion.li
                   key={index}
@@ -343,7 +339,7 @@ export default function AboutPage() {
       </section>
 
       {/* Closing CTA */}
-      <section className="py-20">
+      <section className="py-24">
         <div className="container max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -352,8 +348,11 @@ export default function AboutPage() {
             transition={{ duration: 0.6 }}
             className="text-center"
           >
-            <p className="font-body text-lg text-muted-foreground mb-8">
+            <p className="font-body text-lg text-muted-foreground mb-6">
               {t('about:closingCTA.text')}
+            </p>
+            <p className="font-body text-sm text-muted-foreground/60 mb-8">
+              {t('about:closingCTA.independence')}
             </p>
             <Button asChild size="lg" variant="outline" className="font-body">
               <Link to="/book">

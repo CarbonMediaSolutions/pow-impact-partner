@@ -1,9 +1,7 @@
 {
   "pageTitle": "About Plexa Partners",
   "hero": {
-    "intro": "Plexa Partners is an independent advisory firm operating at the intersection of strategy, governance, and long-term performance.",
-    "intro2": "We work with founders, boards, and leadership teams navigating growth, complexity, and institutional change.",
-    "supporting": "Our work combines disciplined analysis, experienced judgment, and practical execution — supporting decisions where clarity and long-term perspective matter most."
+    "intro": "Plexa Partners is an independent advisory firm operating at the intersection of strategy, governance, and long-term performance.\n\nWe work with founders, boards, and leadership teams navigating decisions where clarity, judgment, and long-term perspective matter most."
   },
   "howWeThink": {
     "title": "How We Think",
@@ -41,7 +39,7 @@
       },
       "pengLi": {
         "name": "Peng-Li Hong",
-        "role": "Vice President · Technology",
+        "role": "Vice President · Technology & Transformation",
         "focus": "Enterprise Architecture · Transformation"
       },
       "chiara": {
@@ -51,7 +49,7 @@
       },
       "gabriel": {
         "name": "Gabriel Mai",
-        "role": "Vice President · Communications",
+        "role": "Vice President · Corporate Communications",
         "focus": "Brand · Stakeholder Engagement"
       },
       "nicole": {
@@ -66,7 +64,7 @@
       },
       "mandy": {
         "name": "Mandy Wong",
-        "role": "Executive · Business Development",
+        "role": "Executive · Strategic Development",
         "focus": "Strategic Growth · International Markets"
       }
     }
@@ -101,6 +99,7 @@
     }
   },
   "closingCTA": {
+    "independence": "Plexa Partners operates independently and without conflicts of interest.",
     "text": "If this reflects the way you think about leadership and long-term decision-making, we welcome a conversation.",
     "button": "Request a Consultation"
   }
