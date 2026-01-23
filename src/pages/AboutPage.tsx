@@ -1,14 +1,32 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Award, ChevronLeft, ChevronRight, Quote, Users, Leaf, TrendingUp } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Quote, Users, Leaf, TrendingUp, Check, User } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import { Button } from '@/components/ui/button';
 import patricPortrait from '@/assets/patric-portrait.jpg';
 
-const credentials = [
-  'ICAEW Chartered Accountant',
-  'Regulated by ICAEW',
+// Team member type
+interface TeamMember {
+  id: string;
+  nameKey: string;
+  roleKey: string;
+  focusKey: string;
+  image?: string;
+}
+
+// Team members data with translation keys
+const teamMembers: TeamMember[] = [
+  { id: 'patric', nameKey: 'patric', roleKey: 'patric', focusKey: 'patric', image: patricPortrait },
+  { id: 'rakesh', nameKey: 'rakesh', roleKey: 'rakesh', focusKey: 'rakesh' },
+  { id: 'pengLi', nameKey: 'pengLi', roleKey: 'pengLi', focusKey: 'pengLi' },
+  { id: 'chiara', nameKey: 'chiara', roleKey: 'chiara', focusKey: 'chiara' },
+  { id: 'gabriel', nameKey: 'gabriel', roleKey: 'gabriel', focusKey: 'gabriel' },
+  { id: 'nicole', nameKey: 'nicole', roleKey: 'nicole', focusKey: 'nicole' },
+  { id: 'stephen', nameKey: 'stephen', roleKey: 'stephen', focusKey: 'stephen' },
+  { id: 'mandy', nameKey: 'mandy', roleKey: 'mandy', focusKey: 'mandy' },
 ];
 
 export default function AboutPage() {
@@ -51,6 +69,13 @@ export default function AboutPage() {
     },
   ];
 
+  const professionalStandards = [
+    t('about:professionalStandards.items.icaew'),
+    t('about:professionalStandards.items.chartered'),
+    t('about:professionalStandards.items.independent'),
+    t('about:professionalStandards.items.confidentiality'),
+  ];
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
@@ -70,94 +95,30 @@ export default function AboutPage() {
     <div className="min-h-screen bg-background">
       <Header />
       
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-gradient-to-b from-primary/5 to-background">
-        <div className="container">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            {/* Left - Photo */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              className="relative order-2 lg:order-1"
-            >
-              <div className="relative max-w-md mx-auto lg:mx-0">
-                <div className="absolute -inset-4 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-3xl -z-10" />
-                <div className="relative overflow-hidden rounded-2xl border-4 border-background shadow-2xl">
-                  <img
-                    src={patricPortrait}
-                    alt="Patric - Founder, Plexa Partners"
-                    className="w-full h-auto object-cover"
-                  />
-                </div>
-                <div className="absolute -bottom-4 -right-4 lg:right-auto lg:-left-4 bg-secondary text-secondary-foreground px-5 py-3 rounded-xl shadow-lg flex items-center gap-2">
-                  <Award className="w-5 h-5" />
-                  <span className="font-body text-sm font-medium">{t('about:icaewChartered')}</span>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Right - Content */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="order-1 lg:order-2"
-            >
-              <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-medium text-foreground mb-6">
-                {t('about:pageTitle')}
-              </h1>
-              <p className="font-body text-lg text-muted-foreground leading-relaxed">
-                {t('about:heroDescription')}
-              </p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Credentials */}
-      <section className="py-12 bg-muted/30">
-        <div className="container">
-          <div className="flex flex-wrap justify-center gap-4">
-            {credentials.map((credential, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="flex items-center gap-2 bg-background px-5 py-3 rounded-lg border border-border"
-              >
-                <Award className="w-5 h-5 text-secondary flex-shrink-0" />
-                <span className="font-body text-foreground font-medium">{credential}</span>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* The Firm */}
-      <section className="py-20">
+      {/* Hero Section - Firm-Level Introduction */}
+      <section className="pt-32 pb-20">
         <div className="container max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
+            className="text-center"
           >
-            <div className="section-divider" />
-            <h2 className="font-serif text-2xl md:text-3xl font-medium text-foreground mb-8">
-              {t('about:theFirm.title')}
-            </h2>
-            <div className="font-body text-lg text-muted-foreground space-y-4 leading-relaxed">
-              <p>{t('about:theFirm.p1')}</p>
-              <p>{t('about:theFirm.p2')}</p>
+            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-medium text-foreground mb-8">
+              {t('about:pageTitle')}
+            </h1>
+            <div className="space-y-4 font-body text-lg text-muted-foreground leading-relaxed">
+              <p>{t('about:hero.intro')}</p>
+              <p>{t('about:hero.intro2')}</p>
             </div>
+            <p className="mt-8 font-body text-base text-muted-foreground/80 leading-relaxed max-w-3xl mx-auto">
+              {t('about:hero.supporting')}
+            </p>
           </motion.div>
         </div>
       </section>
 
-      {/* How We Think */}
+      {/* How We Think - Philosophy */}
       <section className="py-20 bg-muted/30">
         <div className="container">
           <motion.div
@@ -194,7 +155,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Firm Origins */}
+      {/* The Firm - Collective Identity */}
       <section className="py-20">
         <div className="container max-w-4xl">
           <motion.div
@@ -205,12 +166,104 @@ export default function AboutPage() {
           >
             <div className="section-divider" />
             <h2 className="font-serif text-2xl md:text-3xl font-medium text-foreground mb-8">
-              {t('about:firmOrigins.title')}
+              {t('about:theFirm.title')}
             </h2>
             <div className="font-body text-lg text-muted-foreground space-y-4 leading-relaxed">
-              <p>{t('about:firmOrigins.p1')}</p>
-              <p>{t('about:firmOrigins.p2')}</p>
+              <p>{t('about:theFirm.p1')}</p>
+              <p>{t('about:theFirm.p2')}</p>
+              <p>{t('about:theFirm.p3')}</p>
             </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Leadership Team - Visual Grid */}
+      <section className="py-20 bg-muted/30">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mb-16"
+          >
+            <div className="section-divider" />
+            <h2 className="font-serif text-2xl md:text-3xl font-medium text-foreground">
+              {t('about:leadershipTeam.title')}
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {teamMembers.map((member, index) => (
+              <motion.div
+                key={member.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.05 }}
+                className="group bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+              >
+                {/* Photo */}
+                <div className="aspect-[4/5] bg-muted overflow-hidden">
+                  {member.image ? (
+                    <img
+                      src={member.image}
+                      alt={t(`about:leadershipTeam.members.${member.nameKey}.name`)}
+                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-muted/50">
+                      <User className="w-16 h-16 text-muted-foreground/30" />
+                    </div>
+                  )}
+                </div>
+                
+                {/* Info */}
+                <div className="p-5">
+                  <h3 className="font-serif text-lg font-medium text-foreground mb-1">
+                    {t(`about:leadershipTeam.members.${member.nameKey}.name`)}
+                  </h3>
+                  <p className="font-body text-sm text-muted-foreground mb-2">
+                    {t(`about:leadershipTeam.members.${member.roleKey}.role`)}
+                  </p>
+                  <p className="font-body text-xs text-primary/80">
+                    {t(`about:leadershipTeam.members.${member.focusKey}.focus`)}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Professional Standards */}
+      <section className="py-20">
+        <div className="container max-w-4xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="section-divider" />
+            <h2 className="font-serif text-2xl md:text-3xl font-medium text-foreground mb-8">
+              {t('about:professionalStandards.title')}
+            </h2>
+            <ul className="space-y-3">
+              {professionalStandards.map((standard, index) => (
+                <motion.li
+                  key={index}
+                  initial={{ opacity: 0, x: -10 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  className="flex items-center gap-3 font-body text-muted-foreground"
+                >
+                  <Check className="w-5 h-5 text-primary flex-shrink-0" />
+                  <span>{standard}</span>
+                </motion.li>
+              ))}
+            </ul>
           </motion.div>
         </div>
       </section>
@@ -289,7 +342,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Thought Leaders */}
+      {/* Closing CTA */}
       <section className="py-20">
         <div className="container max-w-4xl">
           <motion.div
@@ -297,38 +350,16 @@ export default function AboutPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
+            className="text-center"
           >
-            <div className="section-divider" />
-            <h2 className="font-serif text-2xl md:text-3xl font-medium text-foreground mb-8">
-              {t('about:founder.title')}
-            </h2>
-            <div className="font-body text-lg text-muted-foreground space-y-4 leading-relaxed">
-              <p>{t('about:founder.p1')}</p>
-              <p>{t('about:founder.p2')}</p>
-              <p>{t('about:founder.p3')}</p>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Closing CTA */}
-      <section className="py-20 bg-muted/30">
-        <div className="container max-w-4xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <p className="font-body text-muted-foreground mb-4">
+            <p className="font-body text-lg text-muted-foreground mb-8">
               {t('about:closingCTA.text')}
             </p>
-            <a 
-              href="mailto:hello@plexapartners.com" 
-              className="font-body text-teal hover:underline underline-offset-2"
-            >
-              hello@plexapartners.com
-            </a>
+            <Button asChild size="lg" variant="outline" className="font-body">
+              <Link to="/book">
+                {t('about:closingCTA.button')}
+              </Link>
+            </Button>
           </motion.div>
         </div>
       </section>

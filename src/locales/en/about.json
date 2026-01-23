@@ -1,11 +1,9 @@
 {
   "pageTitle": "About Plexa Partners",
-  "heroDescription": "Plexa Partners is an independent advisory firm operating at the intersection of strategy, governance, and long-term performance.",
-  "icaewChartered": "ICAEW Chartered",
-  "theFirm": {
-    "title": "The Firm",
-    "p1": "Plexa Partners advises founders, leadership teams, and boards navigating growth, transformation, and strategic complexity.",
-    "p2": "The firm works across organisational design, governance, and financial strategy, supporting decision-making where clarity, judgment, and long-term perspective matter most."
+  "hero": {
+    "intro": "Plexa Partners is an independent advisory firm operating at the intersection of strategy, governance, and long-term performance.",
+    "intro2": "We work with founders, boards, and leadership teams navigating growth, complexity, and institutional change.",
+    "supporting": "Our work combines disciplined analysis, experienced judgment, and practical execution — supporting decisions where clarity and long-term perspective matter most."
   },
   "howWeThink": {
     "title": "How We Think",
@@ -22,10 +20,65 @@
       "description": "Capital discipline, operational clarity, and measurable outcomes."
     }
   },
-  "firmOrigins": {
-    "title": "Firm Origins",
-    "p1": "Plexa Partners was established to address the growing gap between financial expertise and strategic decision-making in complex organisations.",
-    "p2": "Many mission-driven, growth-stage, and professional services organisations face challenges that cannot be solved through compliance or transactional advice alone. The firm was created to provide senior-level strategic and financial counsel aligned with long-term objectives."
+  "theFirm": {
+    "title": "The Firm",
+    "p1": "Plexa Partners brings together senior advisors with experience across finance, strategy, technology, operations, and transformation.",
+    "p2": "As a collective, we work across organisational design, governance, capital strategy, and performance measurement — supporting decision-making in complex and regulated environments.",
+    "p3": "Our engagements are selective, relationship-led, and grounded in long-term objectives rather than transactional outcomes."
+  },
+  "leadershipTeam": {
+    "title": "Leadership Team",
+    "members": {
+      "patric": {
+        "name": "Patric Wong",
+        "role": "Founder & Principal Advisor",
+        "focus": "Strategy · Governance · Capital Allocation"
+      },
+      "rakesh": {
+        "name": "Rakesh Shah",
+        "role": "Co-Founder · Outsourced CFO",
+        "focus": "Finance · Growth · Fundraising"
+      },
+      "pengLi": {
+        "name": "Peng-Li Hong",
+        "role": "Vice President · Technology",
+        "focus": "Enterprise Architecture · Transformation"
+      },
+      "chiara": {
+        "name": "Chiara Coppola",
+        "role": "Vice President · Procurement",
+        "focus": "Commercial Strategy · Governance"
+      },
+      "gabriel": {
+        "name": "Gabriel Mai",
+        "role": "Vice President · Communications",
+        "focus": "Brand · Stakeholder Engagement"
+      },
+      "nicole": {
+        "name": "Nicole Magnier",
+        "role": "Vice President · Transformation",
+        "focus": "PMO · Complex Programmes"
+      },
+      "stephen": {
+        "name": "Stephen Chan",
+        "role": "Vice President · Data & Intelligence",
+        "focus": "Financial Analysis · Business Intelligence"
+      },
+      "mandy": {
+        "name": "Mandy Wong",
+        "role": "Executive · Business Development",
+        "focus": "Strategic Growth · International Markets"
+      }
+    }
+  },
+  "professionalStandards": {
+    "title": "Professional Standards",
+    "items": {
+      "icaew": "Regulated by ICAEW",
+      "chartered": "Chartered Accountants within the leadership team",
+      "independent": "Independent and conflict-aware advisory model",
+      "confidentiality": "Confidentiality and professional judgment as standard"
+    }
   },
   "clientPerspectives": {
     "title": "Client Perspectives",
@@ -47,13 +100,8 @@
       }
     }
   },
-  "founder": {
-    "title": "Founder",
-    "p1": "Patric is the Founder and Principal Advisor at Plexa Partners.",
-    "p2": "He advises founders, leadership teams, and boards on strategic finance, governance, and organisational decision-making. His work spans growth strategy, capital structure, and operational performance across a range of sectors.",
-    "p3": "Patric is a Chartered Accountant and has advised organisations at various stages of scale and complexity."
-  },
   "closingCTA": {
-    "text": "For enquiries regarding advisory engagements, please contact the firm directly."
+    "text": "If this reflects the way you think about leadership and long-term decision-making, we welcome a conversation.",
+    "button": "Request a Consultation"
   }
 }
