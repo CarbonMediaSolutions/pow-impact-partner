@@ -10,6 +10,10 @@ import patricPortrait from '@/assets/patric-wong.png';
 import rakeshPortrait from '@/assets/rakesh-portrait.png';
 import pengLiPortrait from '@/assets/peng-li-portrait.png';
 import chiaraPortrait from '@/assets/chiara-portrait.png';
+import gabrielPortrait from '@/assets/gabriel-portrait.png';
+import nicolePortrait from '@/assets/nicole-portrait.png';
+import stephenPortrait from '@/assets/stephen-portrait.png';
+import mandyPortrait from '@/assets/mandy-portrait.png';
 
 // Team member type
 interface TeamMember {
@@ -26,10 +30,10 @@ const teamMembers: TeamMember[] = [
   { id: 'rakesh', nameKey: 'rakesh', roleKey: 'rakesh', focusKey: 'rakesh', image: rakeshPortrait },
   { id: 'pengLi', nameKey: 'pengLi', roleKey: 'pengLi', focusKey: 'pengLi', image: pengLiPortrait },
   { id: 'chiara', nameKey: 'chiara', roleKey: 'chiara', focusKey: 'chiara', image: chiaraPortrait },
-  { id: 'gabriel', nameKey: 'gabriel', roleKey: 'gabriel', focusKey: 'gabriel' },
-  { id: 'nicole', nameKey: 'nicole', roleKey: 'nicole', focusKey: 'nicole' },
-  { id: 'stephen', nameKey: 'stephen', roleKey: 'stephen', focusKey: 'stephen' },
-  { id: 'mandy', nameKey: 'mandy', roleKey: 'mandy', focusKey: 'mandy' },
+  { id: 'gabriel', nameKey: 'gabriel', roleKey: 'gabriel', focusKey: 'gabriel', image: gabrielPortrait },
+  { id: 'nicole', nameKey: 'nicole', roleKey: 'nicole', focusKey: 'nicole', image: nicolePortrait },
+  { id: 'stephen', nameKey: 'stephen', roleKey: 'stephen', focusKey: 'stephen', image: stephenPortrait },
+  { id: 'mandy', nameKey: 'mandy', roleKey: 'mandy', focusKey: 'mandy', image: mandyPortrait },
 ];
 
 export default function AboutPage() {
