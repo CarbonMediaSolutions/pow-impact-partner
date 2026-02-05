@@ -162,6 +162,7 @@ export type Database = {
           image: string | null
           summary: string
           summary_zh: string | null
+          tags: string[] | null
           title: string
           title_zh: string | null
           topic: string
@@ -176,6 +177,7 @@ export type Database = {
           image?: string | null
           summary: string
           summary_zh?: string | null
+          tags?: string[] | null
           title: string
           title_zh?: string | null
           topic: string
@@ -190,6 +192,7 @@ export type Database = {
           image?: string | null
           summary?: string
           summary_zh?: string | null
+          tags?: string[] | null
           title?: string
           title_zh?: string | null
           topic?: string

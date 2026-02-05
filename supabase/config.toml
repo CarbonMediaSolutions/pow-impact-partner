@@ -2,3 +2,6 @@ project_id = "ebekkeagbtmgyoxtdxzk"
 
 [functions.send-consultation-notification]
 verify_jwt = false
+
+[functions.summarize-perspective]
+verify_jwt = false
