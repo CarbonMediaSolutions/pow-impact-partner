@@ -1,184 +1,209 @@
 
 
-## Fix: Rich Text Formatting for Perspectives
+## Feature: Preview Links & Social Sharing
 
-### Problem Identified
+### Overview
 
-When pasting formatted content (like LinkedIn posts with bullet points, bold text, etc.), the formatting is lost because:
-
-1. **Content splitting** - The admin saves content by splitting on double newlines (`\n\n`), which doesn't properly separate individual bullet points that use single newlines
-2. **Plain text rendering** - The detail page renders each paragraph as plain `<p>` tags with no formatting for bullets, bold, or lists
-3. **No markdown/rich text support** - The system treats everything as plain text
-
-### Current Flow
-
-```
-User pastes formatted text → Split by \n\n → Store as string[] → Render as plain <p> tags
-```
-
-### Solution
-
-Implement markdown-style rendering that:
-1. Preserves the full content as-is (without aggressive splitting)
-2. Converts common patterns to proper HTML:
-   - Lines starting with `●`, `•`, `-`, `*` become list items
-   - Text wrapped in `**bold**` or unicode bold characters becomes `<strong>`
-   - Blank lines create paragraph breaks
-   - Quote lines starting with `"` get blockquote styling
+Add two enhancements:
+1. **Preview buttons in Admin panel** - Quick links to view published Perspectives and Analyses directly from the admin tables
+2. **Social share buttons on detail pages** - Allow readers to share articles to LinkedIn, Twitter (X), and Facebook
 
 ---
 
-### Implementation Options
+### Part 1: Admin Preview Links
 
-**Option A: Simple Pattern-Based Rendering (Recommended)**
-- Keep the current storage format (text array)
-- Enhance the rendering component to detect and format patterns
-- No new dependencies needed
+Add an "eye" icon button next to the edit/delete actions in the Perspectives and Analyses tables that opens the public article page in a new tab.
 
-**Option B: Full Markdown Support**
-- Add a markdown library (react-markdown)
-- Store content as a single markdown string
-- Requires migration of existing content
+**Visual Example (Perspectives table):**
 
-I recommend **Option A** for simplicity and backward compatibility.
+```text
+| Title                                    | Topic   | Featured | Actions       |
+|------------------------------------------|---------|----------|---------------|
+| Founder Mental Health Isn't Just...      | Risk    | Yes      | 👁 ✏️ 🗑️      |
+```
+
+The eye icon (👁) opens `/perspectives/{id}` in a new tab.
 
 ---
 
-### Technical Changes
+### Part 2: Social Share Buttons on Detail Pages
+
+Add share buttons after the article metadata (below the author section) on both Perspective and Analysis detail pages.
+
+**Design:**
+- Row of 3 icon buttons: LinkedIn, Twitter/X, Facebook
+- Subtle styling that matches the institutional tone
+- Opens native share dialogs in new windows
+
+**Share URLs:**
+- **LinkedIn**: `https://www.linkedin.com/sharing/share-offsite/?url={url}`
+- **Twitter/X**: `https://twitter.com/intent/tweet?url={url}&text={title}`
+- **Facebook**: `https://www.facebook.com/sharer/sharer.php?u={url}`
+
+---
+
+### Files to Modify
 
 | File | Changes |
 |------|---------|
-| `src/pages/Admin.tsx` | Improve content parsing - split on single newlines and preserve structure |
-| `src/pages/PerspectiveDetail.tsx` | Add `renderFormattedContent()` function to handle bullets, bold, quotes |
-| `src/components/FormattedContent.tsx` | New reusable component for rich text rendering |
+| `src/pages/Admin.tsx` | Add Eye/ExternalLink preview button to Perspectives and Analyses tables |
+| `src/pages/PerspectiveDetail.tsx` | Add social share component below author section |
+| `src/pages/AnalysisDetail.tsx` | Add social share component below header |
+| `src/components/SocialShare.tsx` | **New** - Reusable share button component |
 
 ---
 
-### Parsing Logic (Admin.tsx)
+### Technical Details
 
-**Before:**
-```typescript
-const contentArray = perspectiveForm.content.split('\n\n').filter(p => p.trim());
-```
-
-**After:**
-```typescript
-// Preserve single newlines for bullet points, split on double newlines for paragraphs
-const contentArray = perspectiveForm.content
-  .split('\n')
-  .filter(line => line.trim())
-  .map(line => line.trim());
-```
-
-This keeps each line (including individual bullet points) as a separate array item.
-
----
-
-### Rendering Logic (PerspectiveDetail.tsx)
-
-**New `renderFormattedContent` function:**
+**New Component: `SocialShare.tsx`**
 
 ```tsx
-const renderFormattedContent = (content: string[]) => {
-  const elements: React.ReactNode[] = [];
-  let currentList: string[] = [];
+import { Linkedin, Twitter, Facebook } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+
+interface SocialShareProps {
+  url: string;
+  title: string;
+}
+
+export const SocialShare = ({ url, title }: SocialShareProps) => {
+  const encodedUrl = encodeURIComponent(url);
+  const encodedTitle = encodeURIComponent(title);
   
-  const flushList = () => {
-    if (currentList.length > 0) {
-      elements.push(
-        <ul key={`list-${elements.length}`} className="list-disc pl-6 space-y-2">
-          {currentList.map((item, i) => (
-            <li key={i}>{formatText(item)}</li>
-          ))}
-        </ul>
-      );
-      currentList = [];
-    }
+  const shareLinks = {
+    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+    twitter: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`
   };
   
-  content.forEach((line, index) => {
-    // Check if line is a bullet point
-    const bulletMatch = line.match(/^[●•\-\*]\s*(.+)$/);
-    
-    if (bulletMatch) {
-      currentList.push(bulletMatch[1]);
-    } else {
-      flushList();
-      
-      // Check for quote
-      if (line.startsWith('"') && line.endsWith('"')) {
-        elements.push(
-          <blockquote key={index} className="border-l-4 border-primary pl-4 italic my-4">
-            {formatText(line)}
-          </blockquote>
-        );
-      } else {
-        elements.push(<p key={index}>{formatText(line)}</p>);
-      }
-    }
-  });
+  const openShare = (platform: keyof typeof shareLinks) => {
+    window.open(shareLinks[platform], '_blank', 'width=600,height=400');
+  };
   
-  flushList();
-  return elements;
-};
-
-// Format bold text and hashtags
-const formatText = (text: string) => {
-  // Handle **bold** syntax
-  let parts = text.split(/(\*\*[^*]+\*\*)/g);
-  
-  return parts.map((part, i) => {
-    if (part.startsWith('**') && part.endsWith('**')) {
-      return <strong key={i}>{part.slice(2, -2)}</strong>;
-    }
-    // Handle hashtags
-    if (part.includes('hashtag#')) {
-      return part.replace(/hashtag#(\w+)/g, '#$1');
-    }
-    return part;
-  });
+  return (
+    <div className="flex items-center gap-2">
+      <span className="text-sm text-muted-foreground mr-2">Share:</span>
+      <Button variant="ghost" size="sm" onClick={() => openShare('linkedin')}>
+        <Linkedin className="w-4 h-4" />
+      </Button>
+      <Button variant="ghost" size="sm" onClick={() => openShare('twitter')}>
+        <Twitter className="w-4 h-4" />
+      </Button>
+      <Button variant="ghost" size="sm" onClick={() => openShare('facebook')}>
+        <Facebook className="w-4 h-4" />
+      </Button>
+    </div>
+  );
 };
 ```
 
+**Admin.tsx Changes:**
+
+Add preview button to Perspectives table (line ~1308):
+```tsx
+<div className="flex gap-2">
+  <Button 
+    variant="ghost" 
+    size="sm" 
+    onClick={() => window.open(`/perspectives/${perspective.id}`, '_blank')}
+    title="Preview"
+  >
+    <Eye className="w-4 h-4" />
+  </Button>
+  <Button variant="ghost" size="sm" onClick={() => openEditPerspective(perspective)}>
+    <Pencil className="w-4 h-4" />
+  </Button>
+  // ... delete button
+</div>
+```
+
+Add preview button to Analyses table (line ~1483):
+```tsx
+<div className="flex gap-2">
+  <Button 
+    variant="ghost" 
+    size="sm" 
+    onClick={() => window.open(`/analysis/${analysis.id}`, '_blank')}
+    title="Preview"
+  >
+    <Eye className="w-4 h-4" />
+  </Button>
+  <Button variant="ghost" size="sm" onClick={() => openEditAnalysis(analysis)}>
+    <Pencil className="w-4 h-4" />
+  </Button>
+  // ... delete button
+</div>
+```
+
+**PerspectiveDetail.tsx Changes:**
+
+Add share buttons below the author section (after line ~147):
+```tsx
+import { SocialShare } from '@/components/SocialShare';
+
+// Inside the component, after author section:
+<SocialShare 
+  url={`https://pow-impact-partner.lovable.app/perspectives/${perspective.id}`}
+  title={getTitle(perspective)}
+/>
+```
+
+**AnalysisDetail.tsx Changes:**
+
+Add share buttons below the header section (after line ~147):
+```tsx
+import { SocialShare } from '@/components/SocialShare';
+
+// Inside the component, after the summary:
+<SocialShare 
+  url={`https://pow-impact-partner.lovable.app/analysis/${analysis.id}`}
+  title={getTitle(analysis)}
+/>
+```
+
 ---
 
-### Visual Result
+### Visual Layout
 
-**Before (wall of text):**
+**Perspective Detail Page:**
+```text
+┌─────────────────────────────────────────┐
+│ ← Back to Perspectives                  │
+│                                         │
+│ [Topic Badge]  📅 Date  🕐 X min read   │
+│                                         │
+│ Article Title                           │
+│                                         │
+│ Summary text here...                    │
+│                                         │
+│ 👤 Pow Consulting Team                  │
+│    Impact Partners                      │
+│                                         │
+│ Share: [in] [𝕏] [f]    ← NEW           │
+│                                         │
+│ [Featured Image]                        │
+│                                         │
+│ Article content...                      │
+└─────────────────────────────────────────┘
 ```
-● Cashflow anxiety: The low-level, constant worry... ● Fundraising fatigue: The grind of 50-100+...
-```
-
-**After (formatted):**
-```
-• Cashflow anxiety: The low-level, constant worry...
-• Fundraising fatigue: The grind of 50-100+...
-```
-
-With proper bullet points, spacing, and bold formatting preserved.
 
 ---
 
-### Additional Improvements
+### Bilingual Support
 
-1. **Hashtag handling** - Convert `hashtag#Topic` to `#Topic` or style as badges
-2. **Unicode bold detection** - Detect unicode bold characters (𝐂𝐚𝐬𝐡𝐟𝐥𝐨𝐰) and render as `<strong>`
-3. **Quote detection** - Lines starting with `"` get blockquote styling
-4. **Section headers** - Lines that are short and followed by bullets become subheadings
-
----
-
-### Files to Create/Modify
-
-| File | Action | Description |
-|------|--------|-------------|
-| `src/pages/Admin.tsx` | Modify | Update content splitting to preserve line-by-line structure |
-| `src/pages/PerspectiveDetail.tsx` | Modify | Add rich text rendering with bullet detection |
-| `src/components/FormattedContent.tsx` | Create | Reusable component for formatted article content |
+The share buttons don't require translation as they use icons only. The "Share:" label will be:
+- English: "Share"
+- Chinese: "分享"
 
 ---
 
-### Backward Compatibility
+### Implementation Summary
 
-Existing perspectives stored with the old format (split by `\n\n`) will still render correctly - they just won't have the enhanced formatting. New perspectives will benefit from the improved parsing and rendering.
+| Feature | Location | Component |
+|---------|----------|-----------|
+| Preview link (Perspectives) | Admin table | Eye icon → opens `/perspectives/{id}` |
+| Preview link (Analyses) | Admin table | Eye icon → opens `/analysis/{id}` |
+| Share to LinkedIn | Detail pages | SocialShare component |
+| Share to Twitter/X | Detail pages | SocialShare component |
+| Share to Facebook | Detail pages | SocialShare component |
 
