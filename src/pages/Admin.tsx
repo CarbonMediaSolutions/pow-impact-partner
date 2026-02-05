@@ -15,9 +15,13 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { Lock, Users, FileText, Mail, Eye, Plus, Pencil, Trash2, BookOpen, BarChart3, Copy, Calendar, ExternalLink, LogOut, Download } from 'lucide-react';
+ import { Sparkles, Upload, X, Check, ChevronsUpDown } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 import type { User } from '@supabase/supabase-js';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+import { cn } from '@/lib/utils';
 
 const CALENDAR_LINK = 'https://calendar.app.google/WMyDAedTAtZgvFEf7';
 
@@ -60,6 +64,7 @@ interface Perspective {
   featured: boolean | null;
   image: string | null;
   content: string[];
+  tags: string[] | null;
   created_at: string;
   updated_at: string;
 }
@@ -82,7 +87,7 @@ interface Analysis {
   updated_at: string;
 }
 
-const perspectiveTopics = ['Governance', 'Impact', 'Growth', 'Strategy', 'Risk'];
+const defaultPerspectiveTopics = ['Governance', 'Impact', 'Growth', 'Strategy', 'Risk', 'Leadership', 'Innovation', 'Sustainability'];
 const analysisCategories = ['Capital Allocation', 'Governance', 'Performance', 'Operations', 'Impact'];
 const leadStatuses = ['Reviewing', 'Approved', 'Declined'];
 
@@ -127,8 +132,23 @@ export default function Admin() {
     summary: '',
     topic: 'Governance',
     featured: false,
-    content: ''
+    content: '',
+    image: '',
+    tags: [] as string[]
   });
+  
+  // Topic combobox state
+  const [topicOpen, setTopicOpen] = useState(false);
+  const [customTopic, setCustomTopic] = useState('');
+  
+  // Image upload state
+  const [imageUploading, setImageUploading] = useState(false);
+  
+  // AI summary state
+  const [generatingSummary, setGeneratingSummary] = useState(false);
+  
+  // Tag input state
+  const [tagInput, setTagInput] = useState('');
   
   // Analysis form
   const [analysisForm, setAnalysisForm] = useState({
@@ -145,17 +165,41 @@ export default function Admin() {
 
   // Check auth state on mount
   useEffect(() => {
+    let authTimeout: ReturnType<typeof setTimeout>;
+    let isMounted = true;
+    
     const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (session?.user) {
-        setUser(session.user);
-        await checkAdminRole(session.user.id);
+      try {
+        // Set a timeout to prevent infinite loading
+        authTimeout = setTimeout(() => {
+          if (isMounted) {
+            console.warn('Auth check timed out');
+            setAuthLoading(false);
+          }
+        }, 10000);
+        
+        const { data: { session }, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          console.error('Auth session error:', error);
+          if (isMounted) setAuthLoading(false);
+          return;
+        }
+        
+        if (session?.user && isMounted) {
+          setUser(session.user);
+          await checkAdminRole(session.user.id);
+        }
+        if (isMounted) setAuthLoading(false);
+      } catch (err) {
+        console.error('Auth check failed:', err);
+        if (isMounted) setAuthLoading(false);
       }
-      setAuthLoading(false);
     };
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (authTimeout) clearTimeout(authTimeout);
+      
       if (session?.user) {
         setUser(session.user);
         await checkAdminRole(session.user.id);
@@ -163,10 +207,15 @@ export default function Admin() {
         setUser(null);
         setIsAdmin(false);
       }
+      if (isMounted) setAuthLoading(false);
     });
 
     checkAuth();
-    return () => subscription.unsubscribe();
+    return () => {
+      isMounted = false;
+      if (authTimeout) clearTimeout(authTimeout);
+      subscription.unsubscribe();
+    };
   }, []);
 
   const checkAdminRole = async (userId: string) => {
@@ -326,9 +375,13 @@ export default function Admin() {
       summary: '',
       topic: 'Governance',
       featured: false,
-      content: ''
+      content: '',
+      image: '',
+      tags: []
     });
     setEditingPerspective(null);
+    setCustomTopic('');
+    setTagInput('');
   };
 
   const resetAnalysisForm = () => {
@@ -353,8 +406,11 @@ export default function Admin() {
       summary: perspective.summary,
       topic: perspective.topic,
       featured: perspective.featured || false,
-      content: perspective.content.join('\n\n')
+      content: perspective.content.join('\n\n'),
+      image: perspective.image || '',
+      tags: perspective.tags || []
     });
+    setCustomTopic(perspective.topic);
     setPerspectiveDialogOpen(true);
   };
 
@@ -382,7 +438,9 @@ export default function Admin() {
       summary: perspectiveForm.summary,
       topic: perspectiveForm.topic,
       featured: perspectiveForm.featured,
-      content: contentArray
+      content: contentArray,
+      image: perspectiveForm.image || null,
+      tags: perspectiveForm.tags.length > 0 ? perspectiveForm.tags : []
     };
 
     try {
@@ -487,6 +545,111 @@ export default function Admin() {
 
   // Count leads by status
   const reviewingCount = consultationLeads.filter(l => l.status === 'Reviewing').length;
+
+  // Get all unique topics from existing perspectives plus defaults
+  const allTopics = [...new Set([...defaultPerspectiveTopics, ...perspectives.map(p => p.topic)])];
+
+  // Image upload handler
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please upload an image file');
+      return;
+    }
+    
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image must be less than 5MB');
+      return;
+    }
+    
+    setImageUploading(true);
+    
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+      
+      const { error } = await supabase.storage
+        .from('perspective-images')
+        .upload(fileName, file);
+      
+      if (error) throw error;
+      
+      const { data: { publicUrl } } = supabase.storage
+        .from('perspective-images')
+        .getPublicUrl(fileName);
+      
+      setPerspectiveForm(prev => ({ ...prev, image: publicUrl }));
+      toast.success('Image uploaded successfully');
+    } catch (err) {
+      console.error('Error uploading image:', err);
+      toast.error('Failed to upload image');
+    } finally {
+      setImageUploading(false);
+    }
+  };
+  
+  // AI summary generation
+  const generateSummary = async () => {
+    if (!perspectiveForm.content.trim()) {
+      toast.error('Please add content first');
+      return;
+    }
+    
+    setGeneratingSummary(true);
+    
+    try {
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/summarize-perspective`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+        },
+        body: JSON.stringify({ content: perspectiveForm.content }),
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to generate summary');
+      }
+      
+      const data = await response.json();
+      
+      if (data.summary) {
+        setPerspectiveForm(prev => ({ ...prev, summary: data.summary }));
+        toast.success('Summary generated!');
+      }
+    } catch (err) {
+      console.error('Error generating summary:', err);
+      toast.error(err instanceof Error ? err.message : 'Failed to generate summary');
+    } finally {
+      setGeneratingSummary(false);
+    }
+  };
+  
+  // Tag handlers
+  const addTag = (tag: string) => {
+    const trimmedTag = tag.trim();
+    if (trimmedTag && !perspectiveForm.tags.includes(trimmedTag)) {
+      setPerspectiveForm(prev => ({ ...prev, tags: [...prev.tags, trimmedTag] }));
+    }
+    setTagInput('');
+  };
+  
+  const removeTag = (tagToRemove: string) => {
+    setPerspectiveForm(prev => ({
+      ...prev,
+      tags: prev.tags.filter(tag => tag !== tagToRemove)
+    }));
+  };
+  
+  const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault();
+      addTag(tagInput);
+    }
+  };
 
   if (authLoading) {
     return (
@@ -918,8 +1081,64 @@ export default function Admin() {
                               placeholder="Perspective title"
                             />
                           </div>
+                          
+                          {/* Image Upload */}
                           <div className="space-y-2">
-                            <Label htmlFor="summary">Summary</Label>
+                            <Label>Featured Image</Label>
+                            {perspectiveForm.image ? (
+                              <div className="relative">
+                                <img 
+                                  src={perspectiveForm.image} 
+                                  alt="Preview" 
+                                  className="w-full h-40 object-cover rounded-lg border"
+                                />
+                                <Button
+                                  type="button"
+                                  variant="destructive"
+                                  size="sm"
+                                  className="absolute top-2 right-2"
+                                  onClick={() => setPerspectiveForm(prev => ({ ...prev, image: '' }))}
+                                >
+                                  <X className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            ) : (
+                              <div className="border-2 border-dashed rounded-lg p-6 text-center">
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={handleImageUpload}
+                                  className="hidden"
+                                  id="perspective-image"
+                                  disabled={imageUploading}
+                                />
+                                <label 
+                                  htmlFor="perspective-image" 
+                                  className="cursor-pointer flex flex-col items-center gap-2"
+                                >
+                                  <Upload className="w-8 h-8 text-muted-foreground" />
+                                  <span className="text-sm text-muted-foreground">
+                                    {imageUploading ? 'Uploading...' : 'Click to upload image'}
+                                  </span>
+                                </label>
+                              </div>
+                            )}
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                              <Label htmlFor="summary">Summary</Label>
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={generateSummary}
+                                disabled={!perspectiveForm.content.trim() || generatingSummary}
+                              >
+                                <Sparkles className="w-4 h-4 mr-1" />
+                                {generatingSummary ? 'Generating...' : 'AI Generate'}
+                              </Button>
+                            </div>
                             <Textarea
                               id="summary"
                               value={perspectiveForm.summary}
@@ -928,24 +1147,98 @@ export default function Admin() {
                               rows={2}
                             />
                           </div>
+                          
                           <div className="space-y-2">
-                            <Label htmlFor="topic">Topic</Label>
-                            <Select
-                              value={perspectiveForm.topic}
-                              onValueChange={(value) => setPerspectiveForm(prev => ({ ...prev, topic: value }))}
-                            >
-                              <SelectTrigger>
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {perspectiveTopics.map((topic) => (
-                                  <SelectItem key={topic} value={topic}>
-                                    {topic}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
+                            <Label>Topic</Label>
+                            <Popover open={topicOpen} onOpenChange={setTopicOpen}>
+                              <PopoverTrigger asChild>
+                                <Button
+                                  variant="outline"
+                                  role="combobox"
+                                  aria-expanded={topicOpen}
+                                  className="w-full justify-between"
+                                >
+                                  {perspectiveForm.topic || "Select or type topic..."}
+                                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-full p-0">
+                                <Command>
+                                  <CommandInput 
+                                    placeholder="Search or type custom topic..." 
+                                    value={customTopic}
+                                    onValueChange={(value) => {
+                                      setCustomTopic(value);
+                                    }}
+                                  />
+                                  <CommandList>
+                                    <CommandEmpty>
+                                      <Button
+                                        variant="ghost"
+                                        className="w-full justify-start"
+                                        onClick={() => {
+                                          if (customTopic.trim()) {
+                                            setPerspectiveForm(prev => ({ ...prev, topic: customTopic.trim() }));
+                                            setTopicOpen(false);
+                                          }
+                                        }}
+                                      >
+                                        <Plus className="mr-2 h-4 w-4" />
+                                        Create "{customTopic}"
+                                      </Button>
+                                    </CommandEmpty>
+                                    <CommandGroup>
+                                      {allTopics.map((topic) => (
+                                        <CommandItem
+                                          key={topic}
+                                          value={topic}
+                                          onSelect={() => {
+                                            setPerspectiveForm(prev => ({ ...prev, topic }));
+                                            setCustomTopic(topic);
+                                            setTopicOpen(false);
+                                          }}
+                                        >
+                                          <Check
+                                            className={cn(
+                                              "mr-2 h-4 w-4",
+                                              perspectiveForm.topic === topic ? "opacity-100" : "opacity-0"
+                                            )}
+                                          />
+                                          {topic}
+                                        </CommandItem>
+                                      ))}
+                                    </CommandGroup>
+                                  </CommandList>
+                                </Command>
+                              </PopoverContent>
+                            </Popover>
                           </div>
+                          
+                          {/* Tags Input */}
+                          <div className="space-y-2">
+                            <Label>Tags</Label>
+                            <div className="flex flex-wrap gap-2 mb-2">
+                              {perspectiveForm.tags.map((tag) => (
+                                <Badge key={tag} variant="secondary" className="flex items-center gap-1">
+                                  {tag}
+                                  <button
+                                    type="button"
+                                    onClick={() => removeTag(tag)}
+                                    className="ml-1 hover:text-destructive"
+                                  >
+                                    <X className="w-3 h-3" />
+                                  </button>
+                                </Badge>
+                              ))}
+                            </div>
+                            <Input
+                              value={tagInput}
+                              onChange={(e) => setTagInput(e.target.value)}
+                              onKeyDown={handleTagKeyDown}
+                              placeholder="Type a tag and press Enter"
+                            />
+                          </div>
+                          
                           <div className="flex items-center space-x-2">
                             <Checkbox
                               id="featured"

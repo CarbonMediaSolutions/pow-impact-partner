@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { supabase } from '@/integrations/supabase/client';
 import { perspectives as staticPerspectives } from '@/data/perspectives';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, User } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { format } from 'date-fns';
 
 interface Perspective {
   id: string;
@@ -16,6 +20,9 @@ interface Perspective {
   topic: string;
   content: string[];
   content_zh?: string[] | null;
+  image?: string | null;
+  tags?: string[] | null;
+  created_at?: string;
 }
 
 const PerspectiveDetail = () => {
@@ -93,47 +100,125 @@ const PerspectiveDetail = () => {
     <div className="min-h-screen bg-background">
       <Header />
       
-      <main className="pt-32 pb-24">
-        {/* Back link */}
-        <div className="max-w-3xl mx-auto px-6 mb-12">
-          <Link 
-            to="/perspectives" 
-            className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
+      {/* Hero Section */}
+      <section className="pt-32 pb-12">
+        <div className="container max-w-4xl">
+          <Link to="/perspectives" className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors mb-8 font-body">
             <ArrowLeft className="w-4 h-4 mr-2" />
             {isZh ? '返回觀點' : 'Back to Perspectives'}
           </Link>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="flex flex-wrap items-center gap-4 mb-6">
+              <Badge variant="outline" className="font-body">{perspective.topic}</Badge>
+              {perspective.created_at && (
+                <span className="flex items-center gap-1 text-sm text-muted-foreground font-body">
+                  <Calendar className="w-4 h-4" />
+                  {format(new Date(perspective.created_at), 'dd MMMM yyyy')}
+                </span>
+              )}
+              <span className="flex items-center gap-1 text-sm text-muted-foreground font-body">
+                <Clock className="w-4 h-4" />
+                {Math.ceil(getContent(perspective).join(' ').split(' ').length / 200)} min read
+              </span>
+            </div>
+            
+            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
+              {getTitle(perspective)}
+            </h1>
+            
+            <p className="font-body text-xl text-muted-foreground mb-8">
+              {getSummary(perspective)}
+            </p>
+
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <User className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <p className="font-body font-semibold text-foreground">Pow Consulting Team</p>
+                <p className="font-body text-sm text-muted-foreground">Impact Partners</p>
+              </div>
+            </div>
+          </motion.div>
         </div>
+      </section>
 
-        {/* Header */}
-        <header className="max-w-3xl mx-auto px-6 mb-16">
-          <span className="text-xs uppercase tracking-widest text-muted-foreground mb-4 block">
-            {perspective.topic}
-          </span>
-          <h1 className="text-4xl md:text-5xl font-serif text-foreground leading-tight mb-6">
-            {getTitle(perspective)}
-          </h1>
-          <p className="text-xl text-muted-foreground leading-relaxed">
-            {getSummary(perspective)}
-          </p>
-        </header>
-
-        {/* Content */}
-        <article className="max-w-3xl mx-auto px-6">
-          <div className="space-y-8">
-            {getContent(perspective).map((paragraph, index) => (
-              <p 
-                key={index} 
-                className="text-lg text-foreground/90 leading-relaxed font-light"
-              >
-                {paragraph}
-              </p>
-            ))}
+      {/* Featured Image */}
+      {perspective.image && (
+        <section className="pb-12">
+          <div className="container max-w-4xl">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <img
+                src={perspective.image}
+                alt={getTitle(perspective)}
+                className="w-full h-64 md:h-96 object-cover rounded-xl"
+              />
+            </motion.div>
           </div>
-        </article>
+        </section>
+      )}
 
-        {/* Footer divider */}
-        <div className="max-w-3xl mx-auto px-6 mt-20">
+      {/* Article Content */}
+      <section className="pb-16">
+        <div className="container max-w-3xl">
+          <motion.article
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="prose prose-lg max-w-none font-body"
+          >
+            {getContent(perspective).map((paragraph, index) => (
+              <p key={index}>{paragraph}</p>
+            ))}
+          </motion.article>
+
+          {/* Tags */}
+          {perspective.tags && perspective.tags.length > 0 && (
+            <div className="mt-12 pt-8 border-t border-border">
+              <h4 className="font-body font-semibold text-foreground mb-4">Tags</h4>
+              <div className="flex flex-wrap gap-2">
+                {perspective.tags.map(tag => (
+                  <Badge key={tag} variant="outline" className="font-body">
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 bg-muted/30">
+        <div className="container max-w-3xl text-center">
+          <h3 className="font-serif text-2xl font-bold text-foreground mb-4">
+            {isZh ? '想進一步討論這些想法？' : 'Want to discuss these ideas further?'}
+          </h3>
+          <p className="font-body text-muted-foreground mb-6">
+            {isZh 
+              ? '預約免費諮詢，探討這些策略如何適用於您的組織。' 
+              : 'Book a free consultation to explore how these strategies could work for your organization.'}
+          </p>
+          <Link to="/book">
+            <Button className="btn-emerald font-body font-semibold px-8 py-6">
+              {isZh ? '預約免費諮詢' : 'Book Your Free Consultation'}
+            </Button>
+          </Link>
+        </div>
+      </section>
+
+      {/* Footer divider */}
+      <section className="py-12">
+        <div className="container max-w-3xl">
           <div className="border-t border-border pt-12">
             <p className="text-sm text-muted-foreground italic">
               {isZh 
@@ -142,7 +227,7 @@ const PerspectiveDetail = () => {
             </p>
           </div>
         </div>
-      </main>
+      </section>
 
       <Footer />
     </div>
