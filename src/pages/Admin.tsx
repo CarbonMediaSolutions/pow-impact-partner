@@ -430,8 +430,13 @@ export default function Admin() {
     setAnalysisDialogOpen(true);
   };
 
-  const savePerspective = async () => {
-    const contentArray = perspectiveForm.content.split('\n\n').filter(p => p.trim());
+   const savePerspective = async () => {
+     // Split by newlines to preserve bullet points and formatting
+     // Each non-empty line becomes a separate array element
+     const contentArray = perspectiveForm.content
+       .split('\n')
+       .filter(line => line.trim())
+       .map(line => line.trim());
     
     const data = {
       title: perspectiveForm.title,
