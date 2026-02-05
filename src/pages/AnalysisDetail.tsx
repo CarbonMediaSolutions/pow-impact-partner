@@ -7,6 +7,7 @@ import { EmailGate } from '@/components/EmailGate';
 import { supabase } from '@/integrations/supabase/client';
 import { analyses as staticAnalyses } from '@/data/analyses';
 import { ArrowLeft } from 'lucide-react';
+ import { SocialShare } from '@/components/SocialShare';
 
 interface AnalysisContent {
   introduction?: string;
@@ -145,6 +146,14 @@ const AnalysisDetail = () => {
           <p className="text-xl text-muted-foreground leading-relaxed">
             {getSummary(analysis)}
           </p>
+         
+         {/* Social Share */}
+         <div className="mt-6">
+           <SocialShare 
+             url={`https://pow-impact-partner.lovable.app/analysis/${analysis.id}`}
+             title={getTitle(analysis)}
+           />
+         </div>
         </header>
 
         {/* Gated Content */}

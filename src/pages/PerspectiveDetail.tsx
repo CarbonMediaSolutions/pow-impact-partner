@@ -11,6 +11,7 @@
  import { Badge } from '@/components/ui/badge';
  import { format } from 'date-fns';
  import { FormattedContent } from '@/components/FormattedContent';
+ import { SocialShare } from '@/components/SocialShare';
 
 interface Perspective {
   id: string;
@@ -145,6 +146,12 @@ const PerspectiveDetail = () => {
                 <p className="font-body text-sm text-muted-foreground">Impact Partners</p>
               </div>
             </div>
+           
+           {/* Social Share */}
+           <SocialShare 
+             url={`https://pow-impact-partner.lovable.app/perspectives/${perspective.id}`}
+             title={getTitle(perspective)}
+           />
           </motion.div>
         </div>
       </section>

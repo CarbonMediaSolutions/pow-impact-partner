@@ -1309,6 +1309,14 @@ export default function Admin() {
                                     <Button variant="ghost" size="sm" onClick={() => openEditPerspective(perspective)}>
                                       <Pencil className="w-4 h-4" />
                                     </Button>
+                                     <Button 
+                                       variant="ghost" 
+                                       size="sm" 
+                                       onClick={() => window.open(`/perspectives/${perspective.id}`, '_blank')}
+                                       title="Preview"
+                                     >
+                                       <ExternalLink className="w-4 h-4" />
+                                     </Button>
                                     <Button variant="ghost" size="sm" onClick={() => deletePerspective(perspective.id)}>
                                       <Trash2 className="w-4 h-4 text-destructive" />
                                     </Button>
@@ -1484,6 +1492,14 @@ export default function Admin() {
                                     <Button variant="ghost" size="sm" onClick={() => openEditAnalysis(analysis)}>
                                       <Pencil className="w-4 h-4" />
                                     </Button>
+                                     <Button 
+                                       variant="ghost" 
+                                       size="sm" 
+                                       onClick={() => window.open(`/analysis/${analysis.id}`, '_blank')}
+                                       title="Preview"
+                                     >
+                                       <ExternalLink className="w-4 h-4" />
+                                     </Button>
                                     <Button variant="ghost" size="sm" onClick={() => deleteAnalysis(analysis.id)}>
                                       <Trash2 className="w-4 h-4 text-destructive" />
                                     </Button>
