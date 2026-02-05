@@ -76,6 +76,7 @@ interface Analysis {
   category: string;
   date: string | null;
   featured: boolean | null;
+   pdf_url?: string | null;
   content: {
     introduction?: string;
     sections?: { heading: string; paragraphs: string[] }[];
@@ -150,6 +151,9 @@ export default function Admin() {
   // Tag input state
   const [tagInput, setTagInput] = useState('');
   
+   // PDF upload state
+   const [pdfUploading, setPdfUploading] = useState(false);
+   
   // Analysis form
   const [analysisForm, setAnalysisForm] = useState({
     title: '',
@@ -160,7 +164,8 @@ export default function Admin() {
     introduction: '',
     methodology: '',
     keyFindings: '',
-    implications: ''
+     implications: '',
+     pdfUrl: ''
   });
 
   // Check auth state on mount
@@ -394,7 +399,8 @@ export default function Admin() {
       introduction: '',
       methodology: '',
       keyFindings: '',
-      implications: ''
+       implications: '',
+       pdfUrl: ''
     });
     setEditingAnalysis(null);
   };
@@ -425,7 +431,8 @@ export default function Admin() {
       introduction: analysis.content?.introduction || '',
       methodology: analysis.content?.methodology || '',
       keyFindings: analysis.content?.keyFindings?.join('\n') || '',
-      implications: analysis.content?.implications?.join('\n') || ''
+       implications: analysis.content?.implications?.join('\n') || '',
+       pdfUrl: analysis.pdf_url || ''
     });
     setAnalysisDialogOpen(true);
   };
@@ -490,7 +497,8 @@ export default function Admin() {
       category: analysisForm.category,
       date: analysisForm.date,
       featured: analysisForm.featured,
-      content
+       content,
+       pdf_url: analysisForm.pdfUrl || null
     };
 
     try {
@@ -669,6 +677,52 @@ export default function Admin() {
     }
   };
 
+   // PDF upload handler
+   const handlePdfUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+     const file = e.target.files?.[0];
+     if (!file) return;
+     
+     if (file.type !== 'application/pdf') {
+       toast.error('Please upload a PDF file');
+       return;
+     }
+     
+     if (file.size > 20 * 1024 * 1024) {
+       toast.error('PDF must be less than 20MB');
+       return;
+     }
+     
+     setPdfUploading(true);
+     
+     try {
+       const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.pdf`;
+       
+       const { data, error } = await supabase.storage
+         .from('analysis-pdfs')
+         .upload(fileName, file, {
+           cacheControl: '3600',
+           upsert: false
+         });
+       
+       if (error) throw error;
+       
+       const { data: { publicUrl } } = supabase.storage
+         .from('analysis-pdfs')
+         .getPublicUrl(fileName);
+       
+       setAnalysisForm(prev => ({ ...prev, pdfUrl: publicUrl }));
+       toast.success('PDF uploaded successfully');
+     } catch (err) {
+       console.error('Error uploading PDF:', err);
+       toast.error('Failed to upload PDF');
+     } finally {
+       setPdfUploading(false);
+       // Reset the file input
+       const input = document.getElementById('analysis-pdf') as HTMLInputElement;
+       if (input) input.value = '';
+     }
+   };
+ 
   if (authLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -1456,6 +1510,40 @@ export default function Admin() {
                               rows={4}
                             />
                           </div>
+                           <div className="space-y-2">
+                             <Label>PDF Report (optional)</Label>
+                             <div className="border-2 border-dashed border-border rounded-lg p-4">
+                               {analysisForm.pdfUrl ? (
+                                 <div className="flex items-center justify-between">
+                                   <span className="text-sm text-muted-foreground truncate flex-1">
+                                     PDF uploaded
+                                   </span>
+                                   <Button 
+                                     variant="ghost" 
+                                     size="sm" 
+                                     onClick={() => setAnalysisForm(prev => ({ ...prev, pdfUrl: '' }))}
+                                   >
+                                     <X className="w-4 h-4" />
+                                   </Button>
+                                 </div>
+                               ) : (
+                                 <label className="cursor-pointer flex flex-col items-center">
+                                   <Upload className="w-8 h-8 text-muted-foreground mb-2" />
+                                   <span className="text-sm text-muted-foreground">
+                                     {pdfUploading ? 'Uploading...' : 'Click to upload PDF'}
+                                   </span>
+                                   <input
+                                     id="analysis-pdf"
+                                     type="file"
+                                     accept=".pdf"
+                                     onChange={handlePdfUpload}
+                                     className="hidden"
+                                     disabled={pdfUploading}
+                                   />
+                                 </label>
+                               )}
+                             </div>
+                           </div>
                           <Button onClick={saveAnalysis} className="w-full">
                             {editingAnalysis ? 'Update Analysis' : 'Create Analysis'}
                           </Button>

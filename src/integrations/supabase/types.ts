@@ -23,6 +23,7 @@ export type Database = {
           date: string | null
           featured: boolean | null
           id: string
+          pdf_url: string | null
           summary: string
           summary_zh: string | null
           title: string
@@ -37,6 +38,7 @@ export type Database = {
           date?: string | null
           featured?: boolean | null
           id?: string
+          pdf_url?: string | null
           summary: string
           summary_zh?: string | null
           title: string
@@ -51,6 +53,7 @@ export type Database = {
           date?: string | null
           featured?: boolean | null
           id?: string
+          pdf_url?: string | null
           summary?: string
           summary_zh?: string | null
           title?: string
