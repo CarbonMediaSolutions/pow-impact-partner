@@ -3,7 +3,6 @@ import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { EmailGate } from '@/components/EmailGate';
 import { supabase } from '@/integrations/supabase/client';
 import { analyses as staticAnalyses } from '@/data/analyses';
 import { ArrowLeft } from 'lucide-react';
@@ -170,85 +169,84 @@ const AnalysisDetail = () => {
         </header>
 
         {/* Gated Content */}
-        <EmailGate source={`analysis-${analysis.id}`}>
+        {/* Content - freely accessible */}
+        <article className="max-w-3xl mx-auto px-6">
           {/* Introduction */}
-          <article className="max-w-3xl mx-auto px-6">
-            {getContent(analysis).introduction && (
-              <p className="text-lg text-foreground/90 leading-relaxed font-light mb-12">
-                {getContent(analysis).introduction}
+          {getContent(analysis).introduction && (
+            <p className="text-lg text-foreground/90 leading-relaxed font-light mb-12">
+              {getContent(analysis).introduction}
+            </p>
+          )}
+
+          {/* Sections */}
+          {getContent(analysis).sections && getContent(analysis).sections!.length > 0 && (
+            <div className="space-y-12">
+              {getContent(analysis).sections!.map((section, index) => (
+                <section key={index}>
+                  <h2 className="text-2xl font-serif text-foreground mb-6">
+                    {section.heading}
+                  </h2>
+                  <div className="space-y-6">
+                    {section.paragraphs.map((paragraph, pIndex) => (
+                      <p 
+                        key={pIndex} 
+                        className="text-lg text-foreground/90 leading-relaxed font-light"
+                      >
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+          )}
+
+          {/* Methodology */}
+          {getContent(analysis).methodology && (
+            <section className="mt-16 pt-12 border-t border-border">
+              <h2 className="text-lg font-medium text-foreground mb-4">
+                {isZh ? '研究方法' : 'Methodology'}
+              </h2>
+              <p className="text-muted-foreground leading-relaxed">
+                {getContent(analysis).methodology}
               </p>
-            )}
+            </section>
+          )}
 
-            {/* Sections */}
-            {getContent(analysis).sections && getContent(analysis).sections!.length > 0 && (
-              <div className="space-y-12">
-                {getContent(analysis).sections!.map((section, index) => (
-                  <section key={index}>
-                    <h2 className="text-2xl font-serif text-foreground mb-6">
-                      {section.heading}
-                    </h2>
-                    <div className="space-y-6">
-                      {section.paragraphs.map((paragraph, pIndex) => (
-                        <p 
-                          key={pIndex} 
-                          className="text-lg text-foreground/90 leading-relaxed font-light"
-                        >
-                          {paragraph}
-                        </p>
-                      ))}
-                    </div>
-                  </section>
+          {/* Key Findings */}
+          {getContent(analysis).keyFindings && getContent(analysis).keyFindings!.length > 0 && (
+            <section className="mt-12">
+              <h2 className="text-lg font-medium text-foreground mb-6">
+                {isZh ? '主要發現' : 'Key Findings'}
+              </h2>
+              <ul className="space-y-4">
+                {getContent(analysis).keyFindings!.map((finding, index) => (
+                  <li key={index} className="flex items-start gap-4">
+                    <span className="text-primary/60 font-serif text-lg">•</span>
+                    <span className="text-foreground/80 leading-relaxed">{finding}</span>
+                  </li>
                 ))}
-              </div>
-            )}
+              </ul>
+            </section>
+          )}
 
-            {/* Methodology */}
-            {getContent(analysis).methodology && (
-              <section className="mt-16 pt-12 border-t border-border">
-                <h2 className="text-lg font-medium text-foreground mb-4">
-                  {isZh ? '研究方法' : 'Methodology'}
-                </h2>
-                <p className="text-muted-foreground leading-relaxed">
-                  {getContent(analysis).methodology}
-                </p>
-              </section>
-            )}
-
-            {/* Key Findings */}
-            {getContent(analysis).keyFindings && getContent(analysis).keyFindings!.length > 0 && (
-              <section className="mt-12">
-                <h2 className="text-lg font-medium text-foreground mb-6">
-                  {isZh ? '主要發現' : 'Key Findings'}
-                </h2>
-                <ul className="space-y-4">
-                  {getContent(analysis).keyFindings!.map((finding, index) => (
-                    <li key={index} className="flex items-start gap-4">
-                      <span className="text-primary/60 font-serif text-lg">•</span>
-                      <span className="text-foreground/80 leading-relaxed">{finding}</span>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )}
-
-            {/* Implications */}
-            {getContent(analysis).implications && getContent(analysis).implications!.length > 0 && (
-              <section className="mt-12">
-                <h2 className="text-lg font-medium text-foreground mb-6">
-                  {isZh ? '影響與啟示' : 'Implications'}
-                </h2>
-                <ul className="space-y-4">
-                  {getContent(analysis).implications!.map((implication, index) => (
-                    <li key={index} className="flex items-start gap-4">
-                      <span className="text-primary/60 font-serif text-lg">•</span>
-                      <span className="text-foreground/80 leading-relaxed">{implication}</span>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )}
-          </article>
-        </EmailGate>
+          {/* Implications */}
+          {getContent(analysis).implications && getContent(analysis).implications!.length > 0 && (
+            <section className="mt-12">
+              <h2 className="text-lg font-medium text-foreground mb-6">
+                {isZh ? '影響與啟示' : 'Implications'}
+              </h2>
+              <ul className="space-y-4">
+                {getContent(analysis).implications!.map((implication, index) => (
+                  <li key={index} className="flex items-start gap-4">
+                    <span className="text-primary/60 font-serif text-lg">•</span>
+                    <span className="text-foreground/80 leading-relaxed">{implication}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+        </article>
 
         {/* Footer note */}
         <div className="max-w-3xl mx-auto px-6 mt-20">
