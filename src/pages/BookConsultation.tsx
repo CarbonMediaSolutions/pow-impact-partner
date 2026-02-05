@@ -24,7 +24,8 @@ export default function BookConsultation() {
     email: '',
     organisation: '',
     role: '',
-    website_linkedin: '',
+    company_website: '',
+    linkedin_profile: '',
     problem_statement: '',
     desired_outcome: '',
   });
@@ -50,7 +51,7 @@ export default function BookConsultation() {
           email: formData.email,
           organisation: formData.organisation || null,
           role: formData.role || null,
-          website_linkedin: formData.website_linkedin || null,
+          website_linkedin: [formData.company_website, formData.linkedin_profile].filter(Boolean).join(' | ') || null,
           problem_statement: selectedSolution 
             ? `[${selectedSolution.title}] ${formData.problem_statement}`
             : formData.problem_statement,
@@ -68,7 +69,7 @@ export default function BookConsultation() {
             email: formData.email,
             organisation: formData.organisation,
             role: formData.role,
-            website_linkedin: formData.website_linkedin,
+            website_linkedin: [formData.company_website, formData.linkedin_profile].filter(Boolean).join(' | '),
             problem_statement: selectedSolution 
               ? `[${selectedSolution.title}] ${formData.problem_statement}`
               : formData.problem_statement,
@@ -173,7 +174,7 @@ export default function BookConsultation() {
                 <Button
                   onClick={() => {
                     setIsSubmitted(false);
-                    setFormData({ name: '', email: '', organisation: '', role: '', website_linkedin: '', problem_statement: '', desired_outcome: '' });
+                    setFormData({ name: '', email: '', organisation: '', role: '', company_website: '', linkedin_profile: '', problem_statement: '', desired_outcome: '' });
                   }}
                   variant="outline"
                   className="font-body"
@@ -234,16 +235,30 @@ export default function BookConsultation() {
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="website_linkedin" className="font-body text-sm">{t('book:form.websiteLinkedin')}</Label>
-                  <Input
-                    id="website_linkedin"
-                    name="website_linkedin"
-                    value={formData.website_linkedin}
-                    onChange={handleChange}
-                    placeholder={t('book:form.websiteLinkedinPlaceholder')}
-                    className="font-body"
-                  />
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="company_website" className="font-body text-sm">{t('book:form.companyWebsite')}</Label>
+                    <Input
+                      id="company_website"
+                      name="company_website"
+                      value={formData.company_website}
+                      onChange={handleChange}
+                      placeholder={t('book:form.companyWebsitePlaceholder')}
+                      className="font-body"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="linkedin_profile" className="font-body text-sm">{t('book:form.linkedinProfile')}</Label>
+                    <Input
+                      id="linkedin_profile"
+                      name="linkedin_profile"
+                      value={formData.linkedin_profile}
+                      onChange={handleChange}
+                      placeholder={t('book:form.linkedinProfilePlaceholder')}
+                      className="font-body"
+                    />
+                  </div>
                 </div>
 
                 <div className="space-y-2">
