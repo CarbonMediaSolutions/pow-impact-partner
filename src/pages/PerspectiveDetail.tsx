@@ -1,15 +1,16 @@
-import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { motion } from 'framer-motion';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
-import { supabase } from '@/integrations/supabase/client';
-import { perspectives as staticPerspectives } from '@/data/perspectives';
-import { ArrowLeft, Calendar, Clock, User } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { format } from 'date-fns';
+ import { useState, useEffect } from 'react';
+ import { useParams, Link } from 'react-router-dom';
+ import { useTranslation } from 'react-i18next';
+ import { motion } from 'framer-motion';
+ import { Header } from '@/components/Header';
+ import { Footer } from '@/components/Footer';
+ import { supabase } from '@/integrations/supabase/client';
+ import { perspectives as staticPerspectives } from '@/data/perspectives';
+ import { ArrowLeft, Calendar, Clock, User } from 'lucide-react';
+ import { Button } from '@/components/ui/button';
+ import { Badge } from '@/components/ui/badge';
+ import { format } from 'date-fns';
+ import { FormattedContent } from '@/components/FormattedContent';
 
 interface Perspective {
   id: string;
@@ -167,19 +168,17 @@ const PerspectiveDetail = () => {
         </section>
       )}
 
-      {/* Article Content */}
-      <section className="pb-16">
-        <div className="container max-w-3xl">
-          <motion.article
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="prose prose-lg max-w-none font-body"
-          >
-            {getContent(perspective).map((paragraph, index) => (
-              <p key={index}>{paragraph}</p>
-            ))}
-          </motion.article>
+       {/* Article Content */}
+       <section className="pb-16">
+         <div className="container max-w-3xl">
+           <motion.article
+             initial={{ opacity: 0, y: 20 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ duration: 0.6, delay: 0.3 }}
+             className="prose prose-lg max-w-none font-body"
+           >
+             <FormattedContent content={getContent(perspective)} />
+           </motion.article>
 
           {/* Tags */}
           {perspective.tags && perspective.tags.length > 0 && (
