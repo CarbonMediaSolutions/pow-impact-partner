@@ -1,44 +1,42 @@
 
 
-## Feature: Preview Links & Social Sharing
+## Feature: PDF Upload for Analyses with Gated Download
 
 ### Overview
 
-Add two enhancements:
-1. **Preview buttons in Admin panel** - Quick links to view published Perspectives and Analyses directly from the admin tables
-2. **Social share buttons on detail pages** - Allow readers to share articles to LinkedIn, Twitter (X), and Facebook
+Add the ability to upload PDFs to analyses in the admin panel, and allow visitors to download the PDF only after providing their email address (using the existing email gate pattern).
 
 ---
 
-### Part 1: Admin Preview Links
+### Database Changes
 
-Add an "eye" icon button next to the edit/delete actions in the Perspectives and Analyses tables that opens the public article page in a new tab.
+Add a new `pdf_url` column to the `analyses` table to store the URL of the uploaded PDF.
 
-**Visual Example (Perspectives table):**
-
-```text
-| Title                                    | Topic   | Featured | Actions       |
-|------------------------------------------|---------|----------|---------------|
-| Founder Mental Health Isn't Just...      | Risk    | Yes      | 👁 ✏️ 🗑️      |
+```sql
+ALTER TABLE public.analyses ADD COLUMN pdf_url text;
 ```
 
-The eye icon (👁) opens `/perspectives/{id}` in a new tab.
-
 ---
 
-### Part 2: Social Share Buttons on Detail Pages
+### Storage Changes
 
-Add share buttons after the article metadata (below the author section) on both Perspective and Analysis detail pages.
+Create a new storage bucket for analysis PDFs with appropriate RLS policies:
 
-**Design:**
-- Row of 3 icon buttons: LinkedIn, Twitter/X, Facebook
-- Subtle styling that matches the institutional tone
-- Opens native share dialogs in new windows
+```sql
+-- Create bucket for analysis PDFs
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('analysis-pdfs', 'analysis-pdfs', true);
 
-**Share URLs:**
-- **LinkedIn**: `https://www.linkedin.com/sharing/share-offsite/?url={url}`
-- **Twitter/X**: `https://twitter.com/intent/tweet?url={url}&text={title}`
-- **Facebook**: `https://www.facebook.com/sharer/sharer.php?u={url}`
+-- Allow authenticated users to upload PDFs
+CREATE POLICY "Authenticated users can upload analysis PDFs"
+ON storage.objects FOR INSERT TO authenticated
+WITH CHECK (bucket_id = 'analysis-pdfs');
+
+-- Allow public read access
+CREATE POLICY "Public can view analysis PDFs"
+ON storage.objects FOR SELECT TO public
+USING (bucket_id = 'analysis-pdfs');
+```
 
 ---
 
@@ -46,164 +44,298 @@ Add share buttons after the article metadata (below the author section) on both 
 
 | File | Changes |
 |------|---------|
-| `src/pages/Admin.tsx` | Add Eye/ExternalLink preview button to Perspectives and Analyses tables |
-| `src/pages/PerspectiveDetail.tsx` | Add social share component below author section |
-| `src/pages/AnalysisDetail.tsx` | Add social share component below header |
-| `src/components/SocialShare.tsx` | **New** - Reusable share button component |
+| `src/pages/Admin.tsx` | Add PDF upload field to analysis form, PDF upload handler, save PDF URL |
+| `src/pages/AnalysisDetail.tsx` | Add gated PDF download button |
+| `src/components/EmailGate.tsx` | Create variant or wrapper for download-specific gating |
 
 ---
 
-### Technical Details
+### Admin Panel Changes
 
-**New Component: `SocialShare.tsx`**
+**1. Add PDF upload state:**
+```typescript
+const [pdfUploading, setPdfUploading] = useState(false);
+```
+
+**2. Update analysis form state:**
+```typescript
+const [analysisForm, setAnalysisForm] = useState({
+  // ... existing fields
+  pdfUrl: ''  // new field
+});
+```
+
+**3. Add PDF upload handler:**
+```typescript
+const handlePdfUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+  
+  if (file.type !== 'application/pdf') {
+    toast.error('Please upload a PDF file');
+    return;
+  }
+  
+  if (file.size > 20 * 1024 * 1024) {
+    toast.error('PDF must be less than 20MB');
+    return;
+  }
+  
+  setPdfUploading(true);
+  
+  try {
+    const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.pdf`;
+    
+    const { data, error } = await supabase.storage
+      .from('analysis-pdfs')
+      .upload(fileName, file, { cacheControl: '3600', upsert: false });
+    
+    if (error) throw error;
+    
+    const { data: { publicUrl } } = supabase.storage
+      .from('analysis-pdfs')
+      .getPublicUrl(fileName);
+    
+    setAnalysisForm(prev => ({ ...prev, pdfUrl: publicUrl }));
+    toast.success('PDF uploaded successfully');
+  } catch (err) {
+    toast.error('Failed to upload PDF');
+  } finally {
+    setPdfUploading(false);
+  }
+};
+```
+
+**4. Add PDF upload UI to analysis form (after the Implications field):**
+```tsx
+<div className="space-y-2">
+  <Label>PDF Report (optional)</Label>
+  <div className="border-2 border-dashed rounded-lg p-4">
+    {analysisForm.pdfUrl ? (
+      <div className="flex items-center justify-between">
+        <span className="text-sm text-muted-foreground truncate">
+          PDF uploaded
+        </span>
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          onClick={() => setAnalysisForm(prev => ({ ...prev, pdfUrl: '' }))}
+        >
+          <X className="w-4 h-4" />
+        </Button>
+      </div>
+    ) : (
+      <label className="cursor-pointer flex flex-col items-center">
+        <Upload className="w-8 h-8 text-muted-foreground mb-2" />
+        <span className="text-sm text-muted-foreground">
+          {pdfUploading ? 'Uploading...' : 'Click to upload PDF'}
+        </span>
+        <input
+          type="file"
+          accept=".pdf"
+          onChange={handlePdfUpload}
+          className="hidden"
+          disabled={pdfUploading}
+        />
+      </label>
+    )}
+  </div>
+</div>
+```
+
+**5. Update saveAnalysis to include pdf_url:**
+```typescript
+const data = {
+  // ... existing fields
+  pdf_url: analysisForm.pdfUrl || null
+};
+```
+
+---
+
+### Customer-Facing Download
+
+On the AnalysisDetail page, add a download button that appears only when a PDF exists. The download is gated behind email capture.
+
+**New Component: `GatedDownload.tsx`**
 
 ```tsx
-import { Linkedin, Twitter, Facebook } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Download, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
-interface SocialShareProps {
-  url: string;
+interface GatedDownloadProps {
+  pdfUrl: string;
   title: string;
+  source: string;
 }
 
-export const SocialShare = ({ url, title }: SocialShareProps) => {
-  const encodedUrl = encodeURIComponent(url);
-  const encodedTitle = encodeURIComponent(title);
-  
-  const shareLinks = {
-    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
-    twitter: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
-    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`
+const STORAGE_KEY = 'plexa_email_captured';
+
+export const GatedDownload = ({ pdfUrl, title, source }: GatedDownloadProps) => {
+  const [hasAccess, setHasAccess] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    const captured = localStorage.getItem(STORAGE_KEY);
+    if (captured) setHasAccess(true);
+  }, []);
+
+  const handleDownload = () => {
+    if (hasAccess) {
+      window.open(pdfUrl, '_blank');
+    } else {
+      setShowModal(true);
+    }
   };
-  
-  const openShare = (platform: keyof typeof shareLinks) => {
-    window.open(shareLinks[platform], '_blank', 'width=600,height=400');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      await supabase.from('email_captures').insert([{ email, name: name || null, source }]);
+      localStorage.setItem(STORAGE_KEY, 'true');
+      setHasAccess(true);
+      setShowModal(false);
+      window.open(pdfUrl, '_blank');
+      toast.success('Download started');
+    } catch {
+      toast.error('Please try again');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
-  
+
   return (
-    <div className="flex items-center gap-2">
-      <span className="text-sm text-muted-foreground mr-2">Share:</span>
-      <Button variant="ghost" size="sm" onClick={() => openShare('linkedin')}>
-        <Linkedin className="w-4 h-4" />
+    <>
+      <Button onClick={handleDownload} className="gap-2">
+        <Download className="w-4 h-4" />
+        Download Full Report
       </Button>
-      <Button variant="ghost" size="sm" onClick={() => openShare('twitter')}>
-        <Twitter className="w-4 h-4" />
-      </Button>
-      <Button variant="ghost" size="sm" onClick={() => openShare('facebook')}>
-        <Facebook className="w-4 h-4" />
-      </Button>
-    </div>
+
+      <Dialog open={showModal} onOpenChange={setShowModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Download Report</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label>Name</Label>
+              <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" />
+            </div>
+            <div className="space-y-2">
+              <Label>Email *</Label>
+              <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="you@company.com" />
+            </div>
+            <Button type="submit" disabled={isSubmitting} className="w-full">
+              {isSubmitting ? 'Processing...' : 'Get Report'}
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 ```
 
-**Admin.tsx Changes:**
+---
 
-Add preview button to Perspectives table (line ~1308):
+### AnalysisDetail Page Update
+
+Add the download button in the header section (after social share):
+
 ```tsx
-<div className="flex gap-2">
-  <Button 
-    variant="ghost" 
-    size="sm" 
-    onClick={() => window.open(`/perspectives/${perspective.id}`, '_blank')}
-    title="Preview"
-  >
-    <Eye className="w-4 h-4" />
-  </Button>
-  <Button variant="ghost" size="sm" onClick={() => openEditPerspective(perspective)}>
-    <Pencil className="w-4 h-4" />
-  </Button>
-  // ... delete button
-</div>
-```
+import { GatedDownload } from '@/components/GatedDownload';
 
-Add preview button to Analyses table (line ~1483):
-```tsx
-<div className="flex gap-2">
-  <Button 
-    variant="ghost" 
-    size="sm" 
-    onClick={() => window.open(`/analysis/${analysis.id}`, '_blank')}
-    title="Preview"
-  >
-    <Eye className="w-4 h-4" />
-  </Button>
-  <Button variant="ghost" size="sm" onClick={() => openEditAnalysis(analysis)}>
-    <Pencil className="w-4 h-4" />
-  </Button>
-  // ... delete button
-</div>
-```
+// In the Analysis interface, add:
+pdf_url?: string | null;
 
-**PerspectiveDetail.tsx Changes:**
-
-Add share buttons below the author section (after line ~147):
-```tsx
-import { SocialShare } from '@/components/SocialShare';
-
-// Inside the component, after author section:
-<SocialShare 
-  url={`https://pow-impact-partner.lovable.app/perspectives/${perspective.id}`}
-  title={getTitle(perspective)}
-/>
-```
-
-**AnalysisDetail.tsx Changes:**
-
-Add share buttons below the header section (after line ~147):
-```tsx
-import { SocialShare } from '@/components/SocialShare';
-
-// Inside the component, after the summary:
-<SocialShare 
-  url={`https://pow-impact-partner.lovable.app/analysis/${analysis.id}`}
-  title={getTitle(analysis)}
-/>
+// In the header section, after SocialShare:
+{analysis.pdf_url && (
+  <div className="mt-6">
+    <GatedDownload 
+      pdfUrl={analysis.pdf_url}
+      title={getTitle(analysis)}
+      source={`analysis-pdf-${analysis.id}`}
+    />
+  </div>
+)}
 ```
 
 ---
 
 ### Visual Layout
 
-**Perspective Detail Page:**
+**Admin Form (Analysis):**
 ```text
 ┌─────────────────────────────────────────┐
-│ ← Back to Perspectives                  │
+│ Title: [                              ] │
+│ Summary: [                            ] │
+│ Category: [Dropdown] | Year: [2025   ] │
+│ ☐ Featured                              │
+│ Introduction: [                       ] │
+│ Methodology: [                        ] │
+│ Key Findings: [                       ] │
+│ Implications: [                       ] │
 │                                         │
-│ [Topic Badge]  📅 Date  🕐 X min read   │
+│ PDF Report (optional)                   │
+│ ┌─────────────────────────────────────┐ │
+│ │  📄 Click to upload PDF             │ │
+│ └─────────────────────────────────────┘ │
 │                                         │
-│ Article Title                           │
+│ [Create Analysis]                       │
+└─────────────────────────────────────────┘
+```
+
+**Customer View (Analysis Detail):**
+```text
+┌─────────────────────────────────────────┐
+│ ← Back to Analysis                      │
 │                                         │
-│ Summary text here...                    │
+│ GOVERNANCE · 2025                       │
 │                                         │
-│ 👤 Pow Consulting Team                  │
-│    Impact Partners                      │
+│ Analysis Title                          │
 │                                         │
-│ Share: [in] [𝕏] [f]    ← NEW           │
+│ Summary text...                         │
 │                                         │
-│ [Featured Image]                        │
+│ Share: [in] [𝕏] [f]                     │
 │                                         │
-│ Article content...                      │
+│ [📥 Download Full Report]   ← NEW       │
+│                                         │
+│ (Article content - email gated)         │
 └─────────────────────────────────────────┘
 ```
 
 ---
 
-### Bilingual Support
+### Implementation Summary
 
-The share buttons don't require translation as they use icons only. The "Share:" label will be:
-- English: "Share"
-- Chinese: "分享"
+| Component | Change |
+|-----------|--------|
+| Database | Add `pdf_url` column to `analyses` table |
+| Storage | Create `analysis-pdfs` bucket with RLS |
+| Admin.tsx | PDF upload field, handler, form state |
+| GatedDownload.tsx | New component for email-gated downloads |
+| AnalysisDetail.tsx | Integrate download button when PDF exists |
 
 ---
 
-### Implementation Summary
+### Bilingual Support
 
-| Feature | Location | Component |
-|---------|----------|-----------|
-| Preview link (Perspectives) | Admin table | Eye icon → opens `/perspectives/{id}` |
-| Preview link (Analyses) | Admin table | Eye icon → opens `/analysis/{id}` |
-| Share to LinkedIn | Detail pages | SocialShare component |
-| Share to Twitter/X | Detail pages | SocialShare component |
-| Share to Facebook | Detail pages | SocialShare component |
+Download button text:
+- English: "Download Full Report"
+- Chinese: "下載完整報告"
+
+Email gate modal:
+- English: "Download Report" / "Get Report"
+- Chinese: "下載報告" / "獲取報告"
 
