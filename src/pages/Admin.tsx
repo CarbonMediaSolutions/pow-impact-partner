@@ -570,11 +570,21 @@ export default function Admin() {
       const fileExt = file.name.split('.').pop();
       const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
       
-      const { error } = await supabase.storage
-        .from('perspective-images')
-        .upload(fileName, file);
+      console.log('Starting upload to perspective-images bucket:', fileName);
       
-      if (error) throw error;
+      const { data, error } = await supabase.storage
+        .from('perspective-images')
+        .upload(fileName, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+      
+      if (error) {
+        console.error('Storage upload error:', error);
+        throw error;
+      }
+      
+      console.log('Upload successful:', data);
       
       const { data: { publicUrl } } = supabase.storage
         .from('perspective-images')
@@ -584,9 +594,12 @@ export default function Admin() {
       toast.success('Image uploaded successfully');
     } catch (err) {
       console.error('Error uploading image:', err);
-      toast.error('Failed to upload image');
+      toast.error(err instanceof Error ? err.message : 'Failed to upload image');
     } finally {
       setImageUploading(false);
+      // Reset the file input so the same file can be selected again
+      const input = document.getElementById('perspective-image') as HTMLInputElement;
+      if (input) input.value = '';
     }
   };
   
