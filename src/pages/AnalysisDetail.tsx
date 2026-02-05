@@ -8,6 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { analyses as staticAnalyses } from '@/data/analyses';
 import { ArrowLeft } from 'lucide-react';
  import { SocialShare } from '@/components/SocialShare';
+ import { GatedDownload } from '@/components/GatedDownload';
 
 interface AnalysisContent {
   introduction?: string;
@@ -27,6 +28,7 @@ interface Analysis {
   date: string | null;
   content: AnalysisContent;
   content_zh?: AnalysisContent | null;
+   pdf_url?: string | null;
 }
 
 const AnalysisDetail = () => {
@@ -154,6 +156,17 @@ const AnalysisDetail = () => {
              title={getTitle(analysis)}
            />
          </div>
+          
+          {/* Gated PDF Download */}
+          {analysis.pdf_url && (
+            <div className="mt-6">
+              <GatedDownload 
+                pdfUrl={analysis.pdf_url}
+                title={getTitle(analysis)}
+                source={`analysis-pdf-${analysis.id}`}
+              />
+            </div>
+          )}
         </header>
 
         {/* Gated Content */}
