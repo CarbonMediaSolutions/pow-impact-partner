@@ -14,8 +14,9 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
-import { Lock, Users, FileText, Mail, Eye, Plus, Pencil, Trash2, BookOpen, BarChart3, Copy, Calendar, ExternalLink, LogOut, Download } from 'lucide-react';
+import { Lock, Users, FileText, Mail, Eye, Plus, Pencil, Trash2, BookOpen, BarChart3, Copy, Calendar, ExternalLink, LogOut, Download, Settings } from 'lucide-react';
  import { Sparkles, Upload, X, Check, ChevronsUpDown } from 'lucide-react';
+import { SiteContentEditor } from '@/components/admin/SiteContentEditor';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 import type { User } from '@supabase/supabase-js';
@@ -922,6 +923,7 @@ export default function Admin() {
                 <TabsTrigger value="analyses">Analyses</TabsTrigger>
                 <TabsTrigger value="submissions">Submissions</TabsTrigger>
                 <TabsTrigger value="emails">Email Captures</TabsTrigger>
+                <TabsTrigger value="site-content">Site Content</TabsTrigger>
               </TabsList>
 
               {/* Consultation Leads Tab */}
@@ -1736,6 +1738,10 @@ export default function Admin() {
                     )}
                   </CardContent>
                 </Card>
+              </TabsContent>
+
+              <TabsContent value="site-content">
+                <SiteContentEditor />
               </TabsContent>
             </Tabs>
           </motion.div>
