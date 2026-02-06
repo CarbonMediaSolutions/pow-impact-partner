@@ -33,8 +33,10 @@
     "perspective": "觀點"
   },
   "credentials": {
-    "icaewChartered": "ICAEW特許會計師",
     "regulatedByIcaew": "受ICAEW監管",
-    "london": "英國倫敦"
+    "locations": "英國  •  美國  •  加拿大  •  香港  •  新加坡"
+  },
+  "clients": {
+    "label": "受各行業機構信賴"
   }
 }
