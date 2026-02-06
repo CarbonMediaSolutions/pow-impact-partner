@@ -67,11 +67,9 @@ export const Hero = () => {
             transition={{ duration: 0.6, delay: 0.7 }}
             className="mt-16 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs sm:text-sm text-muted-foreground/60 font-body"
           >
-            <span>{t('common:credentials.icaewChartered')}</span>
-            <span className="hidden sm:inline text-muted-foreground/30">•</span>
             <span>{t('common:credentials.regulatedByIcaew')}</span>
             <span className="hidden sm:inline text-muted-foreground/30">•</span>
-            <span>{t('common:credentials.london')}</span>
+            <span>{t('common:credentials.locations')}</span>
           </motion.div>
         </div>
       </div>

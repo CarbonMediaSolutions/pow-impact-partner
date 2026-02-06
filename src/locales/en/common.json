@@ -33,8 +33,10 @@
     "perspective": "Perspective"
   },
   "credentials": {
-    "icaewChartered": "ICAEW Chartered Accountant",
     "regulatedByIcaew": "Regulated by ICAEW",
-    "london": "London, UK"
+    "locations": "UK  •  US  •  Canada  •  Hong Kong  •  Singapore"
+  },
+  "clients": {
+    "label": "Trusted by organisations across sectors"
   }
 }

@@ -4,6 +4,7 @@ import { ThreePillars } from '@/components/ThreePillars';
 import { FeaturedPerspectives } from '@/components/FeaturedPerspectives';
 import { InsightLed } from '@/components/InsightLed';
 import { CaseStudies } from '@/components/CaseStudies';
+import { ClientLogos } from '@/components/ClientLogos';
 import { FinalCTA } from '@/components/FinalCTA';
 import { Footer } from '@/components/Footer';
 
@@ -17,6 +18,7 @@ const Index = () => {
         <FeaturedPerspectives />
         <InsightLed />
         <CaseStudies />
+        <ClientLogos />
         <FinalCTA />
       </main>
       <Footer />
