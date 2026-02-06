@@ -438,6 +438,42 @@ export default function Admin() {
     setAnalysisDialogOpen(true);
   };
 
+   const translateContent = async (
+     id: string,
+     table: 'perspectives' | 'analyses',
+     title: string,
+     summary: string,
+     content: string[] | object,
+     type: 'perspective' | 'analysis'
+   ) => {
+     toast.info('Translating to Chinese...');
+     try {
+       const { data: fnData, error: fnError } = await supabase.functions.invoke('translate-content', {
+         body: { title, summary, content, type }
+       });
+
+       if (fnError) throw fnError;
+       if (fnData?.error) throw new Error(fnData.error);
+
+       const updateData: Record<string, unknown> = {
+         title_zh: fnData.title_zh,
+         summary_zh: fnData.summary_zh,
+         content_zh: fnData.content_zh,
+       };
+
+       const { error: updateError } = await supabase
+         .from(table)
+         .update(updateData)
+         .eq('id', id);
+
+       if (updateError) throw updateError;
+       toast.success('Chinese translation saved');
+     } catch (err) {
+       console.error('Translation error:', err);
+       toast.warning('Auto-translation failed. You can retry by re-saving the content.');
+     }
+   };
+
    const savePerspective = async () => {
      // Split by newlines to preserve bullet points and formatting
      // Each non-empty line becomes a separate array element
@@ -457,6 +493,8 @@ export default function Admin() {
     };
 
     try {
+      let savedId: string;
+
       if (editingPerspective) {
         const { error } = await supabase
           .from('perspectives')
@@ -464,19 +502,26 @@ export default function Admin() {
           .eq('id', editingPerspective.id);
         
         if (error) throw error;
+        savedId = editingPerspective.id;
         toast.success('Perspective updated successfully');
       } else {
-        const { error } = await supabase
+        const { data: inserted, error } = await supabase
           .from('perspectives')
-          .insert(data);
+          .insert(data)
+          .select('id')
+          .single();
         
         if (error) throw error;
+        savedId = inserted.id;
         toast.success('Perspective created successfully');
       }
       
       setPerspectiveDialogOpen(false);
       resetPerspectiveForm();
       fetchData();
+
+      // Auto-translate in background
+      translateContent(savedId, 'perspectives', data.title, data.summary, contentArray, 'perspective');
     } catch (err) {
       console.error('Error saving perspective:', err);
       toast.error('Failed to save perspective');
@@ -503,6 +548,8 @@ export default function Admin() {
     };
 
     try {
+      let savedId: string;
+
       if (editingAnalysis) {
         const { error } = await supabase
           .from('analyses')
@@ -510,19 +557,26 @@ export default function Admin() {
           .eq('id', editingAnalysis.id);
         
         if (error) throw error;
+        savedId = editingAnalysis.id;
         toast.success('Analysis updated successfully');
       } else {
-        const { error } = await supabase
+        const { data: inserted, error } = await supabase
           .from('analyses')
-          .insert(data);
+          .insert(data)
+          .select('id')
+          .single();
         
         if (error) throw error;
+        savedId = inserted.id;
         toast.success('Analysis created successfully');
       }
       
       setAnalysisDialogOpen(false);
       resetAnalysisForm();
       fetchData();
+
+      // Auto-translate in background
+      translateContent(savedId, 'analyses', data.title, data.summary, content, 'analysis');
     } catch (err) {
       console.error('Error saving analysis:', err);
       toast.error('Failed to save analysis');
