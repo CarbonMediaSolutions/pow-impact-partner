@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { SiteContentProvider } from "@/components/SiteContentProvider";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import TaxPlanning from "./pages/TaxPlanning";
@@ -32,6 +33,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <SiteContentProvider>
       <BrowserRouter>
         <ScrollToTop />
         <Routes>
@@ -58,6 +60,7 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
+      </SiteContentProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
