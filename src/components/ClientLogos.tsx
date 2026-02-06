@@ -1,5 +1,7 @@
+import { useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import useEmblaCarousel from 'embla-carousel-react';
 import quantic from '@/assets/clients/quantic.png';
 import cityGuilds from '@/assets/clients/city-guilds.png';
 import thrivegrowth from '@/assets/clients/thrivegrowth.png';
@@ -23,25 +25,51 @@ const logos = [
 export const ClientLogos = () => {
   const { t } = useTranslation('common');
 
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: true,
+    align: 'start',
+    slidesToScroll: 1,
+  });
+
+  const autoplay = useCallback(() => {
+    if (!emblaApi) return;
+    const interval = setInterval(() => {
+      emblaApi.scrollNext();
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [emblaApi]);
+
+  useEffect(() => {
+    const cleanup = autoplay();
+    return cleanup;
+  }, [autoplay]);
+
   return (
     <section className="py-16 lg:py-20">
-      <div className="container max-w-5xl">
-        <p className="text-center font-body text-sm text-muted-foreground/60 mb-10">
+      <div className="container max-w-4xl">
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="text-center font-body text-sm text-muted-foreground/60 mb-10"
+        >
           {t('clients.label')}
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-8">
-          {logos.map((logo, i) => (
-            <motion.img
-              key={logo.alt}
-              src={logo.src}
-              alt={logo.alt}
-              className="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 0.6 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.05 }}
-            />
-          ))}
+        </motion.p>
+        <div className="overflow-hidden" ref={emblaRef}>
+          <div className="flex">
+            {logos.map((logo) => (
+              <div
+                key={logo.alt}
+                className="flex-[0_0_25%] min-w-0 flex items-center justify-center px-4 sm:px-6"
+              >
+                <img
+                  src={logo.src}
+                  alt={logo.alt}
+                  className="h-8 sm:h-10 w-auto max-w-[120px] object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
