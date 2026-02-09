@@ -38,5 +38,11 @@
   },
   "clients": {
     "label": "Trusted by organisations across sectors"
+  },
+  "newsletter": {
+    "label": "Stay informed on strategy, governance, and impact.",
+    "placeholder": "Your email address",
+    "subscribe": "Subscribe",
+    "success": "Thank you for subscribing."
   }
 }

@@ -1,6 +1,7 @@
 import { Mail, Linkedin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { NewsletterSignup } from './NewsletterSignup';
 
 export const Footer = () => {
   const { t } = useTranslation();
@@ -17,10 +18,11 @@ export const Footer = () => {
       <div className="container py-12 lg:py-16">
         <div className="grid lg:grid-cols-12 gap-12">
           {/* Company Info */}
-          <div className="lg:col-span-4">
+          <div className="lg:col-span-4 space-y-6">
             <span className="font-serif text-lg font-medium text-foreground tracking-tight">
               {t('brand.name')}
             </span>
+            <NewsletterSignup />
           </div>
 
           {/* Navigation */}

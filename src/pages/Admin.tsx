@@ -116,6 +116,7 @@ export default function Admin() {
   const [consultationLeads, setConsultationLeads] = useState<ConsultationLead[]>([]);
   const [perspectiveSubmissions, setPerspectiveSubmissions] = useState<PerspectiveSubmission[]>([]);
   const [emailCaptures, setEmailCaptures] = useState<EmailCapture[]>([]);
+  const [newsletterSubscribers, setNewsletterSubscribers] = useState<{ id: string; email: string; subscribed_at: string }[]>([]);
   const [perspectives, setPerspectives] = useState<Perspective[]>([]);
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [loading, setLoading] = useState(false);
@@ -302,12 +303,13 @@ export default function Admin() {
     setLoading(true);
     
     try {
-      const [leadsRes, submissionsRes, emailsRes, perspectivesRes, analysesRes] = await Promise.all([
+      const [leadsRes, submissionsRes, emailsRes, perspectivesRes, analysesRes, subscribersRes] = await Promise.all([
         supabase.from('consultation_leads').select('*').order('created_at', { ascending: false }),
         supabase.from('perspective_submissions').select('*').order('created_at', { ascending: false }),
         supabase.from('email_captures').select('*').order('created_at', { ascending: false }),
         supabase.from('perspectives').select('*').order('created_at', { ascending: false }),
-        supabase.from('analyses').select('*').order('created_at', { ascending: false })
+        supabase.from('analyses').select('*').order('created_at', { ascending: false }),
+        supabase.from('newsletter_subscribers' as any).select('*').order('subscribed_at', { ascending: false })
       ]);
 
       if (leadsRes.data) setConsultationLeads(leadsRes.data as ConsultationLead[]);
@@ -315,6 +317,7 @@ export default function Admin() {
       if (emailsRes.data) setEmailCaptures(emailsRes.data);
       if (perspectivesRes.data) setPerspectives(perspectivesRes.data as Perspective[]);
       if (analysesRes.data) setAnalyses(analysesRes.data as Analysis[]);
+      if (subscribersRes.data) setNewsletterSubscribers(subscribersRes.data as any);
     } catch (err) {
       console.error('Error fetching data:', err);
     }
@@ -977,6 +980,7 @@ export default function Admin() {
                 <TabsTrigger value="analyses">Analyses</TabsTrigger>
                 <TabsTrigger value="submissions">Submissions</TabsTrigger>
                 <TabsTrigger value="emails">Email Captures</TabsTrigger>
+                <TabsTrigger value="subscribers">Subscribers</TabsTrigger>
                 <TabsTrigger value="site-content">Site Content</TabsTrigger>
               </TabsList>
 
@@ -1784,6 +1788,61 @@ export default function Admin() {
                                 <TableCell className="font-medium">{capture.name || '-'}</TableCell>
                                 <TableCell>{capture.email}</TableCell>
                                 <TableCell>{capture.source}</TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="subscribers">
+                <Card>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <CardTitle className="text-lg">Newsletter Subscribers</CardTitle>
+                        <CardDescription>{newsletterSubscribers.length} subscriber{newsletterSubscribers.length !== 1 ? 's' : ''}</CardDescription>
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          const csv = ['Email,Subscribed At', ...newsletterSubscribers.map(s => `${s.email},${s.subscribed_at}`)].join('\n');
+                          const blob = new Blob([csv], { type: 'text/csv' });
+                          const url = URL.createObjectURL(blob);
+                          const a = document.createElement('a');
+                          a.href = url;
+                          a.download = 'newsletter-subscribers.csv';
+                          a.click();
+                          URL.revokeObjectURL(url);
+                        }}
+                      >
+                        <Download className="w-4 h-4 mr-1" /> Export CSV
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    {newsletterSubscribers.length === 0 ? (
+                      <p className="text-muted-foreground text-sm">No subscribers yet.</p>
+                    ) : (
+                      <div className="overflow-x-auto">
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Date</TableHead>
+                              <TableHead>Email</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {newsletterSubscribers.map((sub) => (
+                              <TableRow key={sub.id}>
+                                <TableCell className="text-sm">
+                                  {format(new Date(sub.subscribed_at), 'dd MMM yyyy')}
+                                </TableCell>
+                                <TableCell className="font-medium">{sub.email}</TableCell>
                               </TableRow>
                             ))}
                           </TableBody>

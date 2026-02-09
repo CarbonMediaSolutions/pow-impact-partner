@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { NewsletterSignup } from './NewsletterSignup';
 
 export const FinalCTA = () => {
   const { t } = useTranslation();
@@ -24,6 +25,10 @@ export const FinalCTA = () => {
           >
             hello@plexapartners.com
           </a>
+
+          <div className="pt-4 flex justify-center">
+            <NewsletterSignup />
+          </div>
         </motion.div>
       </div>
     </section>
