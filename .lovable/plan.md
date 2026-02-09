@@ -1,117 +1,78 @@
 
 
-## Auto-Translate Perspectives & Analyses to Traditional Chinese
+## Newsletter Subscription Form
 
-### The Problem
+### Overview
 
-When the admin creates or edits a perspective or analysis, only the English fields (`title`, `summary`, `content`) are saved. The Chinese fields (`title_zh`, `summary_zh`, `content_zh`) remain empty. Since the frontend falls back to English when Chinese fields are null, Chinese visitors see untranslated English content -- as shown in your screenshots.
+Add a simple email-only newsletter signup form in two places on the homepage: above the Final CTA section and inside the Footer. Subscriptions are stored in a new database table.
 
-### The Solution
+### What It Looks Like
 
-Automatically translate English content to Traditional Chinese using AI whenever the admin saves a perspective or analysis. The translation happens in the background after the initial save, so the admin experience remains fast.
-
-### How It Works
+A minimal, restrained form consistent with the institutional tone:
 
 ```text
-Admin saves English content
-        |
-        v
-  Save to database (instant)
-        |
-        v
-  Call translate-content edge function (background)
-        |
-        v
-  AI translates title, summary, content to Traditional Chinese
-        |
-        v
-  Update _zh fields in database
-        |
-        v
-  Chinese visitors now see translated content
+Stay informed on strategy, governance, and impact.
+[email@example.com       ] [Subscribe]
 ```
 
-### What the Admin Sees
+- Single email input with a submit button
+- Brief label text above
+- Success message replaces the form after submission
+- Duplicate emails handled gracefully (shows success without error)
 
-1. Admin writes and saves a perspective/analysis in English (unchanged workflow)
-2. A brief toast notification: "Translating to Chinese..."
-3. After a few seconds, another toast: "Chinese translation saved" (or an error if it fails)
-4. The admin can continue working -- translation happens asynchronously
+### Database
+
+A new `newsletter_subscribers` table:
+
+| Column | Type | Details |
+|--------|------|---------|
+| id | uuid | Primary key |
+| email | text | Unique, not null |
+| subscribed_at | timestamptz | Default now() |
+
+RLS: Public insert (anyone can subscribe), no public read/update/delete.
+
+### New Component
+
+**`src/components/NewsletterSignup.tsx`** -- A reusable component containing:
+- Email input with Zod validation
+- Submit button
+- Loading and success states
+- Inserts into `newsletter_subscribers` table
+- Uses `onConflict` to silently handle duplicate emails
+
+### Placement
+
+1. **Homepage** -- Added inside `FinalCTA.tsx`, below the advisory inquiries email, as a secondary element
+2. **Footer** -- Added in the Company Info column (lg:col-span-4), below the brand name
+
+### i18n Translations
+
+New keys added to `en/common.json` and `zh/common.json`:
+
+| Key | EN | ZH |
+|-----|----|----|
+| `newsletter.label` | Stay informed on strategy, governance, and impact. | 關注戰略、治理與影響力動態。 |
+| `newsletter.placeholder` | Your email address | 您的電子郵件地址 |
+| `newsletter.subscribe` | Subscribe | 訂閱 |
+| `newsletter.success` | Thank you for subscribing. | 感謝您的訂閱。 |
+
+### Admin Visibility
+
+A new "Subscribers" section in the Admin dashboard (or added to an existing tab) showing a simple table of subscriber emails and dates, so the admin can export or review them.
 
 ### Technical Details
 
-#### 1. New Edge Function: `translate-content`
+**Files to create:**
+- `src/components/NewsletterSignup.tsx` -- Reusable signup form component
 
-A new backend function that accepts English text fields and returns Traditional Chinese translations using the Lovable AI gateway (same approach as the existing `summarize-perspective` function).
+**Files to modify:**
+- `src/components/FinalCTA.tsx` -- Add newsletter form below existing content
+- `src/components/Footer.tsx` -- Add newsletter form in company info column
+- `src/locales/en/common.json` -- Add newsletter translation keys
+- `src/locales/zh/common.json` -- Add newsletter translation keys
+- `src/pages/Admin.tsx` -- Add subscribers list to admin dashboard
 
-**Input:**
-```json
-{
-  "title": "Founder Mental Health...",
-  "summary": "Founder mental health is deeply...",
-  "content": ["Paragraph 1...", "Paragraph 2..."],
-  "type": "perspective"
-}
-```
-
-For analyses, content is a structured object:
-```json
-{
-  "title": "...",
-  "summary": "...",
-  "content": {
-    "introduction": "...",
-    "sections": [{ "heading": "...", "paragraphs": ["..."] }],
-    "methodology": "...",
-    "keyFindings": ["..."],
-    "implications": ["..."]
-  },
-  "type": "analysis"
-}
-```
-
-**Output:**
-```json
-{
-  "title_zh": "創辦人心理健康...",
-  "summary_zh": "創辦人心理健康與...",
-  "content_zh": ["第一段...", "第二段..."]
-}
-```
-
-The AI prompt will instruct the model to:
-- Translate to Traditional Chinese (not Simplified)
-- Maintain the professional, institutional tone
-- Preserve formatting structure (paragraphs, bullet points)
-- Keep proper nouns and technical terms appropriately handled
-
-#### 2. Admin.tsx Changes
-
-After each successful save of a perspective or analysis:
-- Show a "Translating to Chinese..." toast
-- Call the `translate-content` edge function with the English content
-- On success, update the `_zh` fields in the database and show confirmation
-- On failure, show a warning toast (translation can be retried later)
-
-This adds approximately 15-20 lines to each save function.
-
-#### 3. Manual Override
-
-The admin can still manually edit the Chinese fields if the auto-translation needs refinement. A future enhancement could add Chinese text fields to the edit forms, but for now the auto-translation covers the gap.
-
-### Files to Create
-
-| File | Purpose |
-|------|---------|
-| `supabase/functions/translate-content/index.ts` | Edge function for AI translation |
-
-### Files to Modify
-
-| File | Change |
-|------|--------|
-| `src/pages/Admin.tsx` | Add translation calls after saving perspectives and analyses |
-
-### Model Choice
-
-Uses `google/gemini-2.5-flash` -- fast, cost-effective, and strong at translation tasks. Same gateway pattern as the existing `summarize-perspective` function.
+**Database changes:**
+- New `newsletter_subscribers` table with public insert RLS policy
 
