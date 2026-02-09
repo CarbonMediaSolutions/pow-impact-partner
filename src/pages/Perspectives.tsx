@@ -52,14 +52,15 @@ const Perspectives = () => {
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error || !data || data.length === 0) {
-        setPerspectives(staticPerspectives.map(p => ({
-          ...p,
-          featured: p.featured || null
-        })));
-      } else {
-        setPerspectives(data as Perspective[]);
-      }
+      const dbPerspectives: Perspective[] = (data || []) as Perspective[];
+      const dbIds = new Set(dbPerspectives.map(p => p.id));
+
+      // Merge: DB perspectives first, then static ones not already in DB
+      const staticMapped = staticPerspectives
+        .filter(p => !dbIds.has(p.id))
+        .map(p => ({ ...p, featured: p.featured || null }));
+
+      setPerspectives([...dbPerspectives, ...staticMapped]);
       setLoading(false);
     };
 
