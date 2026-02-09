@@ -153,6 +153,10 @@ export default function Admin() {
   // Tag input state
   const [tagInput, setTagInput] = useState('');
   
+  // Save loading states
+  const [savingPerspective, setSavingPerspective] = useState(false);
+  const [savingAnalysis, setSavingAnalysis] = useState(false);
+  
    // PDF upload state
    const [pdfUploading, setPdfUploading] = useState(false);
    
@@ -478,6 +482,8 @@ export default function Admin() {
    };
 
    const savePerspective = async () => {
+     setSavingPerspective(true);
+     try {
      // Split by newlines to preserve bullet points and formatting
      // Each non-empty line becomes a separate array element
      const contentArray = perspectiveForm.content
@@ -529,9 +535,14 @@ export default function Admin() {
       console.error('Error saving perspective:', err);
       toast.error('Failed to save perspective');
     }
+    } finally {
+      setSavingPerspective(false);
+    }
   };
 
   const saveAnalysis = async () => {
+    setSavingAnalysis(true);
+    try {
     const content = {
       introduction: analysisForm.introduction,
       sections: [],
@@ -583,6 +594,9 @@ export default function Admin() {
     } catch (err) {
       console.error('Error saving analysis:', err);
       toast.error('Failed to save analysis');
+    }
+    } finally {
+      setSavingAnalysis(false);
     }
   };
 
@@ -1389,9 +1403,9 @@ export default function Admin() {
                               rows={10}
                             />
                           </div>
-                          <Button onClick={savePerspective} className="w-full">
-                            {editingPerspective ? 'Update Perspective' : 'Create Perspective'}
-                          </Button>
+                           <Button onClick={savePerspective} className="w-full" disabled={savingPerspective}>
+                             {savingPerspective ? 'Saving...' : (editingPerspective ? 'Update Perspective' : 'Create Perspective')}
+                           </Button>
                         </div>
                       </DialogContent>
                     </Dialog>
@@ -1604,9 +1618,9 @@ export default function Admin() {
                                )}
                              </div>
                            </div>
-                          <Button onClick={saveAnalysis} className="w-full">
-                            {editingAnalysis ? 'Update Analysis' : 'Create Analysis'}
-                          </Button>
+                          <Button onClick={saveAnalysis} className="w-full" disabled={savingAnalysis}>
+                             {savingAnalysis ? 'Saving...' : (editingAnalysis ? 'Update Analysis' : 'Create Analysis')}
+                           </Button>
                         </div>
                       </DialogContent>
                     </Dialog>
