@@ -55,18 +55,21 @@ const Analysis = () => {
         .select('id, title, title_zh, summary, summary_zh, category, date, featured')
         .order('created_at', { ascending: false });
 
-      if (error || !data || data.length === 0) {
-        setAnalyses(staticAnalyses.map(a => ({
-          id: a.id,
-          title: a.title,
-          summary: a.summary,
-          category: a.category,
-          date: a.date || null,
-          featured: a.featured || null
-        })));
-      } else {
-        setAnalyses(data as Analysis[]);
-      }
+      const dbAnalyses: Analysis[] = (error || !data) ? [] : (data as Analysis[]);
+      const staticMapped: Analysis[] = staticAnalyses.map(a => ({
+        id: a.id,
+        title: a.title,
+        summary: a.summary,
+        category: a.category,
+        date: a.date || null,
+        featured: a.featured || null
+      }));
+      const dbIds = new Set(dbAnalyses.map(a => a.id));
+      const merged = [
+        ...dbAnalyses,
+        ...staticMapped.filter(a => !dbIds.has(a.id))
+      ];
+      setAnalyses(merged);
       setLoading(false);
     };
 
