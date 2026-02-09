@@ -68,6 +68,7 @@ Title: ${title}
 Summary: ${summary}
 Content: ${contentDescription}`;
     } else {
+      const paragraphCount = Array.isArray(content) ? content.length : 1;
       userPrompt = `Translate the following content to Traditional Chinese. Return a JSON object with this exact structure:
 
 {
@@ -75,6 +76,8 @@ Content: ${contentDescription}`;
   "summary_zh": "translated summary",
   "content_zh": ["translated paragraph 1", "translated paragraph 2"]
 }
+
+IMPORTANT: There are exactly ${paragraphCount} content paragraphs below. Your content_zh array MUST contain exactly ${paragraphCount} translated paragraphs. Do NOT skip, merge, or omit any paragraphs.
 
 Title: ${title}
 Summary: ${summary}
@@ -89,7 +92,8 @@ ${Array.isArray(content) ? content.map((p: string, i: number) => `${i + 1}. ${p}
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
+        model: "google/gemini-2.5-pro",
+        max_tokens: 8192,
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt },
@@ -135,6 +139,13 @@ ${Array.isArray(content) ? content.map((p: string, i: number) => `${i + 1}. ${p}
         JSON.stringify({ error: "Translation format error. Please try again." }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
+    }
+
+    // Validation: check paragraph count matches for array content
+    if (Array.isArray(content) && Array.isArray(translation.content_zh)) {
+      if (translation.content_zh.length !== content.length) {
+        console.warn(`Translation paragraph mismatch: expected ${content.length}, got ${translation.content_zh.length}`);
+      }
     }
 
     return new Response(
