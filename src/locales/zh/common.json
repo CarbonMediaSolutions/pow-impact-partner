@@ -38,5 +38,11 @@
   },
   "clients": {
     "label": "受各行業機構信賴"
+  },
+  "newsletter": {
+    "label": "關注戰略、治理與影響力動態。",
+    "placeholder": "您的電子郵件地址",
+    "subscribe": "訂閱",
+    "success": "感謝您的訂閱。"
   }
 }
