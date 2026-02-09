@@ -258,17 +258,17 @@ export default function Admin() {
     }
 
     if (data.user) {
-      await checkAdminRole(data.user.id);
-      if (!isAdmin) {
-        // Re-check after login
-        const { data: roleData } = await supabase.rpc('has_role', {
-          _user_id: data.user.id,
-          _role: 'admin'
-        });
-        if (!roleData) {
-          setError('You do not have admin access. Contact the system administrator.');
-          await supabase.auth.signOut();
-        }
+      const { data: roleData } = await supabase.rpc('has_role', {
+        _user_id: data.user.id,
+        _role: 'admin'
+      });
+      if (roleData) {
+        setIsAdmin(true);
+        fetchData();
+      } else {
+        setError('You do not have admin access. Contact the system administrator.');
+        await supabase.auth.signOut();
+        setIsAdmin(false);
       }
     }
   };
