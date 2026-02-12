@@ -32,9 +32,11 @@
   "disclaimerNote": "本分析反映了我們對嚴謹、紀律和循證判斷的承諾。研究發現應結合具體組織情況加以考量。",
   "categories": {
     "all": "全部",
+    "capitalAllocation": "資本配置",
     "governance": "治理",
     "growth": "增長",
     "impact": "影響力",
+    "operations": "運營",
     "performance": "績效",
     "risk": "風險",
     "strategy": "戰略"

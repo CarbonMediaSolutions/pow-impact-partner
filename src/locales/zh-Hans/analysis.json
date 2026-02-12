@@ -32,9 +32,11 @@
   "disclaimerNote": "本分析反映了我们对严谨、纪律和循证判断的承诺。研究发现应结合具体组织情况加以考量。",
   "categories": {
     "all": "全部",
+    "capitalAllocation": "资本配置",
     "governance": "治理",
     "growth": "增长",
     "impact": "影响力",
+    "operations": "运营",
     "performance": "绩效",
     "risk": "风险",
     "strategy": "战略"
