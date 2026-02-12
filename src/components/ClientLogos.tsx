@@ -46,7 +46,7 @@ export const ClientLogos = () => {
 
   return (
     <section className="py-16 lg:py-20">
-      <div className="container max-w-4xl">
+      <div className="container max-w-6xl">
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -65,7 +65,7 @@ export const ClientLogos = () => {
                 <img
                   src={logo.src}
                   alt={logo.alt}
-                  className="h-8 sm:h-10 w-auto max-w-[120px] object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                  className="h-24 sm:h-32 w-auto max-w-[320px] object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
                 />
               </div>
             ))}
