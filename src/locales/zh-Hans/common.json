@@ -1,0 +1,48 @@
+{
+  "nav": {
+    "home": "首页",
+    "about": "关于我们",
+    "perspectives": "观点",
+    "dataAnalysis": "数据与分析",
+    "solutions": "解决方案",
+    "requestConsultation": "预约咨询",
+    "shareYourPerspective": "分享您的观点",
+    "admin": "管理"
+  },
+  "brand": {
+    "name": "博睿合伙人"
+  },
+  "footer": {
+    "statement": "独立咨询公司，专注于战略、治理与影响力的交汇领域。",
+    "location": "英国伦敦",
+    "linkedin": "领英",
+    "privacy": "隐私政策",
+    "terms": "服务条款",
+    "copyright": "© 2025 博睿合伙人"
+  },
+  "cta": {
+    "bookConsultation": "预约咨询",
+    "viewEngagementModels": "查看服务模式",
+    "readPerspectives": "阅读观点",
+    "exploreAnalysis": "探索分析",
+    "viewSolutions": "查看解决方案",
+    "forAdvisoryInquiries": "咨询服务联系方式"
+  },
+  "labels": {
+    "research": "研究",
+    "perspective": "观点"
+  },
+  "credentials": {
+    "regulatedByIcaew": "受ICAEW监管",
+    "locations": "英国  •  美国  •  加拿大  •  香港  •  新加坡"
+  },
+  "clients": {
+    "label": "受各行业机构信赖"
+  },
+  "newsletter": {
+    "label": "关注战略、治理与影响力动态。",
+    "placeholder": "您的电子邮件地址",
+    "subscribe": "订阅",
+    "success": "感谢您的订阅。"
+  }
+}

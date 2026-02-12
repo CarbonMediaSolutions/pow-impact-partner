@@ -4,7 +4,6 @@ import { supabase } from '@/integrations/supabase/client';
 
 /**
  * Sets a nested value in an object using a dot-separated key path.
- * e.g. setNestedValue(obj, 'hero.headline', 'Hello') → obj.hero.headline = 'Hello'
  */
 function setNestedValue(obj: Record<string, unknown>, keyPath: string, value: string) {
   const keys = keyPath.split('.');
@@ -26,7 +25,7 @@ export function useSiteContent() {
       try {
         const { data, error } = await supabase
           .from('site_content')
-          .select('page, section_key, value_en, value_zh');
+          .select('page, section_key, value_en, value_zh, value_zh_hans');
 
         if (error) {
           console.error('Failed to fetch site content overrides:', error);
@@ -41,10 +40,12 @@ export function useSiteContent() {
 
         // Group overrides by page (namespace)
         const enOverrides: Record<string, Record<string, unknown>> = {};
-        const zhOverrides: Record<string, Record<string, unknown>> = {};
+        const zhHantOverrides: Record<string, Record<string, unknown>> = {};
+        const zhHansOverrides: Record<string, Record<string, unknown>> = {};
 
         for (const row of data) {
           const { page, section_key, value_en, value_zh } = row;
+          const value_zh_hans = (row as Record<string, string>).value_zh_hans;
 
           if (value_en) {
             if (!enOverrides[page]) enOverrides[page] = {};
@@ -52,18 +53,27 @@ export function useSiteContent() {
           }
 
           if (value_zh) {
-            if (!zhOverrides[page]) zhOverrides[page] = {};
-            setNestedValue(zhOverrides[page], section_key, value_zh);
+            if (!zhHantOverrides[page]) zhHantOverrides[page] = {};
+            setNestedValue(zhHantOverrides[page], section_key, value_zh);
+          }
+
+          if (value_zh_hans) {
+            if (!zhHansOverrides[page]) zhHansOverrides[page] = {};
+            setNestedValue(zhHansOverrides[page], section_key, value_zh_hans);
           }
         }
 
-        // Merge overrides into i18n resource bundles (deep merge, don't overwrite)
+        // Merge overrides into i18n resource bundles
         for (const [ns, overrideObj] of Object.entries(enOverrides)) {
           i18n.addResourceBundle('en', ns, overrideObj, true, true);
         }
 
-        for (const [ns, overrideObj] of Object.entries(zhOverrides)) {
-          i18n.addResourceBundle('zh', ns, overrideObj, true, true);
+        for (const [ns, overrideObj] of Object.entries(zhHantOverrides)) {
+          i18n.addResourceBundle('zh-Hant', ns, overrideObj, true, true);
+        }
+
+        for (const [ns, overrideObj] of Object.entries(zhHansOverrides)) {
+          i18n.addResourceBundle('zh-Hans', ns, overrideObj, true, true);
         }
       } catch (err) {
         console.error('Site content override fetch failed:', err);

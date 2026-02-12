@@ -54,59 +54,62 @@ export default function Solutions() {
       <section className="pb-24">
         <div className="container">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {solutions.map((solution, index) => (
-              <motion.div
-                key={solution.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-card border border-border rounded-lg p-8 flex flex-col"
-              >
-                <div className="mb-6">
-                  <h2 className="font-serif text-xl font-medium text-foreground mb-2">
-                    {solution.title}
-                  </h2>
-                  <p className="font-body text-sm text-primary italic">
-                    "{solution.perspective}"
-                  </p>
-                </div>
-                
-                <p className="font-body text-muted-foreground text-sm leading-relaxed mb-6">
-                  {solution.description}
-                </p>
-
-                <div className="space-y-2 mb-6 flex-grow">
-                  {solution.services.slice(0, 4).map((service, i) => (
-                    <div key={i} className="flex items-start gap-2">
-                      <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                      <span className="font-body text-sm text-muted-foreground">{service}</span>
-                    </div>
-                  ))}
-                  {solution.services.length > 4 && (
-                    <p className="font-body text-xs text-muted-foreground/70 pl-6">
-                      {t('solutions:moreServices', { count: solution.services.length - 4 })}
+            {solutions.map((solution, index) => {
+              const cardKey = `solutions:cards.${solution.id}`;
+              const services = t(`${cardKey}.services`, { returnObjects: true }) as string[];
+              
+              return (
+                <motion.div
+                  key={solution.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="bg-card border border-border rounded-lg p-8 flex flex-col"
+                >
+                  <div className="mb-6">
+                    <h2 className="font-serif text-xl font-medium text-foreground mb-2">
+                      {t(`${cardKey}.title`)}
+                    </h2>
+                    <p className="font-body text-sm text-primary italic">
+                      "{t(`${cardKey}.perspective`)}"
                     </p>
-                  )}
-                </div>
-
-                <div className="border-t border-border pt-6 mt-auto">
-                  <p className="font-serif text-base font-medium text-foreground mb-1">
-                    {solution.price}
+                  </div>
+                  
+                  <p className="font-body text-muted-foreground text-sm leading-relaxed mb-6">
+                    {t(`${cardKey}.description`)}
                   </p>
-                  {solution.priceNote && (
+
+                  <div className="space-y-2 mb-6 flex-grow">
+                    {(Array.isArray(services) ? services : solution.services).slice(0, 4).map((service, i) => (
+                      <div key={i} className="flex items-start gap-2">
+                        <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                        <span className="font-body text-sm text-muted-foreground">{service}</span>
+                      </div>
+                    ))}
+                    {(Array.isArray(services) ? services : solution.services).length > 4 && (
+                      <p className="font-body text-xs text-muted-foreground/70 pl-6">
+                        {t('solutions:moreServices', { count: (Array.isArray(services) ? services : solution.services).length - 4 })}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="border-t border-border pt-6 mt-auto">
+                    <p className="font-serif text-base font-medium text-foreground mb-1">
+                      {t(`${cardKey}.price`)}
+                    </p>
                     <p className="font-body text-xs text-muted-foreground mb-4">
-                      {solution.priceNote}
+                      {t(`${cardKey}.priceNote`)}
                     </p>
-                  )}
-                  <Button asChild variant="outline" className="w-full font-body">
-                    <Link to={`/book?solution=${solution.id}`}>
-                      {t('solutions:enquire')}
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </Link>
-                  </Button>
-                </div>
-              </motion.div>
-            ))}
+                    <Button asChild variant="outline" className="w-full font-body">
+                      <Link to={`/book?solution=${solution.id}`}>
+                        {t('solutions:enquire')}
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Link>
+                    </Button>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>

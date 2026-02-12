@@ -1,0 +1,63 @@
+{
+  "pageTitle": "服務模式",
+  "pageDescription": "每個諮詢項目都始於一個視角——一種看待您挑戰的方式，揭示出前進的新路徑。我們的解決方案旨在滿足組織在其發展旅程中每個階段的需求。",
+  "howWeWork": {
+    "title": "我們如何與您合作",
+    "directAccess": {
+      "title": "直接對接合夥人",
+      "description": "在整個諮詢過程中直接與高級顧問合作。"
+    },
+    "response": {
+      "title": "響應預期",
+      "description": "明確的溝通時間表和定期進度更新。"
+    },
+    "specialists": {
+      "title": "按需配置專家",
+      "description": "根據特定需求獲取領域專家支持。"
+    }
+  },
+  "enquire": "諮詢",
+  "moreServices": "+ {{count}} 項更多服務",
+  "cards": {
+    "governance": {
+      "title": "治理與運營模式",
+      "perspective": "清晰創造能力",
+      "description": "為應對複雜環境的組織提供董事會效能、治理設計和決策架構服務。",
+      "services": ["董事會效能評估", "治理框架設計", "決策架構", "運營模式評估", "政策制定"],
+      "price": "按項目定價",
+      "priceNote": "視範圍而定"
+    },
+    "capital": {
+      "title": "資本配置與績效",
+      "perspective": "資本的目的性",
+      "description": "與機構目標一致的財務戰略、績效框架和資本紀律。",
+      "services": ["資本配置戰略", "績效框架設計", "財務規劃與分析", "投資評估", "利益相關者報告"],
+      "price": "按項目定價",
+      "priceNote": "視範圍而定"
+    },
+    "growth": {
+      "title": "增長與轉型",
+      "perspective": "有序擴展",
+      "description": "為處於轉折點的組織提供戰略擴展、機構轉型和變革管理服務。",
+      "services": ["增長戰略制定", "組織轉型", "變革管理", "戰略規劃", "市場進入戰略"],
+      "price": "按項目定價",
+      "priceNote": "視範圍而定"
+    },
+    "decision-support": {
+      "title": "決策系統與高管支持",
+      "perspective": "領導力槓桿",
+      "description": "為高級領導團隊提供高管諮詢、決策支持和戰略促進服務。",
+      "services": ["外包CFO", "高管決策支持", "戰略促進", "領導力顧問", "董事會演示支持"],
+      "price": "按項目定價",
+      "priceNote": "聘用制或項目制"
+    },
+    "data-insight": {
+      "title": "數據與洞察產品",
+      "perspective": "情報即基礎設施",
+      "description": "為循證決策提供基準、行業數據和委託分析。",
+      "services": ["行業基準分析", "數據分析與報告", "委託研究", "績效指標設計", "洞察交付"],
+      "price": "按項目定價",
+      "priceNote": "視範圍而定"
+    }
+  }
+}

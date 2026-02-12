@@ -21,12 +21,15 @@ interface Analysis {
   id: string;
   title: string;
   title_zh?: string | null;
+  title_zh_hans?: string | null;
   summary: string;
   summary_zh?: string | null;
+  summary_zh_hans?: string | null;
   category: string;
   date: string | null;
   content: AnalysisContent;
   content_zh?: AnalysisContent | null;
+  content_zh_hans?: AnalysisContent | null;
    pdf_url?: string | null;
 }
 
@@ -36,11 +39,23 @@ const AnalysisDetail = () => {
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
-  const isZh = i18n.language === 'zh';
+  const isZh = i18n.language.startsWith('zh');
 
-  const getTitle = (a: Analysis) => (isZh && a.title_zh) ? a.title_zh : a.title;
-  const getSummary = (a: Analysis) => (isZh && a.summary_zh) ? a.summary_zh : a.summary;
-  const getContent = (a: Analysis) => (isZh && a.content_zh) ? a.content_zh : a.content;
+  const getTitle = (a: Analysis) => {
+    if (i18n.language === 'zh-Hant' && a.title_zh) return a.title_zh;
+    if (i18n.language === 'zh-Hans') return a.title_zh_hans || a.title_zh || a.title;
+    return a.title;
+  };
+  const getSummary = (a: Analysis) => {
+    if (i18n.language === 'zh-Hant' && a.summary_zh) return a.summary_zh;
+    if (i18n.language === 'zh-Hans') return a.summary_zh_hans || a.summary_zh || a.summary;
+    return a.summary;
+  };
+  const getContent = (a: Analysis) => {
+    if (i18n.language === 'zh-Hant' && a.content_zh) return a.content_zh;
+    if (i18n.language === 'zh-Hans') return a.content_zh_hans || a.content_zh || a.content;
+    return a.content;
+  };
 
   useEffect(() => {
     const fetchAnalysis = async () => {

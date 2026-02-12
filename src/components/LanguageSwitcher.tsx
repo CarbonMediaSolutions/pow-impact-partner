@@ -1,26 +1,42 @@
 import { useTranslation } from 'react-i18next';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { ChevronDown } from 'lucide-react';
+
+const languages = [
+  { code: 'en', label: 'English' },
+  { code: 'zh-Hans', label: '简体中文' },
+  { code: 'zh-Hant', label: '繁體中文' },
+];
 
 export const LanguageSwitcher = () => {
   const { i18n } = useTranslation();
 
-  const toggleLanguage = () => {
-    const newLang = i18n.language === 'zh' ? 'en' : 'zh';
-    i18n.changeLanguage(newLang);
-  };
+  const currentLang = languages.find(l => l.code === i18n.language) || languages[0];
 
   return (
-    <button
-      onClick={toggleLanguage}
-      className="font-body text-sm text-muted-foreground hover:text-foreground transition-colors"
-      aria-label="Switch language"
-    >
-      <span className={i18n.language === 'en' ? 'text-foreground font-medium' : ''}>
-        EN
-      </span>
-      <span className="mx-1.5 text-muted-foreground/50">|</span>
-      <span className={i18n.language === 'zh' ? 'text-foreground font-medium' : ''}>
-        中文
-      </span>
-    </button>
+    <DropdownMenu>
+      <DropdownMenuTrigger className="font-body text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 outline-none">
+        {currentLang.label}
+        <ChevronDown className="h-3 w-3" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-[140px]">
+        {languages.map(lang => (
+          <DropdownMenuItem
+            key={lang.code}
+            onClick={() => i18n.changeLanguage(lang.code)}
+            className={`font-body text-sm cursor-pointer ${
+              i18n.language === lang.code ? 'font-medium text-foreground' : 'text-muted-foreground'
+            }`}
+          >
+            {lang.label}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };

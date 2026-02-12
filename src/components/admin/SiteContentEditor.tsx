@@ -13,21 +13,21 @@ import { toast } from 'sonner';
 import i18n from '@/i18n/config';
 
 // Helper to get a nested value from the i18n default resources
-function getDefaultValue(lang: 'en' | 'zh', namespace: string, key: string): string {
+function getDefaultValue(lang: string, namespace: string, key: string): string {
   const value = i18n.getResource(lang, namespace, key);
   if (typeof value === 'string') return value;
   return '';
 }
 
 interface FieldValues {
-  [key: string]: { en: string; zh: string };
+  [key: string]: { en: string; zhHant: string; zhHans: string };
 }
 
 interface SectionEditorProps {
   pageKey: string;
   sectionKey: string;
   section: ContentSection;
-  dbValues: Record<string, { value_en: string; value_zh: string }>;
+  dbValues: Record<string, { value_en: string; value_zh: string; value_zh_hans: string }>;
   onSaved: () => void;
 }
 
@@ -44,13 +44,14 @@ function SectionEditor({ pageKey, sectionKey, section, dbValues, onSaved }: Sect
       const dbVal = dbValues[field.key];
       initial[field.key] = {
         en: dbVal?.value_en ?? getDefaultValue('en', pageKey, field.key),
-        zh: dbVal?.value_zh ?? getDefaultValue('zh', pageKey, field.key),
+        zhHant: dbVal?.value_zh ?? getDefaultValue('zh-Hant', pageKey, field.key),
+        zhHans: dbVal?.value_zh_hans ?? getDefaultValue('zh-Hans', pageKey, field.key),
       };
     }
     setValues(initial);
   }, [section.fields, dbValues, pageKey]);
 
-  const handleChange = (key: string, lang: 'en' | 'zh', value: string) => {
+  const handleChange = (key: string, lang: 'en' | 'zhHant' | 'zhHans', value: string) => {
     setValues(prev => ({
       ...prev,
       [key]: { ...prev[key], [lang]: value },
@@ -62,12 +63,12 @@ function SectionEditor({ pageKey, sectionKey, section, dbValues, onSaved }: Sect
   const handleSave = async () => {
     setSaving(true);
     try {
-      // Upsert all fields in this section
       const rows = section.fields.map(field => ({
         page: pageKey,
         section_key: field.key,
         value_en: values[field.key]?.en || '',
-        value_zh: values[field.key]?.zh || '',
+        value_zh: values[field.key]?.zhHant || '',
+        value_zh_hans: values[field.key]?.zhHans || '',
       }));
 
       const { error } = await supabase
@@ -99,12 +100,12 @@ function SectionEditor({ pageKey, sectionKey, section, dbValues, onSaved }: Sect
 
       if (error) throw error;
 
-      // Reset local values to defaults
       const reset: FieldValues = {};
       for (const field of section.fields) {
         reset[field.key] = {
           en: getDefaultValue('en', pageKey, field.key),
-          zh: getDefaultValue('zh', pageKey, field.key),
+          zhHant: getDefaultValue('zh-Hant', pageKey, field.key),
+          zhHans: getDefaultValue('zh-Hans', pageKey, field.key),
         };
       }
       setValues(reset);
@@ -120,11 +121,11 @@ function SectionEditor({ pageKey, sectionKey, section, dbValues, onSaved }: Sect
   };
 
   const renderField = (field: ContentField) => {
-    const val = values[field.key] || { en: '', zh: '' };
+    const val = values[field.key] || { en: '', zhHant: '', zhHans: '' };
     const FieldComponent = field.type === 'textarea' ? Textarea : Input;
 
     return (
-      <div key={field.key} className="grid grid-cols-1 lg:grid-cols-2 gap-3 py-3 border-b border-border/50 last:border-0">
+      <div key={field.key} className="grid grid-cols-1 lg:grid-cols-3 gap-3 py-3 border-b border-border/50 last:border-0">
         <div>
           <Label className="text-xs text-muted-foreground mb-1.5 block">
             {field.label} <span className="text-muted-foreground/50">(EN)</span>
@@ -140,12 +141,25 @@ function SectionEditor({ pageKey, sectionKey, section, dbValues, onSaved }: Sect
         </div>
         <div>
           <Label className="text-xs text-muted-foreground mb-1.5 block">
-            {field.label} <span className="text-muted-foreground/50">(中文)</span>
+            {field.label} <span className="text-muted-foreground/50">(简体)</span>
           </Label>
           <FieldComponent
-            value={val.zh}
+            value={val.zhHans}
             onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-              handleChange(field.key, 'zh', e.target.value)
+              handleChange(field.key, 'zhHans', e.target.value)
+            }
+            className="text-sm"
+            rows={field.type === 'textarea' ? 3 : undefined}
+          />
+        </div>
+        <div>
+          <Label className="text-xs text-muted-foreground mb-1.5 block">
+            {field.label} <span className="text-muted-foreground/50">(繁體)</span>
+          </Label>
+          <FieldComponent
+            value={val.zhHant}
+            onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+              handleChange(field.key, 'zhHant', e.target.value)
             }
             className="text-sm"
             rows={field.type === 'textarea' ? 3 : undefined}
@@ -167,7 +181,7 @@ function SectionEditor({ pageKey, sectionKey, section, dbValues, onSaved }: Sect
         )}
       </CollapsibleTrigger>
       <CollapsibleContent>
-        <div className="px-4 pb-4">
+        <div className="px-4 pb-4 overflow-x-auto">
           {section.fields.map(renderField)}
           <div className="flex items-center justify-end gap-2 mt-4">
             {hasOverrides && (
@@ -194,7 +208,7 @@ function SectionEditor({ pageKey, sectionKey, section, dbValues, onSaved }: Sect
 
 export function SiteContentEditor() {
   const [selectedPage, setSelectedPage] = useState<string>(Object.keys(siteContentSchema)[0]);
-  const [dbValues, setDbValues] = useState<Record<string, { value_en: string; value_zh: string }>>({});
+  const [dbValues, setDbValues] = useState<Record<string, { value_en: string; value_zh: string; value_zh_hans: string }>>({});
   const [loading, setLoading] = useState(true);
 
   const fetchPageContent = useCallback(async (page: string) => {
@@ -202,14 +216,18 @@ export function SiteContentEditor() {
     try {
       const { data, error } = await supabase
         .from('site_content')
-        .select('section_key, value_en, value_zh')
+        .select('section_key, value_en, value_zh, value_zh_hans')
         .eq('page', page);
 
       if (error) throw error;
 
-      const map: Record<string, { value_en: string; value_zh: string }> = {};
+      const map: Record<string, { value_en: string; value_zh: string; value_zh_hans: string }> = {};
       for (const row of data || []) {
-        map[row.section_key] = { value_en: row.value_en, value_zh: row.value_zh };
+        map[row.section_key] = {
+          value_en: row.value_en,
+          value_zh: row.value_zh,
+          value_zh_hans: (row as Record<string, string>).value_zh_hans || '',
+        };
       }
       setDbValues(map);
     } catch (err) {

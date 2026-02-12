@@ -1,0 +1,38 @@
+{
+  "pageTitle": "預約諮詢",
+  "pageDescription": "我們提供30分鐘的免費探索性討論，以了解您的情況並確定是否適合開展合作。",
+  "trustIndicators": {
+    "confidential": "保密",
+    "reviewed": "預約前審核",
+    "timezone": "時區：倫敦 (GMT)"
+  },
+  "reviewNote": "所有諮詢請求都會經過審核，以確保匹配度和相關性。",
+  "enquiringAbout": "諮詢服務：",
+  "form": {
+    "fullName": "姓名",
+    "email": "電子郵箱",
+    "organisation": "組織機構",
+    "role": "職位",
+    "companyWebsite": "公司網站",
+    "companyWebsitePlaceholder": "https://company.com",
+    "linkedinProfile": "個人領英",
+    "linkedinProfilePlaceholder": "https://linkedin.com/in/...",
+    "challengeQuestion": "您目前正在應對什麼挑戰或決策？",
+    "challengePlaceholder": "描述您正在面對的主要挑戰或機遇...",
+    "outcomeQuestion": "您期望的成功結果是什麼？",
+    "outcomePlaceholder": "您認為成功會是什麼樣子？",
+    "submit": "提交諮詢請求",
+    "submitting": "提交中..."
+  },
+  "success": {
+    "title": "請求已提交",
+    "message": "我們將審核您的請求並在1個工作日內回覆。如獲批准，您將收到預約諮詢的連結。",
+    "submitAnother": "提交另一個請求"
+  },
+  "toast": {
+    "successTitle": "請求已提交",
+    "successMessage": "我們將審核您的請求並在1個工作日內回覆。",
+    "errorTitle": "出現問題",
+    "errorMessage": "請重試或直接發送郵件至 hello@plexapartners.com。"
+  }
+}

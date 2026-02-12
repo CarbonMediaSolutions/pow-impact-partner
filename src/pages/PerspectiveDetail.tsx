@@ -17,11 +17,14 @@ interface Perspective {
   id: string;
   title: string;
   title_zh?: string | null;
+  title_zh_hans?: string | null;
   summary: string;
   summary_zh?: string | null;
+  summary_zh_hans?: string | null;
   topic: string;
   content: string[];
   content_zh?: string[] | null;
+  content_zh_hans?: string[] | null;
   image?: string | null;
   tags?: string[] | null;
   created_at?: string;
@@ -33,15 +36,29 @@ const PerspectiveDetail = () => {
   const [perspective, setPerspective] = useState<Perspective | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
-  const isZh = i18n.language === 'zh';
+  const isZh = i18n.language.startsWith('zh');
 
-  const getTitle = (p: Perspective) => (isZh && p.title_zh) ? p.title_zh : p.title;
-  const getSummary = (p: Perspective) => (isZh && p.summary_zh) ? p.summary_zh : p.summary;
-  const getContent = (p: Perspective) => (isZh && p.content_zh && p.content_zh.length > 0) ? p.content_zh : p.content;
+  const getTitle = (p: Perspective) => {
+    if (i18n.language === 'zh-Hant' && p.title_zh) return p.title_zh;
+    if (i18n.language === 'zh-Hans') return p.title_zh_hans || p.title_zh || p.title;
+    return p.title;
+  };
+  const getSummary = (p: Perspective) => {
+    if (i18n.language === 'zh-Hant' && p.summary_zh) return p.summary_zh;
+    if (i18n.language === 'zh-Hans') return p.summary_zh_hans || p.summary_zh || p.summary;
+    return p.summary;
+  };
+  const getContent = (p: Perspective) => {
+    if (i18n.language === 'zh-Hant' && p.content_zh && p.content_zh.length > 0) return p.content_zh;
+    if (i18n.language === 'zh-Hans') {
+      if (p.content_zh_hans && p.content_zh_hans.length > 0) return p.content_zh_hans;
+      if (p.content_zh && p.content_zh.length > 0) return p.content_zh;
+    }
+    return p.content;
+  };
 
   useEffect(() => {
     const fetchPerspective = async () => {
-      // First try database
       const { data, error } = await supabase
         .from('perspectives')
         .select('*')
@@ -51,7 +68,6 @@ const PerspectiveDetail = () => {
       if (data) {
         setPerspective(data as Perspective);
       } else {
-        // Fallback to static data
         const staticPerspective = staticPerspectives.find(p => p.id === id);
         if (staticPerspective) {
           setPerspective(staticPerspective);
@@ -72,7 +88,7 @@ const PerspectiveDetail = () => {
       <div className="min-h-screen bg-background">
         <Header />
         <div className="pt-32 pb-20 px-6 text-center">
-          <p className="text-muted-foreground">Loading...</p>
+          <p className="text-muted-foreground">{t('perspectives:loading')}</p>
         </div>
         <Footer />
       </div>
@@ -142,8 +158,8 @@ const PerspectiveDetail = () => {
                 <User className="w-6 h-6 text-primary" />
               </div>
               <div>
-                <p className="font-body font-semibold text-foreground">Pow Consulting Team</p>
-                <p className="font-body text-sm text-muted-foreground">Impact Partners</p>
+                <p className="font-body font-semibold text-foreground">Plexa Partners</p>
+                <p className="font-body text-sm text-muted-foreground">Advisory</p>
               </div>
             </div>
            

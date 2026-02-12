@@ -1,0 +1,106 @@
+{
+  "pageTitle": "關於博睿合夥人",
+  "hero": {
+    "intro": "博睿合夥人是一家獨立諮詢公司，專注於戰略、治理與長期績效的交匯領域。\n\n我們與正在面臨關鍵決策的創始人、董事會和領導團隊合作——在清晰度、判斷力和長期視野最為重要的時刻提供支持。"
+  },
+  "howWeThink": {
+    "title": "我們的思維方式",
+    "people": {
+      "title": "人才",
+      "description": "領導力效能、組織協同與決策質量。"
+    },
+    "planet": {
+      "title": "可持續",
+      "description": "長期韌性、負責任增長與可持續價值創造。"
+    },
+    "performance": {
+      "title": "績效",
+      "description": "資本紀律、運營清晰度與可衡量成果。"
+    }
+  },
+  "theFirm": {
+    "title": "公司簡介",
+    "p1": "博睿合夥人匯聚了在金融、戰略、技術、運營和轉型領域擁有豐富經驗的資深顧問。",
+    "p2": "作為一個團隊，我們在組織設計、治理、資本戰略和績效衡量等領域開展工作——在複雜和受監管的環境中支持決策。",
+    "p3": "我們的項目具有選擇性、以關係為導向，並以長期目標而非交易性成果為基礎。"
+  },
+  "leadershipTeam": {
+    "title": "領導團隊",
+    "members": {
+      "patric": {
+        "name": "Patric Wong",
+        "role": "創始人兼首席顧問",
+        "focus": "戰略 · 治理 · 資本配置"
+      },
+      "rakesh": {
+        "name": "Rakesh Shah",
+        "role": "聯合創始人 · 外包CFO",
+        "focus": "金融 · 增長 · 融資"
+      },
+      "pengLi": {
+        "name": "Peng-Li Hong",
+        "role": "副總裁 · 技術與轉型",
+        "focus": "企業架構 · 轉型"
+      },
+      "chiara": {
+        "name": "Chiara Coppola",
+        "role": "副總裁 · 採購",
+        "focus": "商業戰略 · 治理"
+      },
+      "gabriel": {
+        "name": "Gabriel Mai",
+        "role": "副總裁 · 企業傳播",
+        "focus": "品牌 · 利益相關者參與"
+      },
+      "nicole": {
+        "name": "Nicole Magnier",
+        "role": "副總裁 · 轉型",
+        "focus": "PMO · 複雜項目"
+      },
+      "stephen": {
+        "name": "Stephen Chan",
+        "role": "副總裁 · 數據與智能",
+        "focus": "財務分析 · 商業智能"
+      },
+      "mandy": {
+        "name": "Mandy Wong",
+        "role": "主管 · 戰略發展",
+        "focus": "戰略增長 · 國際市場"
+      }
+    }
+  },
+  "professionalStandards": {
+    "title": "專業標準",
+    "items": {
+      "icaew": "受ICAEW監管",
+      "chartered": "領導團隊中擁有特許會計師",
+      "independent": "獨立且具有衝突意識的諮詢模式",
+      "confidentiality": "以保密性和專業判斷為標準"
+    }
+  },
+  "clientPerspectives": {
+    "title": "客戶評價",
+    "testimonials": {
+      "t1": {
+        "quote": "該公司在增長關鍵階段為財務結構和治理提供了清晰的指導。他們的方法嚴謹，與長期目標保持一致。",
+        "author": "常務董事",
+        "company": "專業服務機構"
+      },
+      "t2": {
+        "quote": "一個非常有能力的諮詢夥伴。他們在組織戰略方面的工作幫助優化了整個領導團隊的決策。",
+        "author": "首席執行官",
+        "company": "全國技能培訓機構"
+      },
+      "t3": {
+        "quote": "博睿合夥人為複雜的轉型帶來了戰略和財務紀律。該諮詢項目取得了可衡量的成果。",
+        "author": "執行董事",
+        "company": "資助型基金會"
+      }
+    }
+  },
+  "closingCTA": {
+    "independence": "博睿合夥人獨立運營，不存在利益衝突。",
+    "text": "如果這反映了您對領導力和長期決策的思考方式，我們歡迎與您交流。",
+    "button": "預約諮詢"
+  }
+}

@@ -453,7 +453,7 @@ export default function Admin() {
      content: string[] | object,
      type: 'perspective' | 'analysis'
    ) => {
-     toast.info('Translating to Chinese...');
+     toast.info('Translating to Simplified & Traditional Chinese...');
      try {
        const { data: fnData, error: fnError } = await supabase.functions.invoke('translate-content', {
          body: { title, summary, content, type }
@@ -462,11 +462,21 @@ export default function Admin() {
        if (fnError) throw fnError;
        if (fnData?.error) throw new Error(fnData.error);
 
+       // New format returns { 'zh-Hant': {...}, 'zh-Hans': {...} }
+       const hant = fnData['zh-Hant'] || fnData;
+       const hans = fnData['zh-Hans'];
+
        const updateData: Record<string, unknown> = {
-         title_zh: fnData.title_zh,
-         summary_zh: fnData.summary_zh,
-         content_zh: fnData.content_zh,
+         title_zh: hant.title_zh,
+         summary_zh: hant.summary_zh,
+         content_zh: hant.content_zh,
        };
+
+       if (hans) {
+         updateData.title_zh_hans = hans.title_zh;
+         updateData.summary_zh_hans = hans.summary_zh;
+         updateData.content_zh_hans = hans.content_zh;
+       }
 
        const { error: updateError } = await supabase
          .from(table)
@@ -474,7 +484,7 @@ export default function Admin() {
          .eq('id', id);
 
        if (updateError) throw updateError;
-       toast.success('Chinese translation saved');
+       toast.success('Chinese translations (Simplified & Traditional) saved');
      } catch (err) {
        console.error('Translation error:', err);
        toast.warning('Auto-translation failed. You can retry by re-saving the content.');

@@ -18,7 +18,7 @@
  
  export const GatedDownload = ({ pdfUrl, title, source }: GatedDownloadProps) => {
    const { i18n } = useTranslation();
-   const isZh = i18n.language === 'zh';
+   const isZh = i18n.language.startsWith('zh');
    const [hasAccess, setHasAccess] = useState(false);
    const [showModal, setShowModal] = useState(false);
    const [email, setEmail] = useState('');
