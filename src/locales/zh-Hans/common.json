@@ -44,5 +44,18 @@
     "placeholder": "您的电子邮件地址",
     "subscribe": "订阅",
     "success": "感谢您的订阅。"
+  },
+  "share": "分享",
+  "download": {
+    "started": "下载已开始",
+    "tryAgain": "请再试一次",
+    "fullReport": "下载完整报告",
+    "reportTitle": "下载报告",
+    "name": "姓名",
+    "namePlaceholder": "您的姓名",
+    "emailRequired": "电子邮件 *",
+    "contactPrompt": "请提供您的联系方式以下载完整报告。",
+    "processing": "处理中...",
+    "getReport": "获取报告"
   }
 }

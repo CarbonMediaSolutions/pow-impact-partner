@@ -14,6 +14,13 @@
   "serviceCTA": "如果這與您正在面對的情況相符，我們歡迎與您交流。",
   "footerNote": "觀點不是立場文件。它們是我們審視複雜決策的視角。",
   "loading": "載入中...",
+  "notFound": "找不到觀點",
+  "backToList": "返回觀點",
+  "returnToList": "返回觀點",
+  "discussFurther": "想進一步討論這些想法？",
+  "discussDescription": "預約免費諮詢，探討這些策略如何適用於您的組織。",
+  "bookFreeConsultation": "預約免費諮詢",
+  "disclaimerNote": "此觀點反映了我們理解複雜決策的方式。它作為思考的視角提供，而非行動的處方。",
   "topics": {
     "all": "全部",
     "governance": "治理",

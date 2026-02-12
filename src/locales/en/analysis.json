@@ -23,6 +23,13 @@
   },
   "readAnalysis": "Read analysis →",
   "loading": "Loading...",
+  "notFound": "Analysis not found",
+  "backToList": "Back to Analysis",
+  "returnToList": "Return to Analysis",
+  "methodology": "Methodology",
+  "keyFindings": "Key Findings",
+  "implications": "Implications",
+  "disclaimerNote": "This analysis reflects our commitment to rigour, discipline, and evidence-based judgment. Findings should be considered in context of specific organisational circumstances.",
   "categories": {
     "all": "All",
     "governance": "Governance",

@@ -102,10 +102,10 @@ const PerspectiveDetail = () => {
         <main className="pt-32 pb-20 px-6">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-2xl font-serif text-foreground mb-4">
-              {isZh ? '找不到觀點' : 'Perspective not found'}
+              {t('perspectives:notFound')}
             </h1>
             <Link to="/perspectives" className="text-primary hover:underline">
-              {isZh ? '返回觀點' : 'Return to Perspectives'}
+              {t('perspectives:returnToList')}
             </Link>
           </div>
         </main>
@@ -123,7 +123,7 @@ const PerspectiveDetail = () => {
         <div className="container max-w-4xl">
           <Link to="/perspectives" className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors mb-8 font-body">
             <ArrowLeft className="w-4 h-4 mr-2" />
-            {isZh ? '返回觀點' : 'Back to Perspectives'}
+            {t('perspectives:backToList')}
           </Link>
           
           <motion.div
@@ -223,16 +223,14 @@ const PerspectiveDetail = () => {
       <section className="py-16 bg-muted/30">
         <div className="container max-w-3xl text-center">
           <h3 className="font-serif text-2xl font-bold text-foreground mb-4">
-            {isZh ? '想進一步討論這些想法？' : 'Want to discuss these ideas further?'}
+            {t('perspectives:discussFurther')}
           </h3>
           <p className="font-body text-muted-foreground mb-6">
-            {isZh 
-              ? '預約免費諮詢，探討這些策略如何適用於您的組織。' 
-              : 'Book a free consultation to explore how these strategies could work for your organization.'}
+            {t('perspectives:discussDescription')}
           </p>
           <Link to="/book">
             <Button className="btn-emerald font-body font-semibold px-8 py-6">
-              {isZh ? '預約免費諮詢' : 'Book Your Free Consultation'}
+              {t('perspectives:bookFreeConsultation')}
             </Button>
           </Link>
         </div>
@@ -243,9 +241,7 @@ const PerspectiveDetail = () => {
         <div className="container max-w-3xl">
           <div className="border-t border-border pt-12">
             <p className="text-sm text-muted-foreground italic">
-              {isZh 
-                ? '此觀點反映了我們理解複雜決策的方式。它作為思考的視角提供，而非行動的處方。'
-                : 'This perspective reflects our approach to understanding complex decisions. It is offered as a lens for consideration, not a prescription for action.'}
+              {t('perspectives:disclaimerNote')}
             </p>
           </div>
         </div>
