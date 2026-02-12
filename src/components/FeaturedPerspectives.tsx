@@ -14,29 +14,43 @@ const tileImages = [insightTile1, insightTile2, insightTile3, insightTile4];
 interface FeaturedItem {
   id: string;
   title: string;
+  title_zh: string | null;
+  title_zh_hans: string | null;
   image?: string;
 }
 
 export const FeaturedPerspectives = () => {
-  const { t } = useTranslation(['home', 'common']);
+  const { t, i18n } = useTranslation(['home', 'common']);
   const [items, setItems] = useState<FeaturedItem[]>([]);
   
   useEffect(() => {
     const fetchFeaturedPerspectives = async () => {
       const { data } = await supabase
         .from('perspectives')
-        .select('id, title, image')
+        .select('id, title, title_zh, title_zh_hans, image')
         .eq('featured', true)
         .order('created_at', { ascending: false })
         .limit(5);
       
       if (data) {
-        setItems(data.map(p => ({ id: p.id, title: p.title, image: p.image || undefined })));
+        setItems(data.map(p => ({
+          id: p.id,
+          title: p.title,
+          title_zh: p.title_zh,
+          title_zh_hans: p.title_zh_hans,
+          image: p.image || undefined,
+        })));
       }
     };
     
     fetchFeaturedPerspectives();
   }, []);
+
+  const getTitle = (item: FeaturedItem) => {
+    if (i18n.language === 'zh-Hant' && item.title_zh) return item.title_zh;
+    if (i18n.language === 'zh-Hans' && (item.title_zh_hans || item.title_zh)) return item.title_zh_hans || item.title_zh || item.title;
+    return item.title;
+  };
   
   const mainItem = items[0];
   const sideItems = items.slice(1, 5);
@@ -88,7 +102,7 @@ export const FeaturedPerspectives = () => {
               {t('common:labels.perspective')}
               </span>
               <h3 className="font-serif text-xl lg:text-2xl font-medium text-foreground mt-2 leading-tight group-hover:text-primary transition-colors">
-              {mainItem.title}
+              {getTitle(mainItem)}
               </h3>
             </Link>
           </motion.div>
@@ -116,7 +130,7 @@ export const FeaturedPerspectives = () => {
                       {t('common:labels.perspective')}
                     </span>
                     <h4 className="font-serif text-base lg:text-lg font-medium text-foreground mt-2 leading-snug group-hover:text-primary transition-colors">
-                    {item.title}
+                    {getTitle(item)}
                     </h4>
                   </div>
                 </Link>

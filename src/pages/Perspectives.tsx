@@ -15,8 +15,10 @@ interface Perspective {
   id: string;
   title: string;
   title_zh?: string | null;
+  title_zh_hans?: string | null;
   summary: string;
   summary_zh?: string | null;
+  summary_zh_hans?: string | null;
   topic: string;
   featured: boolean | null;
   content: string[];
@@ -31,10 +33,17 @@ const Perspectives = () => {
   const [email, setEmail] = useState('');
   const [isSubscribing, setIsSubscribing] = useState(false);
   const { toast } = useToast();
-  const isZh = i18n.language === 'zh';
 
-  const getTitle = (p: Perspective) => (isZh && p.title_zh) ? p.title_zh : p.title;
-  const getSummary = (p: Perspective) => (isZh && p.summary_zh) ? p.summary_zh : p.summary;
+  const getTitle = (p: Perspective) => {
+    if (i18n.language === 'zh-Hant' && p.title_zh) return p.title_zh;
+    if (i18n.language === 'zh-Hans') return p.title_zh_hans || p.title_zh || p.title;
+    return p.title;
+  };
+  const getSummary = (p: Perspective) => {
+    if (i18n.language === 'zh-Hant' && p.summary_zh) return p.summary_zh;
+    if (i18n.language === 'zh-Hans') return p.summary_zh_hans || p.summary_zh || p.summary;
+    return p.summary;
+  };
 
   const topics = [
     { key: 'all', label: t('perspectives:topics.all') },
@@ -55,7 +64,6 @@ const Perspectives = () => {
       const dbPerspectives: Perspective[] = (data || []) as Perspective[];
       const dbIds = new Set(dbPerspectives.map(p => p.id));
 
-      // Merge: DB perspectives first, then static ones not already in DB
       const staticMapped = staticPerspectives
         .filter(p => !dbIds.has(p.id))
         .map(p => ({ ...p, featured: p.featured || null }));

@@ -1,0 +1,48 @@
+{
+  "nav": {
+    "home": "首頁",
+    "about": "關於我們",
+    "perspectives": "觀點",
+    "dataAnalysis": "數據與分析",
+    "solutions": "解決方案",
+    "requestConsultation": "預約諮詢",
+    "shareYourPerspective": "分享您的觀點",
+    "admin": "管理"
+  },
+  "brand": {
+    "name": "博睿合夥人"
+  },
+  "footer": {
+    "statement": "獨立諮詢公司，專注於戰略、治理與影響力的交匯領域。",
+    "location": "英國倫敦",
+    "linkedin": "領英",
+    "privacy": "隱私政策",
+    "terms": "服務條款",
+    "copyright": "© 2025 博睿合夥人"
+  },
+  "cta": {
+    "bookConsultation": "預約諮詢",
+    "viewEngagementModels": "查看服務模式",
+    "readPerspectives": "閱讀觀點",
+    "exploreAnalysis": "探索分析",
+    "viewSolutions": "查看解決方案",
+    "forAdvisoryInquiries": "諮詢服務聯繫方式"
+  },
+  "labels": {
+    "research": "研究",
+    "perspective": "觀點"
+  },
+  "credentials": {
+    "regulatedByIcaew": "受ICAEW監管",
+    "locations": "英國  •  美國  •  加拿大  •  香港  •  新加坡"
+  },
+  "clients": {
+    "label": "受各行業機構信賴"
+  },
+  "newsletter": {
+    "label": "關注戰略、治理與影響力動態。",
+    "placeholder": "您的電子郵件地址",
+    "subscribe": "訂閱",
+    "success": "感謝您的訂閱。"
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "pageTitle": "服务模式",
+  "pageDescription": "每个咨询项目都始于一个视角——一种看待您挑战的方式，揭示出前进的新路径。我们的解决方案旨在满足组织在其发展旅程中每个阶段的需求。",
+  "howWeWork": {
+    "title": "我们如何与您合作",
+    "directAccess": {
+      "title": "直接对接合伙人",
+      "description": "在整个咨询过程中直接与高级顾问合作。"
+    },
+    "response": {
+      "title": "响应预期",
+      "description": "明确的沟通时间表和定期进度更新。"
+    },
+    "specialists": {
+      "title": "按需配置专家",
+      "description": "根据特定需求获取领域专家支持。"
+    }
+  },
+  "enquire": "咨询",
+  "moreServices": "+ {{count}} 项更多服务",
+  "cards": {
+    "governance": {
+      "title": "治理与运营模式",
+      "perspective": "清晰创造能力",
+      "description": "为应对复杂环境的组织提供董事会效能、治理设计和决策架构服务。",
+      "services": ["董事会效能评估", "治理框架设计", "决策架构", "运营模式评估", "政策制定"],
+      "price": "按项目定价",
+      "priceNote": "视范围而定"
+    },
+    "capital": {
+      "title": "资本配置与绩效",
+      "perspective": "资本的目的性",
+      "description": "与机构目标一致的财务战略、绩效框架和资本纪律。",
+      "services": ["资本配置战略", "绩效框架设计", "财务规划与分析", "投资评估", "利益相关者报告"],
+      "price": "按项目定价",
+      "priceNote": "视范围而定"
+    },
+    "growth": {
+      "title": "增长与转型",
+      "perspective": "有序扩展",
+      "description": "为处于转折点的组织提供战略扩展、机构转型和变革管理服务。",
+      "services": ["增长战略制定", "组织转型", "变革管理", "战略规划", "市场进入战略"],
+      "price": "按项目定价",
+      "priceNote": "视范围而定"
+    },
+    "decision-support": {
+      "title": "决策系统与高管支持",
+      "perspective": "领导力杠杆",
+      "description": "为高级领导团队提供高管咨询、决策支持和战略促进服务。",
+      "services": ["外包CFO", "高管决策支持", "战略促进", "领导力顾问", "董事会演示支持"],
+      "price": "按项目定价",
+      "priceNote": "聘用制或项目制"
+    },
+    "data-insight": {
+      "title": "数据与洞察产品",
+      "perspective": "情报即基础设施",
+      "description": "为循证决策提供基准、行业数据和委托分析。",
+      "services": ["行业基准分析", "数据分析与报告", "委托研究", "绩效指标设计", "洞察交付"],
+      "price": "按项目定价",
+      "priceNote": "视范围而定"
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "pageTitle": "数据与分析",
+  "pageSubtitle": "对战略、机构和运营挑战的结构化研究。",
+  "pageDescription": "基于真实运营环境的循证洞察。",
+  "introText": "我们的分析运用严谨的框架、实证推理和情境理解来评估决策、权衡和结果。",
+  "footerNote": "分析体现了我们对严谨性、纪律性和循证判断的承诺。",
+  "dataBenchmarks": {
+    "title": "数据与基准",
+    "description": "获取结构化数据、行业基准和定制分析。",
+    "benchmark": {
+      "title": "申请基准数据包",
+      "description": "行业特定的绩效基准和对比数据。"
+    },
+    "dataset": {
+      "title": "咨询行业数据集",
+      "description": "获取用于战略规划和分析的结构化数据。"
+    },
+    "commission": {
+      "title": "委托定制分析",
+      "description": "根据您的具体情况定制的研究和分析。"
+    },
+    "cta": "申请数据 / 委托分析"
+  },
+  "readAnalysis": "阅读分析 →",
+  "loading": "加载中...",
+  "categories": {
+    "all": "全部",
+    "governance": "治理",
+    "growth": "增长",
+    "impact": "影响力",
+    "performance": "绩效",
+    "risk": "风险",
+    "strategy": "战略"
+  }
+}

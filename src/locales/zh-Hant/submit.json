@@ -1,0 +1,49 @@
+{
+  "pageTitle": "分享您的觀點",
+  "pageDescription": "我們相信最好的洞察來自業內領導者。分享您對治理、影響力、戰略或增長的觀點——參與這場對話。",
+  "reward": {
+    "title": "月度獎勵",
+    "description": "每月我們會選出最具說服力的觀點，並向其作者頒發<bold>100英鎊亞馬遜禮品卡</bold>。入選的觀點也可能在我們的出版物中刊登。"
+  },
+  "form": {
+    "sectionTitle": "您的觀點",
+    "name": "姓名",
+    "email": "郵箱",
+    "organisation": "組織機構",
+    "topic": "主題",
+    "topicPlaceholder": "選擇主題",
+    "perspectiveLabel": "您的觀點",
+    "perspectiveLimit": "（最多500字）",
+    "perspectivePlaceholder": "分享您對當今組織面臨挑戰的見解、觀察或觀點...",
+    "wordCount": "{{count}} / 500 字",
+    "submit": "提交觀點",
+    "submitting": "提交中..."
+  },
+  "topics": {
+    "governance": "治理",
+    "impact": "影響力",
+    "growth": "增長",
+    "strategy": "戰略",
+    "risk": "風險",
+    "finance": "財務",
+    "other": "其他"
+  },
+  "success": {
+    "title": "感謝您",
+    "message": "您的觀點已收到。我們每月審核所有提交內容，如果您的見解被選中刊登或獲得月度獎勵，我們會與您聯繫。",
+    "submitAnother": "提交另一個觀點"
+  },
+  "guidelines": {
+    "title": "提交指南",
+    "g1": "聚焦於具體的見解、挑戰或機遇",
+    "g2": "盡可能基於真實經驗",
+    "g3": "簡潔且具有可操作性",
+    "g4": "僅限原創內容"
+  },
+  "toast": {
+    "successTitle": "觀點已收到",
+    "successMessage": "感謝分享您的見解。我們每月審核所有提交內容。",
+    "errorTitle": "出現問題",
+    "errorMessage": "請重試或直接聯繫我們。"
+  }
+}

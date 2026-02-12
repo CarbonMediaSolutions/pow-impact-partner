@@ -1,0 +1,106 @@
+{
+  "pageTitle": "关于博睿合伙人",
+  "hero": {
+    "intro": "博睿合伙人是一家独立咨询公司，专注于战略、治理与长期绩效的交汇领域。\n\n我们与正在面临关键决策的创始人、董事会和领导团队合作——在清晰度、判断力和长期视野最为重要的时刻提供支持。"
+  },
+  "howWeThink": {
+    "title": "我们的思维方式",
+    "people": {
+      "title": "人才",
+      "description": "领导力效能、组织协同与决策质量。"
+    },
+    "planet": {
+      "title": "可持续",
+      "description": "长期韧性、负责任增长与可持续价值创造。"
+    },
+    "performance": {
+      "title": "绩效",
+      "description": "资本纪律、运营清晰度与可衡量成果。"
+    }
+  },
+  "theFirm": {
+    "title": "公司简介",
+    "p1": "博睿合伙人汇聚了在金融、战略、技术、运营和转型领域拥有丰富经验的资深顾问。",
+    "p2": "作为一个团队，我们在组织设计、治理、资本战略和绩效衡量等领域开展工作——在复杂和受监管的环境中支持决策。",
+    "p3": "我们的项目具有选择性、以关系为导向，并以长期目标而非交易性成果为基础。"
+  },
+  "leadershipTeam": {
+    "title": "领导团队",
+    "members": {
+      "patric": {
+        "name": "Patric Wong",
+        "role": "创始人兼首席顾问",
+        "focus": "战略 · 治理 · 资本配置"
+      },
+      "rakesh": {
+        "name": "Rakesh Shah",
+        "role": "联合创始人 · 外包CFO",
+        "focus": "金融 · 增长 · 融资"
+      },
+      "pengLi": {
+        "name": "Peng-Li Hong",
+        "role": "副总裁 · 技术与转型",
+        "focus": "企业架构 · 转型"
+      },
+      "chiara": {
+        "name": "Chiara Coppola",
+        "role": "副总裁 · 采购",
+        "focus": "商业战略 · 治理"
+      },
+      "gabriel": {
+        "name": "Gabriel Mai",
+        "role": "副总裁 · 企业传播",
+        "focus": "品牌 · 利益相关者参与"
+      },
+      "nicole": {
+        "name": "Nicole Magnier",
+        "role": "副总裁 · 转型",
+        "focus": "PMO · 复杂项目"
+      },
+      "stephen": {
+        "name": "Stephen Chan",
+        "role": "副总裁 · 数据与智能",
+        "focus": "财务分析 · 商业智能"
+      },
+      "mandy": {
+        "name": "Mandy Wong",
+        "role": "主管 · 战略发展",
+        "focus": "战略增长 · 国际市场"
+      }
+    }
+  },
+  "professionalStandards": {
+    "title": "专业标准",
+    "items": {
+      "icaew": "受ICAEW监管",
+      "chartered": "领导团队中拥有特许会计师",
+      "independent": "独立且具有冲突意识的咨询模式",
+      "confidentiality": "以保密性和专业判断为标准"
+    }
+  },
+  "clientPerspectives": {
+    "title": "客户评价",
+    "testimonials": {
+      "t1": {
+        "quote": "该公司在增长关键阶段为财务结构和治理提供了清晰的指导。他们的方法严谨，与长期目标保持一致。",
+        "author": "常务董事",
+        "company": "专业服务机构"
+      },
+      "t2": {
+        "quote": "一个非常有能力的咨询伙伴。他们在组织战略方面的工作帮助优化了整个领导团队的决策。",
+        "author": "首席执行官",
+        "company": "全国技能培训机构"
+      },
+      "t3": {
+        "quote": "博睿合伙人为复杂的转型带来了战略和财务纪律。该咨询项目取得了可衡量的成果。",
+        "author": "执行董事",
+        "company": "资助型基金会"
+      }
+    }
+  },
+  "closingCTA": {
+    "independence": "博睿合伙人独立运营，不存在利益冲突。",
+    "text": "如果这反映了您对领导力和长期决策的思考方式，我们欢迎与您交流。",
+    "button": "预约咨询"
+  }
+}

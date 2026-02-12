@@ -1,0 +1,35 @@
+{
+  "pageTitle": "數據與分析",
+  "pageSubtitle": "對戰略、機構和運營挑戰的結構化研究。",
+  "pageDescription": "基於真實運營環境的循證洞察。",
+  "introText": "我們的分析運用嚴謹的框架、實證推理和情境理解來評估決策、權衡和結果。",
+  "footerNote": "分析體現了我們對嚴謹性、紀律性和循證判斷的承諾。",
+  "dataBenchmarks": {
+    "title": "數據與基準",
+    "description": "獲取結構化數據、行業基準和定制分析。",
+    "benchmark": {
+      "title": "申請基準數據包",
+      "description": "行業特定的績效基準和對比數據。"
+    },
+    "dataset": {
+      "title": "諮詢行業數據集",
+      "description": "獲取用於戰略規劃和分析的結構化數據。"
+    },
+    "commission": {
+      "title": "委託定制分析",
+      "description": "根據您的具體情況定制的研究和分析。"
+    },
+    "cta": "申請數據 / 委託分析"
+  },
+  "readAnalysis": "閱讀分析 →",
+  "loading": "載入中...",
+  "categories": {
+    "all": "全部",
+    "governance": "治理",
+    "growth": "增長",
+    "impact": "影響力",
+    "performance": "績效",
+    "risk": "風險",
+    "strategy": "戰略"
+  }
+}

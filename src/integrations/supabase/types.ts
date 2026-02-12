@@ -19,6 +19,7 @@ export type Database = {
           category: string
           content: Json
           content_zh: Json | null
+          content_zh_hans: Json | null
           created_at: string
           date: string | null
           featured: boolean | null
@@ -26,14 +27,17 @@ export type Database = {
           pdf_url: string | null
           summary: string
           summary_zh: string | null
+          summary_zh_hans: string | null
           title: string
           title_zh: string | null
+          title_zh_hans: string | null
           updated_at: string
         }
         Insert: {
           category: string
           content?: Json
           content_zh?: Json | null
+          content_zh_hans?: Json | null
           created_at?: string
           date?: string | null
           featured?: boolean | null
@@ -41,14 +45,17 @@ export type Database = {
           pdf_url?: string | null
           summary: string
           summary_zh?: string | null
+          summary_zh_hans?: string | null
           title: string
           title_zh?: string | null
+          title_zh_hans?: string | null
           updated_at?: string
         }
         Update: {
           category?: string
           content?: Json
           content_zh?: Json | null
+          content_zh_hans?: Json | null
           created_at?: string
           date?: string | null
           featured?: boolean | null
@@ -56,8 +63,10 @@ export type Database = {
           pdf_url?: string | null
           summary?: string
           summary_zh?: string | null
+          summary_zh_hans?: string | null
           title?: string
           title_zh?: string | null
+          title_zh_hans?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -177,45 +186,54 @@ export type Database = {
         Row: {
           content: string[]
           content_zh: string[] | null
+          content_zh_hans: string[] | null
           created_at: string
           featured: boolean | null
           id: string
           image: string | null
           summary: string
           summary_zh: string | null
+          summary_zh_hans: string | null
           tags: string[] | null
           title: string
           title_zh: string | null
+          title_zh_hans: string | null
           topic: string
           updated_at: string
         }
         Insert: {
           content?: string[]
           content_zh?: string[] | null
+          content_zh_hans?: string[] | null
           created_at?: string
           featured?: boolean | null
           id?: string
           image?: string | null
           summary: string
           summary_zh?: string | null
+          summary_zh_hans?: string | null
           tags?: string[] | null
           title: string
           title_zh?: string | null
+          title_zh_hans?: string | null
           topic: string
           updated_at?: string
         }
         Update: {
           content?: string[]
           content_zh?: string[] | null
+          content_zh_hans?: string[] | null
           created_at?: string
           featured?: boolean | null
           id?: string
           image?: string | null
           summary?: string
           summary_zh?: string | null
+          summary_zh_hans?: string | null
           tags?: string[] | null
           title?: string
           title_zh?: string | null
+          title_zh_hans?: string | null
           topic?: string
           updated_at?: string
         }
@@ -229,6 +247,7 @@ export type Database = {
           updated_at: string
           value_en: string
           value_zh: string
+          value_zh_hans: string
         }
         Insert: {
           id?: string
@@ -237,6 +256,7 @@ export type Database = {
           updated_at?: string
           value_en?: string
           value_zh?: string
+          value_zh_hans?: string
         }
         Update: {
           id?: string
@@ -245,6 +265,7 @@ export type Database = {
           updated_at?: string
           value_en?: string
           value_zh?: string
+          value_zh_hans?: string
         }
         Relationships: []
       }

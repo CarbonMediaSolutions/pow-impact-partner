@@ -1,0 +1,38 @@
+{
+  "pageTitle": "预约咨询",
+  "pageDescription": "我们提供30分钟的免费探索性讨论，以了解您的情况并确定是否适合开展合作。",
+  "trustIndicators": {
+    "confidential": "保密",
+    "reviewed": "预约前审核",
+    "timezone": "时区：伦敦 (GMT)"
+  },
+  "reviewNote": "所有咨询请求都会经过审核，以确保匹配度和相关性。",
+  "enquiringAbout": "咨询服务：",
+  "form": {
+    "fullName": "姓名",
+    "email": "电子邮箱",
+    "organisation": "组织机构",
+    "role": "职位",
+    "companyWebsite": "公司网站",
+    "companyWebsitePlaceholder": "https://company.com",
+    "linkedinProfile": "个人领英",
+    "linkedinProfilePlaceholder": "https://linkedin.com/in/...",
+    "challengeQuestion": "您目前正在应对什么挑战或决策？",
+    "challengePlaceholder": "描述您正在面对的主要挑战或机遇...",
+    "outcomeQuestion": "您期望的成功结果是什么？",
+    "outcomePlaceholder": "您认为成功会是什么样子？",
+    "submit": "提交咨询请求",
+    "submitting": "提交中..."
+  },
+  "success": {
+    "title": "请求已提交",
+    "message": "我们将审核您的请求并在1个工作日内回复。如获批准，您将收到预约咨询的链接。",
+    "submitAnother": "提交另一个请求"
+  },
+  "toast": {
+    "successTitle": "请求已提交",
+    "successMessage": "我们将审核您的请求并在1个工作日内回复。",
+    "errorTitle": "出现问题",
+    "errorMessage": "请重试或直接发送邮件至 hello@plexapartners.com。"
+  }
+}

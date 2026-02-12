@@ -9,7 +9,7 @@
  
  export const SocialShare = ({ url, title }: SocialShareProps) => {
    const { i18n } = useTranslation();
-   const isZh = i18n.language === 'zh';
+   const isZh = i18n.language.startsWith('zh');
    
    const encodedUrl = encodeURIComponent(url);
    const encodedTitle = encodeURIComponent(title);

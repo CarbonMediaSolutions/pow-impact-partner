@@ -13,8 +13,10 @@ interface Analysis {
   id: string;
   title: string;
   title_zh?: string | null;
+  title_zh_hans?: string | null;
   summary: string;
   summary_zh?: string | null;
+  summary_zh_hans?: string | null;
   category: string;
   date: string | null;
   featured: boolean | null;
@@ -25,10 +27,17 @@ const Analysis = () => {
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<string>('All');
-  const isZh = i18n.language === 'zh';
 
-  const getTitle = (a: Analysis) => (isZh && a.title_zh) ? a.title_zh : a.title;
-  const getSummary = (a: Analysis) => (isZh && a.summary_zh) ? a.summary_zh : a.summary;
+  const getTitle = (a: Analysis) => {
+    if (i18n.language === 'zh-Hant' && a.title_zh) return a.title_zh;
+    if (i18n.language === 'zh-Hans') return a.title_zh_hans || a.title_zh || a.title;
+    return a.title;
+  };
+  const getSummary = (a: Analysis) => {
+    if (i18n.language === 'zh-Hant' && a.summary_zh) return a.summary_zh;
+    if (i18n.language === 'zh-Hans') return a.summary_zh_hans || a.summary_zh || a.summary;
+    return a.summary;
+  };
 
   const dataProducts = [
     {
@@ -52,7 +61,7 @@ const Analysis = () => {
     const fetchAnalyses = async () => {
       const { data, error } = await supabase
         .from('analyses')
-        .select('id, title, title_zh, summary, summary_zh, category, date, featured')
+        .select('id, title, title_zh, title_zh_hans, summary, summary_zh, summary_zh_hans, category, date, featured')
         .order('created_at', { ascending: false });
 
       const dbAnalyses: Analysis[] = (error || !data) ? [] : (data as Analysis[]);
@@ -209,7 +218,6 @@ const Analysis = () => {
       {/* Content Grid */}
       <section className="pb-24 px-6 md:px-12 lg:px-20">
         <div className="max-w-5xl mx-auto">
-          {/* Featured Analysis */}
           {featuredAnalysis && activeCategory === 'All' && (
             <motion.article
               initial={{ opacity: 0, y: 20 }}
@@ -244,7 +252,6 @@ const Analysis = () => {
             </motion.article>
           )}
 
-          {/* Grid of Other Analyses */}
           <div className="grid md:grid-cols-2 gap-x-12 gap-y-0">
             {otherAnalyses.map((analysis, index) => (
               <motion.article

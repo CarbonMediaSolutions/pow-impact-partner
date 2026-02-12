@@ -1,0 +1,77 @@
+{
+  "hero": {
+    "headline": "塑造影响体系的",
+    "headlineLine2": "关键决策",
+    "subheadline": "为使命驱动型及受监管组织提供战略、治理与财务架构服务。",
+    "description": "为领导者、机构和组织提供具有长期经济、社会和监管影响的决策咨询。"
+  },
+  "pillars": {
+    "sectionTitle": "服务方式",
+    "sectionDescription": "整合观点、证据与实践方案的统一方法论。",
+    "perspective": {
+      "title": "观点",
+      "description": "关于战略、治理与长期影响的深度分析文章。"
+    },
+    "dataAnalysis": {
+      "title": "数据与分析",
+      "description": "基于真实运营环境的循证洞察。"
+    },
+    "solutions": {
+      "title": "解决方案",
+      "description": "为不同发展阶段的组织量身定制的服务模式。"
+    }
+  },
+  "perspectives": {
+    "sectionTitle": "观点",
+    "sectionDescription": "深入分析战略、治理与资本决策如何转化为可衡量的规模化成果。"
+  },
+  "themes": {
+    "sectionTitle": "战略主题",
+    "growth": {
+      "title": "增长与转型",
+      "description": "在保持战略一致性、运营纪律和机构信任的同时实现组织规模化。"
+    },
+    "organisation": {
+      "title": "组织架构",
+      "description": "设计强化长期绩效的治理、激励与决策体系。"
+    },
+    "capital": {
+      "title": "资本与绩效",
+      "description": "使财务战略、资本配置与影响力评估与机构目标保持一致。"
+    }
+  },
+  "engagements": {
+    "sectionTitle": "精选案例",
+    "sectionDescription": "展示我们工作范围与深度的咨询案例。",
+    "tech": {
+      "sector": "科技企业",
+      "situation": "从成长期向机构化规模转型期间的战略重新定位。",
+      "outcome": "收入增长轨迹重新调整。运营模式重组。"
+    },
+    "professional": {
+      "sector": "专业服务机构",
+      "situation": "快速扩张期间的财务架构与报告能力建设。",
+      "outcome": "治理体系重新设计。成长资本到位。"
+    },
+    "social": {
+      "sector": "全国性社会企业",
+      "situation": "受监管资金环境下的影响力评估框架与利益相关方协调。",
+      "outcome": "机构公信力增强。新资金到位。"
+    }
+  },
+  "faq": {
+    "sectionTitle": "常见问题",
+    "q1": {
+      "question": "您通常与哪些客户合作？",
+      "answer": "我们与使命驱动型组织的创始人、管理团队和董事会合作。我们的客户包括从成长期初创企业到成熟中小企业和社会企业，他们都在寻求战略清晰度和卓越运营。"
+    },
+    "q2": {
+      "question": "咨询服务通常如何进行？",
+      "answer": "大多数咨询从诊断阶段开始，以了解您的背景和优先事项。然后，我们设计定制化方案——无论是专项项目还是持续顾问关系。我们与您的团队协同工作，而非独立运作。"
+    },
+    "q3": {
+      "question": "博睿合伙人有何不同？",
+      "answer": "我们将战略严谨性与实践执行相结合。许多咨询公司只提供建议；我们会陪伴您完成执行。我们的背景涵盖财务、战略和运营——这使我们拥有纯战略师或会计师通常缺乏的全局视野。"
+    }
+  }
+}
