@@ -1,63 +1,39 @@
 
 
-## Fix: "Test 3" Not Appearing on Perspectives Page
+## Three Updates
 
-### Root Cause
+### 1. Remove Static Template Data
 
-The Perspectives page has an **either/or** data loading pattern:
+Delete the hardcoded template content from two files:
 
-- If the database returns perspectives, it shows **only** those (currently 3 items: "Test 3", "Test One", and one other)
-- If the database is empty or errors, it falls back to the **static** 6 perspectives from `src/data/perspectives.ts`
+- **`src/data/perspectives.ts`** -- Remove all 6 static perspectives from the array (keep the interface and empty array so imports don't break). The Perspectives page will now show only database-sourced content.
+- **`src/data/blogPosts.ts`** -- Remove all 8 static blog posts from the array (keep the interface and empty array). These are the template "Perspective" tiles appearing on the homepage and blog pages.
 
-On your **published site**, the Live database likely has no perspective rows, so it shows the 6 static perspectives. On the **preview/test** site, the database has 3 rows, so it shows only those 3 -- and the original 6 static perspectives vanish.
+This means the homepage Featured Perspectives section and the /perspectives page will be driven entirely by the database.
 
-Additionally, Test and Live databases don't share data. Content created in Test won't appear on the published site.
+### 2. Featured Perspectives on Homepage -- Database Only
 
-### Proposed Fix
+The `FeaturedPerspectives` component currently merges static blogPosts with DB perspectives. After removing the static data, it will rely purely on perspectives marked `featured: true` in the database.
 
-Merge database perspectives with static perspectives so both always appear. Database entries take priority if IDs overlap.
+- Update `src/components/FeaturedPerspectives.tsx` to remove the static blogPost merging logic and source exclusively from the `perspectives` table where `featured = true`.
+- The admin panel already has a "Featured" checkbox when creating/editing perspectives, so no admin changes are needed.
 
-**File to modify:** `src/pages/Perspectives.tsx`
+### 3. Make Client Logos 3-4x Larger
 
-Update the `fetchPerspectives` function to:
+In `src/components/ClientLogos.tsx`:
 
-1. Fetch from the database
-2. Merge database results with static perspectives (DB takes priority for matching IDs)
-3. Sort by `created_at` descending (static ones get a default old date)
-
-This way:
-- Static "seed" perspectives always appear as a baseline
-- New perspectives added via Admin appear alongside them
-- If a static perspective is later added to the DB (same ID), the DB version wins
-
-### For the Published Site
-
-After approving and implementing this fix, you will need to:
-- **Publish** the project so the code change goes live
-- If you want "Test 3" on the live site, recreate it via the Admin panel on the published URL
+- Increase logo height from `h-8 sm:h-10` to approximately `h-24 sm:h-32` (3-4x bigger)
+- Increase max-width from `max-w-[120px]` to `max-w-[320px]`
+- Increase container max-width to accommodate larger logos
+- Adjust padding between slides
 
 ### Technical Details
 
-In `src/pages/Perspectives.tsx`, replace the fetch logic (~lines 52-63):
+**Files to modify:**
+- `src/data/perspectives.ts` -- empty the array
+- `src/data/blogPosts.ts` -- empty the array
+- `src/components/FeaturedPerspectives.tsx` -- remove blogPosts dependency, use only DB perspectives
+- `src/components/ClientLogos.tsx` -- scale up logo sizes ~3-4x
 
-```typescript
-const fetchPerspectives = async () => {
-  const { data, error } = await supabase
-    .from('perspectives')
-    .select('*')
-    .order('created_at', { ascending: false });
+No database changes needed. The admin "Featured" toggle already exists and controls which perspectives appear in the homepage featured section.
 
-  const dbPerspectives: Perspective[] = (data || []) as Perspective[];
-  const dbIds = new Set(dbPerspectives.map(p => p.id));
-
-  // Merge: DB perspectives first, then static ones not already in DB
-  const staticMapped = staticPerspectives
-    .filter(p => !dbIds.has(p.id))
-    .map(p => ({ ...p, featured: p.featured || null }));
-
-  setPerspectives([...dbPerspectives, ...staticMapped]);
-  setLoading(false);
-};
-```
-
-This ensures all perspectives (static + database) are always visible.
