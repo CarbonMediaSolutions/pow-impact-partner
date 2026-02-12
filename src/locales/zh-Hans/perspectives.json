@@ -14,6 +14,13 @@
   "serviceCTA": "如果这与您正在面对的情况相符，我们欢迎与您交流。",
   "footerNote": "观点不是立场文件。它们是我们审视复杂决策的视角。",
   "loading": "加载中...",
+  "notFound": "找不到观点",
+  "backToList": "返回观点",
+  "returnToList": "返回观点",
+  "discussFurther": "想进一步讨论这些想法？",
+  "discussDescription": "预约免费咨询，探讨这些策略如何适用于您的组织。",
+  "bookFreeConsultation": "预约免费咨询",
+  "disclaimerNote": "此观点反映了我们理解复杂决策的方式。它作为思考的视角提供，而非行动的处方。",
   "topics": {
     "all": "全部",
     "governance": "治理",

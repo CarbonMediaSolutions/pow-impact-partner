@@ -14,6 +14,13 @@
   "serviceCTA": "If this matches what you're navigating, we'd welcome a conversation.",
   "footerNote": "Perspectives are not position papers. They are lenses through which we examine complex decisions.",
   "loading": "Loading...",
+  "notFound": "Perspective not found",
+  "backToList": "Back to Perspectives",
+  "returnToList": "Return to Perspectives",
+  "discussFurther": "Want to discuss these ideas further?",
+  "discussDescription": "Book a free consultation to explore how these strategies could work for your organization.",
+  "bookFreeConsultation": "Book Your Free Consultation",
+  "disclaimerNote": "This perspective reflects our approach to understanding complex decisions. It is offered as a lens for consideration, not a prescription for action.",
   "topics": {
     "all": "All",
     "governance": "Governance",

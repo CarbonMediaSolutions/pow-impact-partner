@@ -23,6 +23,13 @@
   },
   "readAnalysis": "閱讀分析 →",
   "loading": "載入中...",
+  "notFound": "找不到分析",
+  "backToList": "返回分析",
+  "returnToList": "返回分析",
+  "methodology": "研究方法",
+  "keyFindings": "主要發現",
+  "implications": "影響與啟示",
+  "disclaimerNote": "本分析反映了我們對嚴謹、紀律和循證判斷的承諾。研究發現應結合具體組織情況加以考量。",
   "categories": {
     "all": "全部",
     "governance": "治理",

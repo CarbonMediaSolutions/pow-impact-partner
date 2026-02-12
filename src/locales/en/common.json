@@ -44,5 +44,18 @@
     "placeholder": "Your email address",
     "subscribe": "Subscribe",
     "success": "Thank you for subscribing."
+  },
+  "share": "Share",
+  "download": {
+    "started": "Download started",
+    "tryAgain": "Please try again",
+    "fullReport": "Download Full Report",
+    "reportTitle": "Download Report",
+    "name": "Name",
+    "namePlaceholder": "Your name",
+    "emailRequired": "Email *",
+    "contactPrompt": "Please provide your contact details to download the full report.",
+    "processing": "Processing...",
+    "getReport": "Get Report"
   }
 }

@@ -35,7 +35,7 @@ interface Analysis {
 
 const AnalysisDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const { i18n } = useTranslation(['analysis', 'common']);
+  const { t, i18n } = useTranslation(['analysis', 'common']);
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
@@ -101,7 +101,7 @@ const AnalysisDetail = () => {
       <div className="min-h-screen bg-background">
         <Header />
         <div className="pt-32 pb-20 px-6 text-center">
-          <p className="text-muted-foreground">Loading...</p>
+          <p className="text-muted-foreground">{t('analysis:loading')}</p>
         </div>
         <Footer />
       </div>
@@ -115,10 +115,10 @@ const AnalysisDetail = () => {
         <main className="pt-32 pb-20 px-6">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-2xl font-serif text-foreground mb-4">
-              {isZh ? '找不到分析' : 'Analysis not found'}
+              {t('analysis:notFound')}
             </h1>
             <Link to="/analysis" className="text-primary hover:underline">
-              {isZh ? '返回分析' : 'Return to Analysis'}
+              {t('analysis:returnToList')}
             </Link>
           </div>
         </main>
@@ -139,7 +139,7 @@ const AnalysisDetail = () => {
             className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            {isZh ? '返回分析' : 'Back to Analysis'}
+            {t('analysis:backToList')}
           </Link>
         </div>
 
@@ -220,7 +220,7 @@ const AnalysisDetail = () => {
           {getContent(analysis).methodology && (
             <section className="mt-16 pt-12 border-t border-border">
               <h2 className="text-lg font-medium text-foreground mb-4">
-                {isZh ? '研究方法' : 'Methodology'}
+                {t('analysis:methodology')}
               </h2>
               <p className="text-muted-foreground leading-relaxed">
                 {getContent(analysis).methodology}
@@ -232,7 +232,7 @@ const AnalysisDetail = () => {
           {getContent(analysis).keyFindings && getContent(analysis).keyFindings!.length > 0 && (
             <section className="mt-12">
               <h2 className="text-lg font-medium text-foreground mb-6">
-                {isZh ? '主要發現' : 'Key Findings'}
+                {t('analysis:keyFindings')}
               </h2>
               <ul className="space-y-4">
                 {getContent(analysis).keyFindings!.map((finding, index) => (
@@ -249,7 +249,7 @@ const AnalysisDetail = () => {
           {getContent(analysis).implications && getContent(analysis).implications!.length > 0 && (
             <section className="mt-12">
               <h2 className="text-lg font-medium text-foreground mb-6">
-                {isZh ? '影響與啟示' : 'Implications'}
+                {t('analysis:implications')}
               </h2>
               <ul className="space-y-4">
                 {getContent(analysis).implications!.map((implication, index) => (
@@ -267,9 +267,7 @@ const AnalysisDetail = () => {
         <div className="max-w-3xl mx-auto px-6 mt-20">
           <div className="border-t border-border pt-12">
             <p className="text-sm text-muted-foreground italic">
-              {isZh 
-                ? '本分析反映了我們對嚴謹、紀律和循證判斷的承諾。研究發現應結合具體組織情況加以考量。'
-                : 'This analysis reflects our commitment to rigour, discipline, and evidence-based judgment. Findings should be considered in context of specific organisational circumstances.'}
+              {t('analysis:disclaimerNote')}
             </p>
           </div>
         </div>
