@@ -39,6 +39,17 @@ const Analysis = () => {
     return a.summary;
   };
 
+  const categoryKeyMap: Record<string, string> = {
+    'All': 'all',
+    'Capital Allocation': 'capitalAllocation',
+    'Governance': 'governance',
+    'Performance': 'performance',
+    'Operations': 'operations',
+    'Impact': 'impact',
+  };
+  const getCategoryLabel = (cat: string) =>
+    t(`analysis:categories.${categoryKeyMap[cat] || cat.toLowerCase()}`);
+
   const dataProducts = [
     {
       icon: FileText,
@@ -198,19 +209,29 @@ const Analysis = () => {
       <section className="pb-12 px-6 md:px-12 lg:px-20">
         <div className="max-w-5xl mx-auto">
           <div className="flex flex-wrap justify-center gap-2">
-            {analysisCategories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setActiveCategory(category)}
-                className={`px-4 py-2 text-xs uppercase tracking-widest transition-colors ${
-                  activeCategory === category
-                    ? 'text-foreground border-b border-foreground'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                {category}
-              </button>
-            ))}
+            {analysisCategories.map((category) => {
+              const keyMap: Record<string, string> = {
+                'All': 'all',
+                'Capital Allocation': 'capitalAllocation',
+                'Governance': 'governance',
+                'Performance': 'performance',
+                'Operations': 'operations',
+                'Impact': 'impact',
+              };
+              return (
+                <button
+                  key={category}
+                  onClick={() => setActiveCategory(category)}
+                  className={`px-4 py-2 text-xs uppercase tracking-widest transition-colors ${
+                    activeCategory === category
+                      ? 'text-foreground border-b border-foreground'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  {t(`analysis:categories.${keyMap[category] || category.toLowerCase()}`)}
+                </button>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -227,7 +248,7 @@ const Analysis = () => {
             >
               <div className="flex items-center gap-4 mb-4">
                 <span className="text-xs uppercase tracking-widest text-muted-foreground">
-                  {featuredAnalysis.category}
+                  {getCategoryLabel(featuredAnalysis.category)}
                 </span>
                 {featuredAnalysis.date && (
                   <span className="text-xs text-muted-foreground/50">
@@ -263,7 +284,7 @@ const Analysis = () => {
               >
                 <div className="flex items-center gap-4 mb-3">
                   <span className="text-xs uppercase tracking-widest text-muted-foreground">
-                    {analysis.category}
+                    {getCategoryLabel(analysis.category)}
                   </span>
                   {analysis.date && (
                     <span className="text-xs text-muted-foreground/50">

@@ -32,9 +32,11 @@
   "disclaimerNote": "This analysis reflects our commitment to rigour, discipline, and evidence-based judgment. Findings should be considered in context of specific organisational circumstances.",
   "categories": {
     "all": "All",
+    "capitalAllocation": "Capital Allocation",
     "governance": "Governance",
     "growth": "Growth",
     "impact": "Impact",
+    "operations": "Operations",
     "performance": "Performance",
     "risk": "Risk",
     "strategy": "Strategy"
