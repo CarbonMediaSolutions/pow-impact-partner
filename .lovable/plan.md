@@ -1,123 +1,79 @@
 
 
-## Multi-Language Overhaul: EN / Simplified Chinese / Traditional Chinese
+## Fix: Remaining Hardcoded Chinese Strings (Traditional-only)
 
-This is a significant update touching the language system, database schema, UI components, and admin editor. Here is the full breakdown.
+### Problem Found
 
----
+All 16 locale JSON files (8 per Chinese variant) are correct -- Traditional Chinese uses proper 繁體 characters and Simplified Chinese uses proper 简体 characters throughout. No mixed characters detected in any locale file.
 
-### 1. Language Switcher -- Dropdown with 3 Options
+However, 4 component files contain **hardcoded inline** `isZh ? '繁體中文' : 'English'` strings that bypass the i18n system entirely. When a user selects Simplified Chinese, these strings still display in Traditional Chinese.
 
-Replace the current EN|中文 toggle button with a dropdown menu offering:
-- **English**
-- **简体中文** (Simplified Chinese)
-- **繁體中文** (Traditional Chinese)
+### Affected Files and Strings
 
-**File:** `src/components/LanguageSwitcher.tsx`
+**`src/pages/PerspectiveDetail.tsx`** (6 hardcoded strings):
+- "找不到觀點" / "Perspective not found"
+- "返回觀點" / "Return to Perspectives" (x2)
+- "想進一步討論這些想法？" / "Want to discuss these ideas further?"
+- "預約免費諮詢，探討這些策略如何適用於您的組織。" / "Book a free consultation..."
+- "預約免費諮詢" / "Book Your Free Consultation"
+- "此觀點反映了我們理解複雜決策的方式..." / "This perspective reflects..."
 
-Uses the existing Radix dropdown component. Language codes will be `en`, `zh-Hans`, and `zh-Hant`.
+**`src/pages/AnalysisDetail.tsx`** (5 hardcoded strings):
+- "找不到分析" / "Analysis not found"
+- "返回分析" / "Return to Analysis" (x2)
+- "研究方法" / "Methodology"
+- "主要發現" / "Key Findings"
+- "影響與啟示" / "Implications"
 
----
+**`src/components/SocialShare.tsx`** (1 hardcoded string):
+- "分享" / "Share"
 
-### 2. Split Chinese Locale Files into Simplified + Traditional
+**`src/components/GatedDownload.tsx`** (8 hardcoded strings):
+- "下載已開始" / "Download started"
+- "請再試一次" / "Please try again"
+- "下載完整報告" / "Download Full Report"
+- "下載報告" / "Download Report"
+- "姓名" / "Name"
+- "您的姓名" / "Your name"
+- "電子郵件 *" / "Email *"
+- "處理中..." / "Processing..."
+- "獲取報告" / "Get Report"
 
-Currently there is one `zh` locale. This will become two:
+### Fix
 
-- **`src/locales/zh-Hant/`** -- Traditional Chinese (copy existing `zh` files as-is, since all current translations are already Traditional)
-- **`src/locales/zh-Hans/`** -- Simplified Chinese (new files, initially machine-converted from Traditional or left as copies with a plan to refine)
+Move all these strings into the i18n locale files (EN, zh-Hans, zh-Hant) and replace the inline ternaries with `t()` calls.
 
-New files to create (8 per locale):
-- `common.json`, `home.json`, `about.json`, `solutions.json`, `perspectives.json`, `analysis.json`, `book.json`, `submit.json`
+**Step 1 -- Add new keys to all 3 locale files:**
 
-**File:** `src/i18n/config.ts` -- Updated to import and register all three locales (`en`, `zh-Hans`, `zh-Hant`), update `fallbackLng`, and namespace config.
+Add to `perspectives.json` (all 3 locales):
+- `notFound`, `backToList`, `discussFurther`, `discussDescription`, `bookFreeConsultation`, `disclaimerNote`
 
----
+Add to `analysis.json` (all 3 locales):
+- `notFound`, `backToList`, `methodology`, `keyFindings`, `implications`
 
-### 3. Fix Solution Cards Not Translating
+Add to `common.json` (all 3 locales):
+- `share`, `download.started`, `download.tryAgain`, `download.fullReport`, `download.reportTitle`, `download.name`, `download.namePlaceholder`, `download.emailRequired`, `download.processing`, `download.getReport`
 
-The Solutions page renders cards directly from `src/data/solutions.ts` using hardcoded English strings (title, description, services, etc.). These never respond to language changes.
+**Step 2 -- Update component files to use `t()` calls:**
 
-**Fix:** Add i18n translation keys for each solution card's content. Add corresponding entries in all three locale files (`en/solutions.json`, `zh-Hans/solutions.json`, `zh-Hant/solutions.json`).
+Replace every `isZh ? '...' : '...'` pattern with the corresponding `t('namespace:key')` call.
 
-**File:** `src/pages/Solutions.tsx` -- Replace `solution.title`, `solution.description`, etc. with `t()` calls using keys like `solutions:cards.governance.title`.
-
-**File:** `src/locales/en/solutions.json`, `zh-Hant/solutions.json`, `zh-Hans/solutions.json` -- Add card content translations.
-
----
-
-### 4. Fix FeaturedPerspectives Not Translating Titles
-
-The homepage FeaturedPerspectives component fetches `title` from the database but ignores `title_zh`. When switching to Chinese, titles stay in English.
-
-**Fix:** Fetch `title_zh` as well. Use a helper that selects the right title based on the current language.
-
-**File:** `src/components/FeaturedPerspectives.tsx` -- Add `title_zh` to the select query, use language-aware display.
-
----
-
-### 5. Database Schema Update -- Add Simplified Chinese Columns
-
-Currently the database has `title_zh`, `summary_zh`, `content_zh` on perspectives and analyses tables (Traditional Chinese). Need to add Simplified Chinese columns and update `site_content`.
-
-**Migration adds:**
-- `perspectives`: `title_zh_hans`, `summary_zh_hans`, `content_zh_hans`
-- `analyses`: `title_zh_hans`, `summary_zh_hans`, `content_zh_hans`
-- `site_content`: `value_zh_hans` column (for Simplified), rename conceptually: existing `value_zh` becomes Traditional
-
----
-
-### 6. Admin Editor -- 3 Language Columns
-
-Update the Site Content Editor to show three columns: EN, Simplified Chinese, Traditional Chinese. This will require horizontal scrolling on smaller screens.
-
-**File:** `src/components/admin/SiteContentEditor.tsx`
-- Change the field rendering from 2-column to 3-column grid
-- Labels: `(EN)`, `(简体)`, `(繁體)`
-- Map to `value_en`, `value_zh_hans`, `value_zh` (existing `value_zh` = Traditional)
-
----
-
-### 7. Update SiteContentProvider for 3 Locales
-
-The `useSiteContent` hook currently merges overrides into `en` and `zh` bundles. Update to merge into `en`, `zh-Hans`, and `zh-Hant`.
-
-**File:** `src/hooks/useSiteContent.ts` -- Add `zh-Hans` override processing using `value_zh_hans`, keep `zh-Hant` using existing `value_zh`.
-
----
-
-### 8. Update Translate Edge Function
-
-The `translate-content` function currently produces Traditional Chinese only. Update to produce both Simplified and Traditional, or accept a target language parameter.
-
-**File:** `supabase/functions/translate-content/index.ts` -- Accept optional `targetLang` parameter, default to producing both variants.
-
----
-
-### 9. Audit All Pages for Untranslated Strings
-
-Scan all page components for hardcoded English strings that bypass the i18n system:
-- Error messages in toast calls (e.g., "Error", "Something went wrong")
-- Analysis category filters using raw English strings from `analysisCategories`
-- Any inline text not wrapped in `t()`
-
-Fix each instance to use translation keys.
-
----
-
-### Summary of Files Modified
+### Files Modified
 
 | File | Change |
 |------|--------|
-| `src/components/LanguageSwitcher.tsx` | Dropdown with 3 options |
-| `src/i18n/config.ts` | Register zh-Hans + zh-Hant locales |
-| `src/locales/zh-Hant/*.json` (8 files) | New directory, copy from existing zh |
-| `src/locales/zh-Hans/*.json` (8 files) | New directory, Simplified Chinese |
-| `src/locales/en/solutions.json` | Add card content keys |
-| `src/pages/Solutions.tsx` | Use t() for card content |
-| `src/components/FeaturedPerspectives.tsx` | Fetch and display title_zh |
-| `src/hooks/useSiteContent.ts` | Support 3 locales |
-| `src/components/admin/SiteContentEditor.tsx` | 3-column layout |
-| `src/data/siteContentSchema.ts` | No change needed |
-| `supabase/functions/translate-content/index.ts` | Support both Chinese variants |
-| Database migration | Add zh_hans columns |
+| `src/locales/en/perspectives.json` | Add detail page keys |
+| `src/locales/zh-Hant/perspectives.json` | Add detail page keys (Traditional) |
+| `src/locales/zh-Hans/perspectives.json` | Add detail page keys (Simplified) |
+| `src/locales/en/analysis.json` | Add detail page keys |
+| `src/locales/zh-Hant/analysis.json` | Add detail page keys (Traditional) |
+| `src/locales/zh-Hans/analysis.json` | Add detail page keys (Simplified) |
+| `src/locales/en/common.json` | Add share/download keys |
+| `src/locales/zh-Hant/common.json` | Add share/download keys (Traditional) |
+| `src/locales/zh-Hans/common.json` | Add share/download keys (Simplified) |
+| `src/pages/PerspectiveDetail.tsx` | Replace 6 inline ternaries with t() |
+| `src/pages/AnalysisDetail.tsx` | Replace 5 inline ternaries with t() |
+| `src/components/SocialShare.tsx` | Replace 1 inline ternary with t() |
+| `src/components/GatedDownload.tsx` | Replace 8 inline ternaries with t() |
 
+No database changes needed. This is purely a locale file + component update.
