@@ -9,6 +9,26 @@ import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { TeamMemberCard } from '@/components/TeamMemberCard';
 
+import patricPortrait from '@/assets/patric-wong.png';
+import rakeshPortrait from '@/assets/rakesh-portrait.png';
+import pengLiPortrait from '@/assets/peng-li-portrait.png';
+import chiaraPortrait from '@/assets/chiara-portrait.png';
+import gabrielPortrait from '@/assets/gabriel-portrait.png';
+import nicolePortrait from '@/assets/nicole-portrait.png';
+import stephenPortrait from '@/assets/stephen-portrait.png';
+import mandyPortrait from '@/assets/mandy-portrait.png';
+
+const fallbackPortraits: Record<string, string> = {
+  'Patric Wong': patricPortrait,
+  'Rakesh Shah': rakeshPortrait,
+  'Peng-Li Hong': pengLiPortrait,
+  'Chiara Coppola': chiaraPortrait,
+  'Gabriel Mai': gabrielPortrait,
+  'Nicole Magnier': nicolePortrait,
+  'Stephen Chan': stephenPortrait,
+  'Mandy Wong': mandyPortrait,
+};
+
 export default function AboutPage() {
   const { t } = useTranslation(['about', 'common']);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
@@ -20,7 +40,13 @@ export default function AboutPage() {
         .from('team_members' as any)
         .select('*')
         .order('sort_order', { ascending: true });
-      if (data) setTeamMembers(data as any);
+      if (data) {
+        const members = (data as any[]).map(m => ({
+          ...m,
+          image_url: m.image_url || fallbackPortraits[m.name] || null,
+        }));
+        setTeamMembers(members);
+      }
     };
     fetchTeam();
   }, []);
