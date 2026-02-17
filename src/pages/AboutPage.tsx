@@ -1,44 +1,29 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Quote, Users, Leaf, TrendingUp, Check, User } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Quote, Users, Leaf, TrendingUp, Check } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import patricPortrait from '@/assets/patric-wong.png';
-import rakeshPortrait from '@/assets/rakesh-portrait.png';
-import pengLiPortrait from '@/assets/peng-li-portrait.png';
-import chiaraPortrait from '@/assets/chiara-portrait.png';
-import gabrielPortrait from '@/assets/gabriel-portrait.png';
-import nicolePortrait from '@/assets/nicole-portrait.png';
-import stephenPortrait from '@/assets/stephen-portrait.png';
-import mandyPortrait from '@/assets/mandy-portrait.png';
-
-// Team member type
-interface TeamMember {
-  id: string;
-  nameKey: string;
-  roleKey: string;
-  focusKey: string;
-  image?: string;
-}
-
-// Team members data with translation keys
-const teamMembers: TeamMember[] = [
-  { id: 'patric', nameKey: 'patric', roleKey: 'patric', focusKey: 'patric', image: patricPortrait },
-  { id: 'rakesh', nameKey: 'rakesh', roleKey: 'rakesh', focusKey: 'rakesh', image: rakeshPortrait },
-  { id: 'pengLi', nameKey: 'pengLi', roleKey: 'pengLi', focusKey: 'pengLi', image: pengLiPortrait },
-  { id: 'chiara', nameKey: 'chiara', roleKey: 'chiara', focusKey: 'chiara', image: chiaraPortrait },
-  { id: 'gabriel', nameKey: 'gabriel', roleKey: 'gabriel', focusKey: 'gabriel', image: gabrielPortrait },
-  { id: 'nicole', nameKey: 'nicole', roleKey: 'nicole', focusKey: 'nicole', image: nicolePortrait },
-  { id: 'stephen', nameKey: 'stephen', roleKey: 'stephen', focusKey: 'stephen', image: stephenPortrait },
-  { id: 'mandy', nameKey: 'mandy', roleKey: 'mandy', focusKey: 'mandy', image: mandyPortrait },
-];
+import { supabase } from '@/integrations/supabase/client';
+import { TeamMemberCard } from '@/components/TeamMemberCard';
 
 export default function AboutPage() {
   const { t } = useTranslation(['about', 'common']);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [teamMembers, setTeamMembers] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchTeam = async () => {
+      const { data } = await supabase
+        .from('team_members' as any)
+        .select('*')
+        .order('sort_order', { ascending: true });
+      if (data) setTeamMembers(data as any);
+    };
+    fetchTeam();
+  }, []);
 
   const testimonials = [
     {
@@ -102,7 +87,7 @@ export default function AboutPage() {
     <div className="min-h-screen bg-background">
       <Header />
       
-      {/* Hero Section - Firm-Level Introduction */}
+      {/* Hero Section */}
       <section className="pt-40 pb-24">
         <div className="container max-w-4xl">
           <motion.div
@@ -121,7 +106,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* How We Think - Philosophy */}
+      {/* How We Think */}
       <section className="py-24 bg-muted/30">
         <div className="container">
           <motion.div
@@ -158,7 +143,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* The Firm - Collective Identity */}
+      {/* The Firm */}
       <section className="py-20">
         <div className="container max-w-4xl">
           <motion.div
@@ -180,7 +165,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Leadership Team - Visual Grid */}
+      {/* Leadership Team */}
       <section className="py-20 bg-muted/30">
         <div className="container">
           <motion.div
@@ -198,42 +183,7 @@ export default function AboutPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {teamMembers.map((member, index) => (
-              <motion.div
-                key={member.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.05 }}
-                className="bg-card rounded-xl border border-border overflow-hidden"
-              >
-                {/* Photo */}
-                <div className="aspect-[4/5] bg-muted overflow-hidden">
-                  {member.image ? (
-                    <img
-                      src={member.image}
-                      alt={t(`about:leadershipTeam.members.${member.nameKey}.name`)}
-                      className="w-full h-full object-cover grayscale"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-muted/50">
-                      <User className="w-16 h-16 text-muted-foreground/30" />
-                    </div>
-                  )}
-                </div>
-                
-                {/* Info */}
-                <div className="p-5">
-                  <h3 className="font-serif text-lg font-medium text-foreground mb-1">
-                    {t(`about:leadershipTeam.members.${member.nameKey}.name`)}
-                  </h3>
-                  <p className="font-body text-sm text-muted-foreground/80 mb-2">
-                    {t(`about:leadershipTeam.members.${member.roleKey}.role`)}
-                  </p>
-                  <p className="font-body text-xs text-primary/70">
-                    {t(`about:leadershipTeam.members.${member.focusKey}.focus`)}
-                  </p>
-                </div>
-              </motion.div>
+              <TeamMemberCard key={member.id} member={member} index={index} />
             ))}
           </div>
         </div>

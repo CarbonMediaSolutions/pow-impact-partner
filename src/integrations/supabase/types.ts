@@ -269,6 +269,63 @@ export type Database = {
         }
         Relationships: []
       }
+      team_members: {
+        Row: {
+          bio: string
+          bio_zh_hans: string
+          bio_zh_hant: string
+          created_at: string
+          focus: string
+          focus_zh_hans: string
+          focus_zh_hant: string
+          id: string
+          image_url: string | null
+          name: string
+          name_zh_hans: string
+          name_zh_hant: string
+          role: string
+          role_zh_hans: string
+          role_zh_hant: string
+          sort_order: number
+        }
+        Insert: {
+          bio?: string
+          bio_zh_hans?: string
+          bio_zh_hant?: string
+          created_at?: string
+          focus?: string
+          focus_zh_hans?: string
+          focus_zh_hant?: string
+          id?: string
+          image_url?: string | null
+          name: string
+          name_zh_hans?: string
+          name_zh_hant?: string
+          role: string
+          role_zh_hans?: string
+          role_zh_hant?: string
+          sort_order?: number
+        }
+        Update: {
+          bio?: string
+          bio_zh_hans?: string
+          bio_zh_hant?: string
+          created_at?: string
+          focus?: string
+          focus_zh_hans?: string
+          focus_zh_hant?: string
+          id?: string
+          image_url?: string | null
+          name?: string
+          name_zh_hans?: string
+          name_zh_hant?: string
+          role?: string
+          role_zh_hans?: string
+          role_zh_hant?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
