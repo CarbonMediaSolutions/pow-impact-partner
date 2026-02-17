@@ -1,79 +1,91 @@
 
 
-## Fix: Remaining Hardcoded Chinese Strings (Traditional-only)
+## Admin-Managed Team Members with Bio Hover Cards
 
-### Problem Found
+Two features: (1) make team member cards fully manageable from the admin dashboard, and (2) add a bio hover/click popup on the About page.
 
-All 16 locale JSON files (8 per Chinese variant) are correct -- Traditional Chinese uses proper 繁體 characters and Simplified Chinese uses proper 简体 characters throughout. No mixed characters detected in any locale file.
+---
 
-However, 4 component files contain **hardcoded inline** `isZh ? '繁體中文' : 'English'` strings that bypass the i18n system entirely. When a user selects Simplified Chinese, these strings still display in Traditional Chinese.
+### 1. Database Table: `team_members`
 
-### Affected Files and Strings
+Create a new `team_members` table to store team member data:
 
-**`src/pages/PerspectiveDetail.tsx`** (6 hardcoded strings):
-- "找不到觀點" / "Perspective not found"
-- "返回觀點" / "Return to Perspectives" (x2)
-- "想進一步討論這些想法？" / "Want to discuss these ideas further?"
-- "預約免費諮詢，探討這些策略如何適用於您的組織。" / "Book a free consultation..."
-- "預約免費諮詢" / "Book Your Free Consultation"
-- "此觀點反映了我們理解複雜決策的方式..." / "This perspective reflects..."
+| Column | Type | Notes |
+|--------|------|-------|
+| `id` | uuid (PK) | Auto-generated |
+| `name` | text | English name |
+| `name_zh_hant` | text | Traditional Chinese name |
+| `name_zh_hans` | text | Simplified Chinese name |
+| `role` | text | English title/role |
+| `role_zh_hant` | text | Traditional Chinese role |
+| `role_zh_hans` | text | Simplified Chinese role |
+| `focus` | text | English specialities line |
+| `focus_zh_hant` | text | Traditional Chinese focus |
+| `focus_zh_hans` | text | Simplified Chinese focus |
+| `bio` | text | English bio paragraph (2-3 sentences) |
+| `bio_zh_hant` | text | Traditional Chinese bio |
+| `bio_zh_hans` | text | Simplified Chinese bio |
+| `image_url` | text | URL in storage bucket |
+| `sort_order` | integer | Controls display order |
+| `created_at` | timestamptz | Auto |
 
-**`src/pages/AnalysisDetail.tsx`** (5 hardcoded strings):
-- "找不到分析" / "Analysis not found"
-- "返回分析" / "Return to Analysis" (x2)
-- "研究方法" / "Methodology"
-- "主要發現" / "Key Findings"
-- "影響與啟示" / "Implications"
+RLS: Public read access (team info is public on the About page), admin-only write access.
 
-**`src/components/SocialShare.tsx`** (1 hardcoded string):
-- "分享" / "Share"
+A new storage bucket `team-portraits` (public) will be created for portrait images.
 
-**`src/components/GatedDownload.tsx`** (8 hardcoded strings):
-- "下載已開始" / "Download started"
-- "請再試一次" / "Please try again"
-- "下載完整報告" / "Download Full Report"
-- "下載報告" / "Download Report"
-- "姓名" / "Name"
-- "您的姓名" / "Your name"
-- "電子郵件 *" / "Email *"
-- "處理中..." / "Processing..."
-- "獲取報告" / "Get Report"
+---
 
-### Fix
+### 2. Admin Dashboard: Team Members Tab
 
-Move all these strings into the i18n locale files (EN, zh-Hans, zh-Hant) and replace the inline ternaries with `t()` calls.
+Add a new tab in the Admin page called "Team" with:
 
-**Step 1 -- Add new keys to all 3 locale files:**
+- **Table view** showing all team members (name, role, sort order) with Edit and Delete buttons
+- **"Add Member" button** opening a dialog with fields for:
+  - Portrait image upload (to `team-portraits` bucket)
+  - Name, Role, Focus (EN / Simplified / Traditional -- 3 columns like the Site Content editor)
+  - Bio (EN / Simplified / Traditional) -- textarea fields for the hover popup text
+  - Sort order (number)
+- **Edit** pre-fills the form with existing data
+- **Delete** with confirmation prompt
+- **Replace image** by uploading a new one in the edit dialog (old image gets replaced)
 
-Add to `perspectives.json` (all 3 locales):
-- `notFound`, `backToList`, `discussFurther`, `discussDescription`, `bookFreeConsultation`, `disclaimerNote`
+---
 
-Add to `analysis.json` (all 3 locales):
-- `notFound`, `backToList`, `methodology`, `keyFindings`, `implications`
+### 3. About Page: Database-Driven Team Grid with Bio Hover Card
 
-Add to `common.json` (all 3 locales):
-- `share`, `download.started`, `download.tryAgain`, `download.fullReport`, `download.reportTitle`, `download.name`, `download.namePlaceholder`, `download.emailRequired`, `download.processing`, `download.getReport`
+Replace the hardcoded `teamMembers` array with a database fetch from `team_members`, ordered by `sort_order`.
 
-**Step 2 -- Update component files to use `t()` calls:**
+For the bio interaction, the recommended approach is a **HoverCard** (desktop) that also works on **click/tap** (mobile):
 
-Replace every `isZh ? '...' : '...'` pattern with the corresponding `t('namespace:key')` call.
+- On desktop: hovering over a team member card reveals a subtle overlay/popover showing their bio, specialities, and role in more detail
+- On mobile: tapping the card opens the same content (since hover doesn't exist on touch devices)
+- Uses the existing Radix `HoverCard` component already in the project
+- The popup appears over the portrait area with a semi-transparent background, showing the bio text
+- Maintains the institutional, restrained visual tone -- no flashy animations, just a clean fade-in
+
+The card will show:
+- Name, role, and focus (as currently shown)
+- On hover/tap: a popover with the full bio paragraph
+
+Language-aware: displays `name`, `role`, `focus`, and `bio` in the correct language variant based on the active i18n language.
+
+---
+
+### 4. Seed Existing Team Data
+
+After the migration creates the table, seed it with the 8 current team members (Patric, Rakesh, Peng-Li, Chiara, Gabriel, Nicole, Stephen, Mandy) using their existing portrait images from `src/assets/` uploaded to the new storage bucket, and their existing locale text from the `about.json` files.
+
+---
 
 ### Files Modified
 
 | File | Change |
 |------|--------|
-| `src/locales/en/perspectives.json` | Add detail page keys |
-| `src/locales/zh-Hant/perspectives.json` | Add detail page keys (Traditional) |
-| `src/locales/zh-Hans/perspectives.json` | Add detail page keys (Simplified) |
-| `src/locales/en/analysis.json` | Add detail page keys |
-| `src/locales/zh-Hant/analysis.json` | Add detail page keys (Traditional) |
-| `src/locales/zh-Hans/analysis.json` | Add detail page keys (Simplified) |
-| `src/locales/en/common.json` | Add share/download keys |
-| `src/locales/zh-Hant/common.json` | Add share/download keys (Traditional) |
-| `src/locales/zh-Hans/common.json` | Add share/download keys (Simplified) |
-| `src/pages/PerspectiveDetail.tsx` | Replace 6 inline ternaries with t() |
-| `src/pages/AnalysisDetail.tsx` | Replace 5 inline ternaries with t() |
-| `src/components/SocialShare.tsx` | Replace 1 inline ternary with t() |
-| `src/components/GatedDownload.tsx` | Replace 8 inline ternaries with t() |
+| Database migration | Create `team_members` table + RLS + storage bucket |
+| `src/pages/Admin.tsx` | Add "Team" tab with CRUD UI |
+| `src/pages/AboutPage.tsx` | Fetch from DB, add HoverCard bio popup |
+| `src/locales/en/about.json` | No change needed (bio text stored in DB) |
 
-No database changes needed. This is purely a locale file + component update.
+### Files Not Changed
+- Locale files stay as-is for other About page sections. Team member text (name, role, focus, bio) lives entirely in the database, not in locale files, since it's admin-managed.
+
