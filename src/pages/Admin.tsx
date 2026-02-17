@@ -17,6 +17,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Lock, Users, FileText, Mail, Eye, Plus, Pencil, Trash2, BookOpen, BarChart3, Copy, Calendar, ExternalLink, LogOut, Download, Settings } from 'lucide-react';
  import { Sparkles, Upload, X, Check, ChevronsUpDown } from 'lucide-react';
 import { SiteContentEditor } from '@/components/admin/SiteContentEditor';
+import { TeamMembersTab } from '@/components/admin/TeamMembersTab';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 import type { User } from '@supabase/supabase-js';
@@ -1006,6 +1007,7 @@ export default function Admin() {
                 <TabsTrigger value="emails">Email Captures</TabsTrigger>
                 <TabsTrigger value="subscribers">Subscribers</TabsTrigger>
                 <TabsTrigger value="site-content">Site Content</TabsTrigger>
+                <TabsTrigger value="team">Team</TabsTrigger>
               </TabsList>
 
               {/* Consultation Leads Tab */}
@@ -1879,6 +1881,10 @@ export default function Admin() {
 
               <TabsContent value="site-content">
                 <SiteContentEditor />
+              </TabsContent>
+
+              <TabsContent value="team">
+                <TeamMembersTab />
               </TabsContent>
             </Tabs>
           </motion.div>
