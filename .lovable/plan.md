@@ -1,91 +1,113 @@
 
 
-## Admin-Managed Team Members with Bio Hover Cards
+## Database-Driven Solutions with Expandable Details and Payment Links
 
-Two features: (1) make team member cards fully manageable from the admin dashboard, and (2) add a bio hover/click popup on the About page.
+Currently, solution cards are static (defined in `src/data/solutions.ts`) and the "Enquire" button links to `/book`. This plan makes solutions fully database-driven with support for images, PDFs, rich detail text, and external payment/checkout links -- all manageable from the Admin Dashboard.
 
 ---
 
-### 1. Database Table: `team_members`
+### 1. Database Table: `solutions`
 
-Create a new `team_members` table to store team member data:
+Create a new `solutions` table:
 
 | Column | Type | Notes |
 |--------|------|-------|
-| `id` | uuid (PK) | Auto-generated |
-| `name` | text | English name |
-| `name_zh_hant` | text | Traditional Chinese name |
-| `name_zh_hans` | text | Simplified Chinese name |
-| `role` | text | English title/role |
-| `role_zh_hant` | text | Traditional Chinese role |
-| `role_zh_hans` | text | Simplified Chinese role |
-| `focus` | text | English specialities line |
-| `focus_zh_hant` | text | Traditional Chinese focus |
-| `focus_zh_hans` | text | Simplified Chinese focus |
-| `bio` | text | English bio paragraph (2-3 sentences) |
-| `bio_zh_hant` | text | Traditional Chinese bio |
-| `bio_zh_hans` | text | Simplified Chinese bio |
-| `image_url` | text | URL in storage bucket |
-| `sort_order` | integer | Controls display order |
-| `created_at` | timestamptz | Auto |
+| id | text (PK) | Slug identifier (e.g. "governance") |
+| sort_order | integer | Display order, default 0 |
+| title | text | English title |
+| perspective | text | English tagline |
+| description | text | English description |
+| services | text[] | English service list |
+| detail_content | text | Extended English description shown on expand |
+| price | text | Pricing label |
+| price_note | text | Pricing sub-note |
+| image_url | text (nullable) | Header image for the card |
+| pdf_url | text (nullable) | Downloadable PDF attachment |
+| payment_link | text (nullable) | External Stripe/checkout URL |
+| title_zh_hant | text | Traditional Chinese title |
+| title_zh_hans | text | Simplified Chinese title |
+| description_zh_hant | text | Traditional Chinese description |
+| description_zh_hans | text | Simplified Chinese description |
+| detail_content_zh_hant | text | Traditional Chinese detail |
+| detail_content_zh_hans | text | Simplified Chinese detail |
+| services_zh_hant | text[] | Traditional Chinese services |
+| services_zh_hans | text[] | Simplified Chinese services |
+| perspective_zh_hant | text | |
+| perspective_zh_hans | text | |
+| price_zh_hant | text | |
+| price_zh_hans | text | |
+| price_note_zh_hant | text | |
+| price_note_zh_hans | text | |
+| created_at | timestamptz | Auto |
 
-RLS: Public read access (team info is public on the About page), admin-only write access.
+RLS: Public read access, admin-only write. Seeded with the 5 existing solutions.
 
-A new storage bucket `team-portraits` (public) will be created for portrait images.
-
----
-
-### 2. Admin Dashboard: Team Members Tab
-
-Add a new tab in the Admin page called "Team" with:
-
-- **Table view** showing all team members (name, role, sort order) with Edit and Delete buttons
-- **"Add Member" button** opening a dialog with fields for:
-  - Portrait image upload (to `team-portraits` bucket)
-  - Name, Role, Focus (EN / Simplified / Traditional -- 3 columns like the Site Content editor)
-  - Bio (EN / Simplified / Traditional) -- textarea fields for the hover popup text
-  - Sort order (number)
-- **Edit** pre-fills the form with existing data
-- **Delete** with confirmation prompt
-- **Replace image** by uploading a new one in the edit dialog (old image gets replaced)
+A `solution-assets` storage bucket (public) for images and PDFs.
 
 ---
 
-### 3. About Page: Database-Driven Team Grid with Bio Hover Card
+### 2. Admin Dashboard: Solutions Tab
 
-Replace the hardcoded `teamMembers` array with a database fetch from `team_members`, ordered by `sort_order`.
+Add a new "Solutions" tab in the Admin page with:
 
-For the bio interaction, the recommended approach is a **HoverCard** (desktop) that also works on **click/tap** (mobile):
-
-- On desktop: hovering over a team member card reveals a subtle overlay/popover showing their bio, specialities, and role in more detail
-- On mobile: tapping the card opens the same content (since hover doesn't exist on touch devices)
-- Uses the existing Radix `HoverCard` component already in the project
-- The popup appears over the portrait area with a semi-transparent background, showing the bio text
-- Maintains the institutional, restrained visual tone -- no flashy animations, just a clean fade-in
-
-The card will show:
-- Name, role, and focus (as currently shown)
-- On hover/tap: a popover with the full bio paragraph
-
-Language-aware: displays `name`, `role`, `focus`, and `bio` in the correct language variant based on the active i18n language.
+- **Table view** of all solution cards (title, sort order) with Edit and Delete buttons
+- **"Add Solution" button** opening a dialog with:
+  - Title, Perspective, Description, Detail Content (EN / zh-Hans / zh-Hant)
+  - Services list (comma-separated or one per line)
+  - Price and Price Note
+  - **Image upload** (displayed at top of card)
+  - **PDF upload** (shown as download link)
+  - **Payment link** text field (admin pastes their Stripe checkout URL)
+  - Sort order
+- **Delete** with confirmation
 
 ---
 
-### 4. Seed Existing Team Data
+### 3. Solutions Page: Expandable Cards with Payment Button
 
-After the migration creates the table, seed it with the 8 current team members (Patric, Rakesh, Peng-Li, Chiara, Gabriel, Nicole, Stephen, Mandy) using their existing portrait images from `src/assets/` uploaded to the new storage bucket, and their existing locale text from the `about.json` files.
+Refactor `src/pages/Solutions.tsx`:
+
+- Fetch solutions from the database instead of the static file
+- The "Enquire" button becomes a **"Learn More"** toggle that expands the card inline to reveal:
+  - The `detail_content` text (extended description of the service)
+  - A **"Download PDF"** button if a PDF is attached
+  - If a `payment_link` is set: a **"Purchase"** button linking to the external checkout URL
+  - If no payment link: the original **"Request a Consultation"** button linking to `/book`
+- The card expansion uses `framer-motion` for a smooth height animation
+- Clicking "Learn More" again collapses the detail section
+
+The card layout when expanded:
+
+```text
++---------------------------+
+|  [Image - if uploaded]    |
++---------------------------+
+|  Title                    |
+|  "Perspective tagline"    |
+|  Description              |
+|                           |
+|  * Service 1              |
+|  * Service 2              |
+|                           |
+|  Price / Price Note       |
+|  [Learn More v]           |
++---------------------------+
+|  Extended detail text...  |
+|                           |
+|  [Download PDF]           |
+|  [Purchase] or [Enquire]  |
++---------------------------+
+```
 
 ---
 
-### Files Modified
+### 4. Files Changed
 
 | File | Change |
 |------|--------|
-| Database migration | Create `team_members` table + RLS + storage bucket |
-| `src/pages/Admin.tsx` | Add "Team" tab with CRUD UI |
-| `src/pages/AboutPage.tsx` | Fetch from DB, add HoverCard bio popup |
-| `src/locales/en/about.json` | No change needed (bio text stored in DB) |
-
-### Files Not Changed
-- Locale files stay as-is for other About page sections. Team member text (name, role, focus, bio) lives entirely in the database, not in locale files, since it's admin-managed.
+| New migration | Create `solutions` table, RLS, `solution-assets` bucket, seed 5 entries |
+| New file: `src/components/admin/SolutionsTab.tsx` | Admin CRUD for solutions |
+| `src/pages/Admin.tsx` | Register new "Solutions" tab |
+| `src/pages/Solutions.tsx` | Fetch from DB, expandable cards with payment link |
+| `src/data/solutions.ts` | Kept as type definition / fallback only |
 
