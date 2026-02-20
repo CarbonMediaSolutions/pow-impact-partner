@@ -269,6 +269,96 @@ export type Database = {
         }
         Relationships: []
       }
+      solutions: {
+        Row: {
+          created_at: string
+          description: string
+          description_zh_hans: string
+          description_zh_hant: string
+          detail_content: string
+          detail_content_zh_hans: string
+          detail_content_zh_hant: string
+          id: string
+          image_url: string | null
+          payment_link: string | null
+          pdf_url: string | null
+          perspective: string
+          perspective_zh_hans: string
+          perspective_zh_hant: string
+          price: string
+          price_note: string
+          price_note_zh_hans: string
+          price_note_zh_hant: string
+          price_zh_hans: string
+          price_zh_hant: string
+          services: string[]
+          services_zh_hans: string[]
+          services_zh_hant: string[]
+          sort_order: number
+          title: string
+          title_zh_hans: string
+          title_zh_hant: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          description_zh_hans?: string
+          description_zh_hant?: string
+          detail_content?: string
+          detail_content_zh_hans?: string
+          detail_content_zh_hant?: string
+          id: string
+          image_url?: string | null
+          payment_link?: string | null
+          pdf_url?: string | null
+          perspective?: string
+          perspective_zh_hans?: string
+          perspective_zh_hant?: string
+          price?: string
+          price_note?: string
+          price_note_zh_hans?: string
+          price_note_zh_hant?: string
+          price_zh_hans?: string
+          price_zh_hant?: string
+          services?: string[]
+          services_zh_hans?: string[]
+          services_zh_hant?: string[]
+          sort_order?: number
+          title: string
+          title_zh_hans?: string
+          title_zh_hant?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          description_zh_hans?: string
+          description_zh_hant?: string
+          detail_content?: string
+          detail_content_zh_hans?: string
+          detail_content_zh_hant?: string
+          id?: string
+          image_url?: string | null
+          payment_link?: string | null
+          pdf_url?: string | null
+          perspective?: string
+          perspective_zh_hans?: string
+          perspective_zh_hant?: string
+          price?: string
+          price_note?: string
+          price_note_zh_hans?: string
+          price_note_zh_hant?: string
+          price_zh_hans?: string
+          price_zh_hant?: string
+          services?: string[]
+          services_zh_hans?: string[]
+          services_zh_hant?: string[]
+          sort_order?: number
+          title?: string
+          title_zh_hans?: string
+          title_zh_hant?: string
+        }
+        Relationships: []
+      }
       team_members: {
         Row: {
           bio: string

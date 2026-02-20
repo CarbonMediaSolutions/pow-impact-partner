@@ -18,6 +18,7 @@ import { Lock, Users, FileText, Mail, Eye, Plus, Pencil, Trash2, BookOpen, BarCh
  import { Sparkles, Upload, X, Check, ChevronsUpDown } from 'lucide-react';
 import { SiteContentEditor } from '@/components/admin/SiteContentEditor';
 import { TeamMembersTab } from '@/components/admin/TeamMembersTab';
+import { SolutionsTab } from '@/components/admin/SolutionsTab';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 import type { User } from '@supabase/supabase-js';
@@ -1006,6 +1007,7 @@ export default function Admin() {
                 <TabsTrigger value="submissions">Submissions</TabsTrigger>
                 <TabsTrigger value="emails">Email Captures</TabsTrigger>
                 <TabsTrigger value="subscribers">Subscribers</TabsTrigger>
+                <TabsTrigger value="solutions">Solutions</TabsTrigger>
                 <TabsTrigger value="site-content">Site Content</TabsTrigger>
                 <TabsTrigger value="team">Team</TabsTrigger>
               </TabsList>
@@ -1877,6 +1879,10 @@ export default function Admin() {
                     )}
                   </CardContent>
                 </Card>
+              </TabsContent>
+
+              <TabsContent value="solutions">
+                <SolutionsTab />
               </TabsContent>
 
               <TabsContent value="site-content">

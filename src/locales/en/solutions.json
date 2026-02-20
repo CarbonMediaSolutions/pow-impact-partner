@@ -17,6 +17,9 @@
     }
   },
   "enquire": "Enquire",
+  "learnMore": "Learn More",
+  "downloadPdf": "Download PDF",
+  "purchase": "Purchase",
   "moreServices": "+ {{count}} more services",
   "cards": {
     "governance": {
