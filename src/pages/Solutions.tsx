@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Check, Clock, MessageSquare, Users, ChevronDown, ChevronUp, Download, ShoppingCart } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowRight, Check, Clock, MessageSquare, Users, ShoppingCart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Header } from '@/components/Header';
@@ -182,61 +182,22 @@ export default function Solutions() {
                         <p className="font-body text-xs text-muted-foreground mb-4">
                           {localized(solution, 'price_note')}
                         </p>
-                        <Button
-                          variant="outline"
-                          className="w-full font-body"
-                          onClick={() => setExpandedId(isExpanded ? null : solution.id)}
-                        >
-                          {t('solutions:learnMore', { defaultValue: 'Learn More' })}
-                          {isExpanded ? <ChevronUp className="w-4 h-4 ml-2" /> : <ChevronDown className="w-4 h-4 ml-2" />}
-                        </Button>
-                      </div>
-
-                      {/* Expandable detail section */}
-                      <AnimatePresence>
-                        {isExpanded && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: 'auto', opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.3 }}
-                            className="overflow-hidden"
-                          >
-                            <div className="pt-6 space-y-4">
-                              {localized(solution, 'detail_content') && (
-                                <p className="font-body text-sm text-muted-foreground leading-relaxed">
-                                  {localized(solution, 'detail_content')}
-                                </p>
-                              )}
-
-                              {solution.pdf_url && (
-                                <Button asChild variant="outline" size="sm" className="w-full font-body">
-                                  <a href={solution.pdf_url} target="_blank" rel="noopener noreferrer">
-                                    <Download className="w-4 h-4 mr-2" />
-                                    {t('solutions:downloadPdf', { defaultValue: 'Download PDF' })}
-                                  </a>
-                                </Button>
-                              )}
-
-                              {solution.payment_link ? (
-                                <Button asChild className="w-full font-body btn-emerald">
-                                  <a href={solution.payment_link} target="_blank" rel="noopener noreferrer">
-                                    <ShoppingCart className="w-4 h-4 mr-2" />
-                                    {t('solutions:purchase', { defaultValue: 'Purchase' })}
-                                  </a>
-                                </Button>
-                              ) : (
-                                <Button asChild className="w-full font-body btn-emerald">
-                                  <Link to={`/book?solution=${solution.id}`}>
-                                    {t('common:cta.bookConsultation')}
-                                    <ArrowRight className="w-4 h-4 ml-2" />
-                                  </Link>
-                                </Button>
-                              )}
-                            </div>
-                          </motion.div>
+                        {solution.payment_link ? (
+                          <Button asChild className="w-full font-body btn-emerald">
+                            <a href={solution.payment_link} target="_blank" rel="noopener noreferrer">
+                              <ShoppingCart className="w-4 h-4 mr-2" />
+                              {t('solutions:purchase', { defaultValue: 'Purchase' })}
+                            </a>
+                          </Button>
+                        ) : (
+                          <Button asChild variant="outline" className="w-full font-body">
+                            <Link to={`/book?solution=${solution.id}`}>
+                              {t('common:cta.bookConsultation')}
+                              <ArrowRight className="w-4 h-4 ml-2" />
+                            </Link>
+                          </Button>
                         )}
-                      </AnimatePresence>
+                      </div>
                     </div>
                   </motion.div>
                 );
