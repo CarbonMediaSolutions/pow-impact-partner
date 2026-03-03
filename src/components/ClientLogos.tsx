@@ -1,35 +1,39 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import useEmblaCarousel from 'embla-carousel-react';
-import quantic from '@/assets/clients/quantic.png';
-import cityGuilds from '@/assets/clients/city-guilds.png';
-import thrivegrowth from '@/assets/clients/thrivegrowth.png';
-import etz from '@/assets/clients/etz.png';
-import offploy from '@/assets/clients/offploy.png';
-import azcrown from '@/assets/clients/azcrown.png';
-import helloYellow from '@/assets/clients/hello-yellow.png';
-import tiantong from '@/assets/clients/tiantong.png';
+import { supabase } from '@/integrations/supabase/client';
+import { Skeleton } from '@/components/ui/skeleton';
 
-const logos = [
-  { src: quantic, alt: 'Quantic School of Business & Technology' },
-  { src: cityGuilds, alt: 'City & Guilds' },
-  { src: thrivegrowth, alt: 'ThriveGrowth' },
-  { src: etz, alt: 'ETZ' },
-  { src: offploy, alt: 'Offploy' },
-  { src: azcrown, alt: 'AZCrown' },
-  { src: helloYellow, alt: 'Hello Yellow' },
-  { src: tiantong, alt: 'Tiantong Foods' },
-];
+interface ClientLogo {
+  id: string;
+  name: string;
+  image_url: string;
+  sort_order: number;
+}
 
 export const ClientLogos = () => {
   const { t } = useTranslation('common');
+  const [logos, setLogos] = useState<ClientLogo[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
     align: 'start',
     slidesToScroll: 1,
   });
+
+  useEffect(() => {
+    const fetchLogos = async () => {
+      const { data } = await supabase
+        .from('client_logos' as any)
+        .select('*')
+        .order('sort_order', { ascending: true });
+      if (data) setLogos(data as any);
+      setLoading(false);
+    };
+    fetchLogos();
+  }, []);
 
   const autoplay = useCallback(() => {
     if (!emblaApi) return;
@@ -43,6 +47,22 @@ export const ClientLogos = () => {
     const cleanup = autoplay();
     return cleanup;
   }, [autoplay]);
+
+  if (loading) {
+    return (
+      <section className="py-16 lg:py-20">
+        <div className="container max-w-6xl">
+          <div className="flex justify-center gap-8">
+            {[...Array(4)].map((_, i) => (
+              <Skeleton key={i} className="h-24 w-40" />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (logos.length === 0) return null;
 
   return (
     <section className="py-16 lg:py-20">
@@ -59,12 +79,12 @@ export const ClientLogos = () => {
           <div className="flex">
             {logos.map((logo) => (
               <div
-                key={logo.alt}
+                key={logo.id}
                 className="flex-[0_0_25%] min-w-0 flex items-center justify-center px-4 sm:px-6"
               >
                 <img
-                  src={logo.src}
-                  alt={logo.alt}
+                  src={logo.image_url}
+                  alt={logo.name}
                   className="h-24 sm:h-32 w-auto max-w-[320px] object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
                 />
               </div>
