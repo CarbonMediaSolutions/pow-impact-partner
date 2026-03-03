@@ -19,6 +19,7 @@ import { Lock, Users, FileText, Mail, Eye, Plus, Pencil, Trash2, BookOpen, BarCh
 import { SiteContentEditor } from '@/components/admin/SiteContentEditor';
 import { TeamMembersTab } from '@/components/admin/TeamMembersTab';
 import { SolutionsTab } from '@/components/admin/SolutionsTab';
+import { ClientLogosTab } from '@/components/admin/ClientLogosTab';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 import type { User } from '@supabase/supabase-js';
@@ -1010,6 +1011,7 @@ export default function Admin() {
                 <TabsTrigger value="solutions">Solutions</TabsTrigger>
                 <TabsTrigger value="site-content">Site Content</TabsTrigger>
                 <TabsTrigger value="team">Team</TabsTrigger>
+                <TabsTrigger value="client-logos">Client Logos</TabsTrigger>
               </TabsList>
 
               {/* Consultation Leads Tab */}
@@ -1891,6 +1893,10 @@ export default function Admin() {
 
               <TabsContent value="team">
                 <TeamMembersTab />
+              </TabsContent>
+
+              <TabsContent value="client-logos">
+                <ClientLogosTab />
               </TabsContent>
             </Tabs>
           </motion.div>
