@@ -1,43 +1,25 @@
 
 
-## Database-Driven Client Logos
+## Fix: Populate Solution Card Translations in Database
 
-Move client logos from hardcoded imports to a database table, with admin CRUD support.
+**Problem:** The `solutions` table has empty strings for all `_zh_hant` and `_zh_hans` columns. The `localized()` function correctly falls back to English when these are empty, which is why cards always show English.
 
-### 1. Database: `client_logos` table
+**Solution:** Run a single database migration to populate all Chinese translation fields using the content already defined in the locale JSON files (`zh-Hans/solutions.json` and `zh-Hant/solutions.json`).
 
-| Column | Type | Notes |
-|--------|------|-------|
-| id | uuid (PK) | Auto-generated |
-| name | text | Company name (used as alt text) |
-| image_url | text | Public URL from storage bucket |
-| sort_order | integer | Display order, default 0 |
-| created_at | timestamptz | Auto |
+### Fields to populate per solution (5 cards x 2 languages x 6 fields = 60 updates):
 
-- RLS: public read, admin-only write
-- Reuse the existing `solution-assets` bucket (or create a dedicated `client-logos` bucket)
-- Seed with the 8 existing logos (upload current assets to storage)
+For each of `governance`, `capital`, `growth`, `decision-support`, `data-insight`:
+- `title_zh_hant` / `title_zh_hans`
+- `perspective_zh_hant` / `perspective_zh_hans`
+- `description_zh_hant` / `description_zh_hans`
+- `services_zh_hant` / `services_zh_hans`
+- `price_zh_hant` / `price_zh_hans`
+- `price_note_zh_hant` / `price_note_zh_hans`
 
-### 2. Admin: Client Logos Tab
+### Changes
+| What | How |
+|------|-----|
+| Database migration | Single migration with 10 UPDATE statements (5 cards x 2 languages) using the translations from locale files |
 
-Add a "Client Logos" tab in Admin with:
-- List of logos (thumbnail, name, sort order) with Edit/Delete
-- "Add Logo" button — upload image, enter company name, set sort order
-- Delete with confirmation
-
-### 3. ClientLogos Component Refactor
-
-- Fetch logos from `client_logos` table ordered by `sort_order`
-- Remove all static image imports
-- Keep the existing Embla carousel, grayscale styling, and autoplay behavior
-- Show a loading skeleton while fetching
-
-### Files Changed
-
-| File | Change |
-|------|--------|
-| New migration | Create `client_logos` table, RLS, seed 8 entries |
-| New: `src/components/admin/ClientLogosTab.tsx` | Admin CRUD for logos |
-| `src/pages/Admin.tsx` | Register new tab |
-| `src/components/ClientLogos.tsx` | Fetch from DB instead of static imports |
+No code changes needed — the `Solutions.tsx` component already handles localization correctly.
 
