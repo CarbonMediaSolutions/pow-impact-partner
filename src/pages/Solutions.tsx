@@ -40,11 +40,22 @@ interface SolutionData {
 export default function Solutions() {
   const { t, i18n } = useTranslation(['solutions', 'common']);
   const [solutions, setSolutions] = useState<SolutionData[]>([]);
-  const [expandedId, setExpandedId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const resolvedLang = i18n.resolvedLanguage || i18n.language;
+
+  // Normalize to 'hant' | 'hans' | 'en'
+  const langVariant = (() => {
+    const l = resolvedLang.toLowerCase();
+    if (l === 'zh-hant' || l === 'zh-tw' || l === 'zh-hk') return 'hant';
+    if (l === 'zh-hans' || l === 'zh-cn' || l === 'zh-sg') return 'hans';
+    if (l === 'zh') return 'hant'; // fallback for bare 'zh'
+    return 'en';
+  })();
+
   useEffect(() => {
-    const fetch = async () => {
+    const fetchSolutions = async () => {
+      setLoading(true);
       const { data } = await supabase
         .from('solutions' as any)
         .select('*')
@@ -52,29 +63,38 @@ export default function Solutions() {
       if (data) setSolutions(data as any);
       setLoading(false);
     };
-    fetch();
-  }, []);
-
-  const lang = i18n.language;
+    fetchSolutions();
+  }, [langVariant]);
 
   const localized = (s: SolutionData, field: 'title' | 'perspective' | 'description' | 'detail_content' | 'price' | 'price_note') => {
-    if (lang.startsWith('zh-Hant') || lang === 'zh') {
+    if (langVariant === 'hant') {
       const v = s[`${field}_zh_hant` as keyof SolutionData] as string;
-      return v || s[field];
+      if (v) return v;
+      // Fallback to locale file
+      const cardKey = `cards.${s.id}.${field === 'price_note' ? 'priceNote' : field}`;
+      const fallback = t(`solutions:${cardKey}`, { defaultValue: '' });
+      return fallback || s[field];
     }
-    if (lang.startsWith('zh-Hans') || lang.startsWith('zh')) {
+    if (langVariant === 'hans') {
       const v = s[`${field}_zh_hans` as keyof SolutionData] as string;
-      return v || s[field];
+      if (v) return v;
+      const cardKey = `cards.${s.id}.${field === 'price_note' ? 'priceNote' : field}`;
+      const fallback = t(`solutions:${cardKey}`, { defaultValue: '' });
+      return fallback || s[field];
     }
     return s[field];
   };
 
   const localizedServices = (s: SolutionData) => {
-    if (lang.startsWith('zh-Hant') || lang === 'zh') {
-      return s.services_zh_hant?.length ? s.services_zh_hant : s.services;
+    if (langVariant === 'hant') {
+      if (s.services_zh_hant?.length) return s.services_zh_hant;
+      const fallback = t(`solutions:cards.${s.id}.services`, { returnObjects: true, defaultValue: [] });
+      return Array.isArray(fallback) && fallback.length ? fallback : s.services;
     }
-    if (lang.startsWith('zh-Hans') || lang.startsWith('zh')) {
-      return s.services_zh_hans?.length ? s.services_zh_hans : s.services;
+    if (langVariant === 'hans') {
+      if (s.services_zh_hans?.length) return s.services_zh_hans;
+      const fallback = t(`solutions:cards.${s.id}.services`, { returnObjects: true, defaultValue: [] });
+      return Array.isArray(fallback) && fallback.length ? fallback : s.services;
     }
     return s.services;
   };
@@ -128,7 +148,6 @@ export default function Solutions() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {solutions.map((solution, index) => {
                 const services = localizedServices(solution);
-                const isExpanded = expandedId === solution.id;
                 
                 return (
                   <motion.div
