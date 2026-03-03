@@ -1,25 +1,38 @@
 
+Goal: make /solutions cards reliably translate in all languages (EN, 简体中文, 繁體中文) even when language codes vary or data is stale.
 
-## Fix: Populate Solution Card Translations in Database
+1) Confirmed root cause scope
+- Backend translation data is already populated for all 5 solutions (`*_zh_hans`, `*_zh_hant`, and service arrays are present).
+- So this is now a frontend localization resolution issue (not a missing-data issue).
 
-**Problem:** The `solutions` table has empty strings for all `_zh_hant` and `_zh_hans` columns. The `localized()` function correctly falls back to English when these are empty, which is why cards always show English.
+2) Update language resolution logic in `src/pages/Solutions.tsx`
+- Replace current `lang` checks with a normalized resolver using `i18n.resolvedLanguage || i18n.language`.
+- Map variants robustly:
+  - `zh-Hant`, `zh-TW`, `zh-HK` -> Traditional
+  - `zh-Hans`, `zh-CN`, `zh-SG` -> Simplified
+  - default -> English
+- Remove ambiguous branching that can route unexpected `zh-*` values incorrectly.
 
-**Solution:** Run a single database migration to populate all Chinese translation fields using the content already defined in the locale JSON files (`zh-Hans/solutions.json` and `zh-Hant/solutions.json`).
+3) Harden card text fallback behavior
+- Keep DB fields as primary source.
+- Add locale-file fallback using `solutions.cards.<id>` when a DB localized field is empty/missing.
+- Apply this for: title, perspective, description, services, price, and priceNote.
+- This ensures cards still translate correctly even if one localized DB field is blank.
 
-### Fields to populate per solution (5 cards x 2 languages x 6 fields = 60 updates):
+4) Ensure fresh data when language switches
+- Re-fetch solutions when language changes (dependency on resolved language), not only on first mount.
+- This prevents stale in-memory data from showing old English fields after backend translation updates.
 
-For each of `governance`, `capital`, `growth`, `decision-support`, `data-insight`:
-- `title_zh_hant` / `title_zh_hans`
-- `perspective_zh_hant` / `perspective_zh_hans`
-- `description_zh_hant` / `description_zh_hans`
-- `services_zh_hant` / `services_zh_hans`
-- `price_zh_hant` / `price_zh_hans`
-- `price_note_zh_hant` / `price_note_zh_hans`
+5) Clean up and verify
+- Remove unused `expandedId` state in Solutions page.
+- Verify on /solutions:
+  - English: all cards in EN
+  - Simplified: all 5 cards fully in 简体
+  - Traditional: all 5 cards fully in 繁體
+  - CTA behavior remains unchanged (Purchase vs Book Consultation).
 
-### Changes
-| What | How |
-|------|-----|
-| Database migration | Single migration with 10 UPDATE statements (5 cards x 2 languages) using the translations from locale files |
-
-No code changes needed — the `Solutions.tsx` component already handles localization correctly.
-
+Technical details
+- File to change: `src/pages/Solutions.tsx` only.
+- No database migration needed.
+- No admin data-entry changes needed.
+- No routing or backend policy changes needed.
