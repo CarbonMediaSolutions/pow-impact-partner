@@ -1,38 +1,41 @@
 
-Goal: make /solutions cards reliably translate in all languages (EN, 简体中文, 繁體中文) even when language codes vary or data is stale.
 
-1) Confirmed root cause scope
-- Backend translation data is already populated for all 5 solutions (`*_zh_hans`, `*_zh_hant`, and service arrays are present).
-- So this is now a frontend localization resolution issue (not a missing-data issue).
+## Add Vincit-Lee Lloyd and Nishopan Karunanithy to the Leadership Team
 
-2) Update language resolution logic in `src/pages/Solutions.tsx`
-- Replace current `lang` checks with a normalized resolver using `i18n.resolvedLanguage || i18n.language`.
-- Map variants robustly:
-  - `zh-Hant`, `zh-TW`, `zh-HK` -> Traditional
-  - `zh-Hans`, `zh-CN`, `zh-SG` -> Simplified
-  - default -> English
-- Remove ambiguous branching that can route unexpected `zh-*` values incorrectly.
+### 1. Copy portrait images to project assets
+- Copy `user-uploads://image-2.png` to `src/assets/vincit-portrait.png`
+- Copy `user-uploads://image-3.png` to `src/assets/nishopan-portrait.png`
 
-3) Harden card text fallback behavior
-- Keep DB fields as primary source.
-- Add locale-file fallback using `solutions.cards.<id>` when a DB localized field is empty/missing.
-- Apply this for: title, perspective, description, services, price, and priceNote.
-- This ensures cards still translate correctly even if one localized DB field is blank.
+### 2. Database migration: Insert two new team members
 
-4) Ensure fresh data when language switches
-- Re-fetch solutions when language changes (dependency on resolved language), not only on first mount.
-- This prevents stale in-memory data from showing old English fields after backend translation updates.
+Insert into `team_members` table with the following data:
 
-5) Clean up and verify
-- Remove unused `expandedId` state in Solutions page.
-- Verify on /solutions:
-  - English: all cards in EN
-  - Simplified: all 5 cards fully in 简体
-  - Traditional: all 5 cards fully in 繁體
-  - CTA behavior remains unchanged (Purchase vs Book Consultation).
+**Vincit-Lee Lloyd**
+- name: "Vincit-Lee Lloyd"
+- role: "Director"
+- focus: "Digital Architecture · UX Systems · Conversion Strategy"
+- bio: Full bio text (two paragraphs about UI/UX architecture, MBA, front-end systems, conversion optimisation)
+- sort_order: 8 (after Mandy Wong)
 
-Technical details
-- File to change: `src/pages/Solutions.tsx` only.
-- No database migration needed.
-- No admin data-entry changes needed.
-- No routing or backend policy changes needed.
+**Nishopan Karunanithy**
+- name: "Nishopan Karunanithy"
+- role: "Tax Advisory Partner"
+- focus: "Tax Strategy · Structuring · International Tax"
+- bio: Full bio text (two paragraphs about tax advisory, CTA/ATT credentials, Big 4 experience)
+- sort_order: 9
+
+Chinese translation fields left empty (fallback to English).
+
+### 3. Update `src/pages/AboutPage.tsx`
+- Import the two new portrait images
+- Add fallback portrait entries for both names
+
+### Files changed
+
+| File | Change |
+|------|--------|
+| `src/assets/vincit-portrait.png` | New (copied from upload) |
+| `src/assets/nishopan-portrait.png` | New (copied from upload) |
+| New migration | INSERT 2 team members |
+| `src/pages/AboutPage.tsx` | Add fallback portrait imports and mappings |
+
