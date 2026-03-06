@@ -17,6 +17,8 @@ import gabrielPortrait from '@/assets/gabriel-portrait.png';
 import nicolePortrait from '@/assets/nicole-portrait.png';
 import stephenPortrait from '@/assets/stephen-portrait.png';
 import mandyPortrait from '@/assets/mandy-portrait.png';
+import vincitPortrait from '@/assets/vincit-portrait.png';
+import nishopanPortrait from '@/assets/nishopan-portrait.png';
 
 const fallbackPortraits: Record<string, string> = {
   'Patric Wong': patricPortrait,
@@ -27,6 +29,8 @@ const fallbackPortraits: Record<string, string> = {
   'Nicole Magnier': nicolePortrait,
   'Stephen Chan': stephenPortrait,
   'Mandy Wong': mandyPortrait,
+  'Vincit-Lee Lloyd': vincitPortrait,
+  'Nishopan Karunanithy': nishopanPortrait,
 };
 
 export default function AboutPage() {
