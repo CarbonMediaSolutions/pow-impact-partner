@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { supabase } from '@/integrations/supabase/client';
-import { Plus, Pencil, Trash2, Upload } from 'lucide-react';
+import { Plus, Pencil, Trash2, Upload, ArrowUp, ArrowDown } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface ClientLogo {
@@ -125,6 +125,25 @@ export function ClientLogosTab() {
     }
   };
 
+  const moveLogo = async (index: number, direction: 'up' | 'down') => {
+    const swapIndex = direction === 'up' ? index - 1 : index + 1;
+    if (swapIndex < 0 || swapIndex >= logos.length) return;
+
+    const current = logos[index];
+    const swap = logos[swapIndex];
+
+    try {
+      await Promise.all([
+        (supabase.from('client_logos' as any) as any).update({ sort_order: swap.sort_order }).eq('id', current.id),
+        (supabase.from('client_logos' as any) as any).update({ sort_order: current.sort_order }).eq('id', swap.id),
+      ]);
+      fetchLogos();
+    } catch (err) {
+      console.error(err);
+      toast.error('Failed to reorder logos');
+    }
+  };
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
@@ -146,16 +165,25 @@ export function ClientLogosTab() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-12">Order</TableHead>
+                <TableHead className="w-20">Order</TableHead>
                 <TableHead className="w-20">Logo</TableHead>
                 <TableHead>Company Name</TableHead>
-                <TableHead className="w-24">Actions</TableHead>
+                <TableHead className="w-32">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {logos.map(logo => (
+              {logos.map((logo, index) => (
                 <TableRow key={logo.id}>
-                  <TableCell className="font-mono text-sm">{logo.sort_order}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-1">
+                      <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => moveLogo(index, 'up')} disabled={index === 0}>
+                        <ArrowUp className="w-3.5 h-3.5" />
+                      </Button>
+                      <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => moveLogo(index, 'down')} disabled={index === logos.length - 1}>
+                        <ArrowDown className="w-3.5 h-3.5" />
+                      </Button>
+                    </div>
+                  </TableCell>
                   <TableCell>
                     <img src={logo.image_url} alt={logo.name} className="h-10 w-auto max-w-[80px] object-contain" />
                   </TableCell>
@@ -208,11 +236,6 @@ export function ClientLogosTab() {
             <div className="space-y-2">
               <Label>Company Name *</Label>
               <Input value={form.name} onChange={e => setForm(prev => ({ ...prev, name: e.target.value }))} placeholder="e.g. Acme Corp" />
-            </div>
-
-            <div className="space-y-2 max-w-[120px]">
-              <Label>Sort Order</Label>
-              <Input type="number" value={form.sort_order} onChange={e => setForm(prev => ({ ...prev, sort_order: parseInt(e.target.value) || 0 }))} />
             </div>
 
             <div className="flex justify-end gap-3 pt-4 border-t">
