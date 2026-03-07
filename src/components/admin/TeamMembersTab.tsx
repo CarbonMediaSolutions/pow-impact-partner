@@ -224,6 +224,12 @@ export function TeamMembersTab() {
                   <TableCell className="text-muted-foreground text-sm">{m.role}</TableCell>
                   <TableCell>
                     <div className="flex gap-1">
+                      <Button variant="ghost" size="icon" onClick={() => moveMember(members.indexOf(m), 'up')} disabled={members.indexOf(m) === 0}>
+                        <ArrowUp className="w-4 h-4" />
+                      </Button>
+                      <Button variant="ghost" size="icon" onClick={() => moveMember(members.indexOf(m), 'down')} disabled={members.indexOf(m) === members.length - 1}>
+                        <ArrowDown className="w-4 h-4" />
+                      </Button>
                       <Button variant="ghost" size="icon" onClick={() => openEdit(m)}>
                         <Pencil className="w-4 h-4" />
                       </Button>
