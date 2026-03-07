@@ -30,7 +30,7 @@ const fallbackPortraits: Record<string, string> = {
   'Stephen Chan': stephenPortrait,
   'Mandy Wong': mandyPortrait,
   'Vincit-Lee Lloyd': vincitPortrait,
-  'Nishopan Karunanithy': nishopanPortrait,
+  'Nish Karun': nishopanPortrait,
 };
 
 export default function AboutPage() {
