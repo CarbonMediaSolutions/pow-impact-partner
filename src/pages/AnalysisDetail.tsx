@@ -6,8 +6,9 @@ import { Footer } from '@/components/Footer';
 import { supabase } from '@/integrations/supabase/client';
 import { analyses as staticAnalyses } from '@/data/analyses';
 import { ArrowLeft } from 'lucide-react';
- import { SocialShare } from '@/components/SocialShare';
- import { GatedDownload } from '@/components/GatedDownload';
+import { SocialShare } from '@/components/SocialShare';
+import { GatedDownload } from '@/components/GatedDownload';
+import { FormattedContent } from '@/components/FormattedContent';
 
 interface AnalysisContent {
   introduction?: string;
@@ -188,9 +189,10 @@ const AnalysisDetail = () => {
         <article className="max-w-3xl mx-auto px-6">
           {/* Introduction */}
           {getContent(analysis).introduction && (
-            <p className="text-lg text-foreground/90 leading-relaxed font-light mb-12">
-              {getContent(analysis).introduction}
-            </p>
+            <FormattedContent 
+              content={[getContent(analysis).introduction!]} 
+              className="text-lg text-foreground/90 leading-relaxed font-light mb-12"
+            />
           )}
 
           {/* Sections */}
@@ -201,16 +203,10 @@ const AnalysisDetail = () => {
                   <h2 className="text-2xl font-serif text-foreground mb-6">
                     {section.heading}
                   </h2>
-                  <div className="space-y-6">
-                    {section.paragraphs.map((paragraph, pIndex) => (
-                      <p 
-                        key={pIndex} 
-                        className="text-lg text-foreground/90 leading-relaxed font-light"
-                      >
-                        {paragraph}
-                      </p>
-                    ))}
-                  </div>
+                  <FormattedContent 
+                    content={section.paragraphs} 
+                    className="text-lg text-foreground/90 leading-relaxed font-light"
+                  />
                 </section>
               ))}
             </div>
@@ -222,9 +218,10 @@ const AnalysisDetail = () => {
               <h2 className="text-lg font-medium text-foreground mb-4">
                 {t('analysis:methodology')}
               </h2>
-              <p className="text-muted-foreground leading-relaxed">
-                {getContent(analysis).methodology}
-              </p>
+              <FormattedContent 
+                content={[getContent(analysis).methodology!]} 
+                className="text-muted-foreground leading-relaxed"
+              />
             </section>
           )}
 
@@ -234,14 +231,10 @@ const AnalysisDetail = () => {
               <h2 className="text-lg font-medium text-foreground mb-6">
                 {t('analysis:keyFindings')}
               </h2>
-              <ul className="space-y-4">
-                {getContent(analysis).keyFindings!.map((finding, index) => (
-                  <li key={index} className="flex items-start gap-4">
-                    <span className="text-primary/60 font-serif text-lg">•</span>
-                    <span className="text-foreground/80 leading-relaxed">{finding}</span>
-                  </li>
-                ))}
-              </ul>
+              <FormattedContent 
+                content={getContent(analysis).keyFindings!} 
+                className="text-foreground/80 leading-relaxed"
+              />
             </section>
           )}
 
@@ -251,14 +244,10 @@ const AnalysisDetail = () => {
               <h2 className="text-lg font-medium text-foreground mb-6">
                 {t('analysis:implications')}
               </h2>
-              <ul className="space-y-4">
-                {getContent(analysis).implications!.map((implication, index) => (
-                  <li key={index} className="flex items-start gap-4">
-                    <span className="text-primary/60 font-serif text-lg">•</span>
-                    <span className="text-foreground/80 leading-relaxed">{implication}</span>
-                  </li>
-                ))}
-              </ul>
+              <FormattedContent 
+                content={getContent(analysis).implications!} 
+                className="text-foreground/80 leading-relaxed"
+              />
             </section>
           )}
         </article>
