@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { supabase } from '@/integrations/supabase/client';
-import { Plus, Pencil, Trash2, Upload } from 'lucide-react';
+import { Plus, Pencil, Trash2, Upload, ArrowUp, ArrowDown } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface TeamMember {
@@ -149,6 +149,21 @@ export function TeamMembersTab() {
     }
   };
 
+  const moveMember = async (index: number, direction: 'up' | 'down') => {
+    const swapIndex = direction === 'up' ? index - 1 : index + 1;
+    const current = members[index];
+    const swap = members[swapIndex];
+    try {
+      const { error: e1 } = await (supabase.from('team_members' as any) as any).update({ sort_order: swap.sort_order }).eq('id', current.id);
+      const { error: e2 } = await (supabase.from('team_members' as any) as any).update({ sort_order: current.sort_order }).eq('id', swap.id);
+      if (e1 || e2) throw e1 || e2;
+      fetchMembers();
+    } catch (err) {
+      console.error(err);
+      toast.error('Failed to reorder');
+    }
+  };
+
   const deleteMember = async (id: string) => {
     if (!confirm('Are you sure you want to delete this team member?')) return;
     try {
@@ -209,6 +224,12 @@ export function TeamMembersTab() {
                   <TableCell className="text-muted-foreground text-sm">{m.role}</TableCell>
                   <TableCell>
                     <div className="flex gap-1">
+                      <Button variant="ghost" size="icon" onClick={() => moveMember(members.indexOf(m), 'up')} disabled={members.indexOf(m) === 0}>
+                        <ArrowUp className="w-4 h-4" />
+                      </Button>
+                      <Button variant="ghost" size="icon" onClick={() => moveMember(members.indexOf(m), 'down')} disabled={members.indexOf(m) === members.length - 1}>
+                        <ArrowDown className="w-4 h-4" />
+                      </Button>
                       <Button variant="ghost" size="icon" onClick={() => openEdit(m)}>
                         <Pencil className="w-4 h-4" />
                       </Button>
