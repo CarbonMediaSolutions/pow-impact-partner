@@ -73,12 +73,12 @@ export const Footer = () => {
               {t('footer.copyright')}
             </p>
             <div className="flex gap-6">
-              <a href="#" className="font-body text-xs text-muted-foreground hover:text-foreground transition-colors">
+              <Link to="/privacy" className="font-body text-xs text-muted-foreground hover:text-foreground transition-colors">
                 {t('footer.privacy')}
-              </a>
-              <a href="#" className="font-body text-xs text-muted-foreground hover:text-foreground transition-colors">
+              </Link>
+              <Link to="/terms" className="font-body text-xs text-muted-foreground hover:text-foreground transition-colors">
                 {t('footer.terms')}
-              </a>
+              </Link>
             </div>
           </div>
         </div>
