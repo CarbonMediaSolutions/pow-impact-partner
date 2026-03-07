@@ -6,8 +6,9 @@ import { Footer } from '@/components/Footer';
 import { supabase } from '@/integrations/supabase/client';
 import { analyses as staticAnalyses } from '@/data/analyses';
 import { ArrowLeft } from 'lucide-react';
- import { SocialShare } from '@/components/SocialShare';
- import { GatedDownload } from '@/components/GatedDownload';
+import { SocialShare } from '@/components/SocialShare';
+import { GatedDownload } from '@/components/GatedDownload';
+import { FormattedContent } from '@/components/FormattedContent';
 
 interface AnalysisContent {
   introduction?: string;
