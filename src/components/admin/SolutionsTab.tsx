@@ -224,6 +224,23 @@ export function SolutionsTab() {
     }
   };
 
+  const moveSolution = async (index: number, direction: 'up' | 'down') => {
+    const swapIndex = direction === 'up' ? index - 1 : index + 1;
+    if (swapIndex < 0 || swapIndex >= solutions.length) return;
+
+    const current = solutions[index];
+    const swap = solutions[swapIndex];
+
+    const { error: e1 } = await supabase.from('solutions' as any).update({ sort_order: swap.sort_order }).eq('id', current.id);
+    const { error: e2 } = await supabase.from('solutions' as any).update({ sort_order: current.sort_order }).eq('id', swap.id);
+
+    if (e1 || e2) {
+      toast.error('Failed to reorder');
+    } else {
+      fetchSolutions();
+    }
+  };
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
