@@ -80,12 +80,12 @@ export const ClientLogos = () => {
             {logos.map((logo) => (
               <div
                 key={logo.id}
-                className="flex-[0_0_25%] min-w-0 flex items-center justify-center px-4 sm:px-6"
+                className="flex-[0_0_50%] sm:flex-[0_0_33.33%] lg:flex-[0_0_25%] min-w-0 flex items-center justify-center px-4 sm:px-6"
               >
                 <img
                   src={logo.image_url}
                   alt={logo.name}
-                  className="h-24 sm:h-32 w-auto max-w-[320px] object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                  className="h-16 sm:h-24 lg:h-32 w-auto max-w-[200px] sm:max-w-[280px] object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
                 />
               </div>
             ))}

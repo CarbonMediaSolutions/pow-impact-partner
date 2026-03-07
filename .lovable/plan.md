@@ -1,35 +1,41 @@
 
 
-## Three Issues to Fix
+## Add Vincit-Lee Lloyd and Nishopan Karunanithy to the Leadership Team
 
-### 1. Site Share Links — Wrong URL and Missing OG Image
+### 1. Copy portrait images to project assets
+- Copy `user-uploads://image-2.png` to `src/assets/vincit-portrait.png`
+- Copy `user-uploads://image-3.png` to `src/assets/nishopan-portrait.png`
 
-The `index.html` has outdated meta tags pointing to `https://p-wconsulting.com` and a generic Lovable OG image. This is why sharing shows the old site.
+### 2. Database migration: Insert two new team members
 
-**Fix in `index.html`:**
-- Update `og:url` and `canonical` to `https://plexapartners.com`
-- Update `og:image` and `twitter:image` to a proper Plexa Partners branded OG image
-- Update structured data from "Pow Consulting" to "Plexa Partners"
-- Update `meta author` from "Pow Consulting" to "Plexa Partners"
+Insert into `team_members` table with the following data:
 
-**For the share image (OG image):** We need to create a simple branded OG image (1200x630px) with the Plexa Partners name on a clean background. This can be placed in `public/og-image.png` and referenced in the meta tags. Since the user wants a white Plexa Partners logo — we can create a simple text-based OG image, or the user can provide one.
+**Vincit-Lee Lloyd**
+- name: "Vincit-Lee Lloyd"
+- role: "Director"
+- focus: "Digital Architecture · UX Systems · Conversion Strategy"
+- bio: Full bio text (two paragraphs about UI/UX architecture, MBA, front-end systems, conversion optimisation)
+- sort_order: 8 (after Mandy Wong)
 
-### 2. White Plexa Partners Logo
+**Nishopan Karunanithy**
+- name: "Nishopan Karunanithy"
+- role: "Tax Advisory Partner"
+- focus: "Tax Strategy · Structuring · International Tax"
+- bio: Full bio text (two paragraphs about tax advisory, CTA/ATT credentials, Big 4 experience)
+- sort_order: 9
 
-This is a design asset request. Since we can't generate image files, the user would need to provide the white logo file. We can then place it in `src/assets/` or `public/` for use.
+Chinese translation fields left empty (fallback to English).
 
-Alternatively, if the user just wants the OG share card to show "Plexa Partners" branding, we can create an SVG-based OG image or use a simple solid-color background with text rendered via an edge function.
+### 3. Update `src/pages/AboutPage.tsx`
+- Import the two new portrait images
+- Add fallback portrait entries for both names
 
-### 3. Mobile Logo Cropping
+### Files changed
 
-The screenshot confirms logos are being clipped on mobile. The slides use `flex-[0_0_25%]` — showing 4 logos even on small screens where there isn't enough space.
-
-**Fix in `src/components/ClientLogos.tsx`:**
-- Change slide width to be responsive: `flex-[0_0_50%] sm:flex-[0_0_33.33%] lg:flex-[0_0_25%]` (2 logos on mobile, 3 on tablet, 4 on desktop)
-- Reduce `max-w-[320px]` to `max-w-[200px]` to prevent overflow
-- Reduce image height on mobile from `h-24` to `h-16` for better fit
-
-### Files to modify
-- `index.html` — fix all OG/meta tags, canonical URL, structured data
-- `src/components/ClientLogos.tsx` — responsive slide widths for mobile
+| File | Change |
+|------|--------|
+| `src/assets/vincit-portrait.png` | New (copied from upload) |
+| `src/assets/nishopan-portrait.png` | New (copied from upload) |
+| New migration | INSERT 2 team members |
+| `src/pages/AboutPage.tsx` | Add fallback portrait imports and mappings |
 
