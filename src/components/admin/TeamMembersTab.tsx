@@ -216,9 +216,14 @@ export function TeamMembersTab() {
                   <TableCell className="font-mono text-sm">{m.sort_order}</TableCell>
                   <TableCell>
                     {m.image_url ? (
-                      <img src={m.image_url} alt={m.name} className="w-10 h-10 rounded-full object-cover" />
+                      <button onClick={() => setPreviewImage(m.image_url)} className="group relative cursor-pointer">
+                        <img src={m.image_url} alt={m.name} className="w-12 h-12 rounded-full object-cover" />
+                        <div className="absolute inset-0 rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <ZoomIn className="w-4 h-4 text-white" />
+                        </div>
+                      </button>
                     ) : (
-                      <div className="w-10 h-10 rounded-full bg-muted" />
+                      <div className="w-12 h-12 rounded-full bg-muted" />
                     )}
                   </TableCell>
                   <TableCell className="font-medium">{m.name}</TableCell>
