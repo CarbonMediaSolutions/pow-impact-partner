@@ -382,6 +382,19 @@ export function TeamMembersTab() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Image Preview Dialog */}
+      <Dialog open={!!previewImage} onOpenChange={(open) => { if (!open) setPreviewImage(null); }}>
+        <DialogContent className="max-w-md p-2">
+          <DialogHeader className="sr-only">
+            <DialogTitle>Portrait Preview</DialogTitle>
+            <DialogDescription>Full-size team member portrait</DialogDescription>
+          </DialogHeader>
+          {previewImage && (
+            <img src={previewImage} alt="Portrait preview" className="w-full rounded-lg object-contain max-h-[70vh]" />
+          )}
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 }
