@@ -1,41 +1,30 @@
 
 
-## Add Vincit-Lee Lloyd and Nishopan Karunanithy to the Leadership Team
+## Autogenerate Privacy Policy and Terms of Service Pages
 
-### 1. Copy portrait images to project assets
-- Copy `user-uploads://image-2.png` to `src/assets/vincit-portrait.png`
-- Copy `user-uploads://image-3.png` to `src/assets/nishopan-portrait.png`
+### What
+Create two new pages — `/privacy` and `/terms` — with professionally written legal content appropriate for Plexa Partners (an independent advisory firm based in London, UK). Update the footer links to point to these pages.
 
-### 2. Database migration: Insert two new team members
+### Pages to create
 
-Insert into `team_members` table with the following data:
+**1. `src/pages/Privacy.tsx`**
+- Standard privacy policy covering: data collection, use of cookies, third-party services, data retention, user rights (GDPR-aligned given UK base), contact information (hello@plexapartners.com)
+- Uses the same page layout pattern as other pages (Header + Footer)
+- Institutional tone consistent with the brand
 
-**Vincit-Lee Lloyd**
-- name: "Vincit-Lee Lloyd"
-- role: "Director"
-- focus: "Digital Architecture · UX Systems · Conversion Strategy"
-- bio: Full bio text (two paragraphs about UI/UX architecture, MBA, front-end systems, conversion optimisation)
-- sort_order: 8 (after Mandy Wong)
+**2. `src/pages/Terms.tsx`**
+- Standard terms of service covering: acceptance of terms, services description, intellectual property, limitation of liability, governing law (England and Wales), contact information
+- Same layout pattern
 
-**Nishopan Karunanithy**
-- name: "Nishopan Karunanithy"
-- role: "Tax Advisory Partner"
-- focus: "Tax Strategy · Structuring · International Tax"
-- bio: Full bio text (two paragraphs about tax advisory, CTA/ATT credentials, Big 4 experience)
-- sort_order: 9
+### Files to modify
 
-Chinese translation fields left empty (fallback to English).
+**3. `src/App.tsx`** — Add routes for `/privacy` and `/terms`
 
-### 3. Update `src/pages/AboutPage.tsx`
-- Import the two new portrait images
-- Add fallback portrait entries for both names
+**4. `src/components/Footer.tsx`** — Change `<a href="#">` links to `<Link to="/privacy">` and `<Link to="/terms">`
 
-### Files changed
-
-| File | Change |
-|------|--------|
-| `src/assets/vincit-portrait.png` | New (copied from upload) |
-| `src/assets/nishopan-portrait.png` | New (copied from upload) |
-| New migration | INSERT 2 team members |
-| `src/pages/AboutPage.tsx` | Add fallback portrait imports and mappings |
+### Design
+- Both pages use a clean, single-column layout with the Header and Footer
+- Content structured with clear section headings
+- Last updated date displayed at the top
+- No translations needed initially (legal pages typically stay in English)
 
