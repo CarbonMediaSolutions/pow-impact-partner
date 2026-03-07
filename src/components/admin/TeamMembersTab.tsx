@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { supabase } from '@/integrations/supabase/client';
-import { Plus, Pencil, Trash2, Upload, ArrowUp, ArrowDown } from 'lucide-react';
+import { Plus, Pencil, Trash2, Upload, ArrowUp, ArrowDown, ZoomIn } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface TeamMember {
@@ -46,6 +46,7 @@ export function TeamMembersTab() {
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const fetchMembers = async () => {
     setLoading(true);
@@ -215,9 +216,14 @@ export function TeamMembersTab() {
                   <TableCell className="font-mono text-sm">{m.sort_order}</TableCell>
                   <TableCell>
                     {m.image_url ? (
-                      <img src={m.image_url} alt={m.name} className="w-10 h-10 rounded-full object-cover" />
+                      <button onClick={() => setPreviewImage(m.image_url)} className="group relative cursor-pointer">
+                        <img src={m.image_url} alt={m.name} className="w-12 h-12 rounded-full object-cover" />
+                        <div className="absolute inset-0 rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <ZoomIn className="w-4 h-4 text-white" />
+                        </div>
+                      </button>
                     ) : (
-                      <div className="w-10 h-10 rounded-full bg-muted" />
+                      <div className="w-12 h-12 rounded-full bg-muted" />
                     )}
                   </TableCell>
                   <TableCell className="font-medium">{m.name}</TableCell>
@@ -374,6 +380,19 @@ export function TeamMembersTab() {
               </Button>
             </div>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Image Preview Dialog */}
+      <Dialog open={!!previewImage} onOpenChange={(open) => { if (!open) setPreviewImage(null); }}>
+        <DialogContent className="max-w-md p-2">
+          <DialogHeader className="sr-only">
+            <DialogTitle>Portrait Preview</DialogTitle>
+            <DialogDescription>Full-size team member portrait</DialogDescription>
+          </DialogHeader>
+          {previewImage && (
+            <img src={previewImage} alt="Portrait preview" className="w-full rounded-lg object-contain max-h-[70vh]" />
+          )}
         </DialogContent>
       </Dialog>
     </Card>
