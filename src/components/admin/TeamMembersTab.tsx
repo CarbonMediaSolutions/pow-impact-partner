@@ -149,6 +149,21 @@ export function TeamMembersTab() {
     }
   };
 
+  const moveMember = async (index: number, direction: 'up' | 'down') => {
+    const swapIndex = direction === 'up' ? index - 1 : index + 1;
+    const current = members[index];
+    const swap = members[swapIndex];
+    try {
+      const { error: e1 } = await (supabase.from('team_members' as any) as any).update({ sort_order: swap.sort_order }).eq('id', current.id);
+      const { error: e2 } = await (supabase.from('team_members' as any) as any).update({ sort_order: current.sort_order }).eq('id', swap.id);
+      if (e1 || e2) throw e1 || e2;
+      fetchMembers();
+    } catch (err) {
+      console.error(err);
+      toast.error('Failed to reorder');
+    }
+  };
+
   const deleteMember = async (id: string) => {
     if (!confirm('Are you sure you want to delete this team member?')) return;
     try {
