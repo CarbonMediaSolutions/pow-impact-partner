@@ -46,6 +46,7 @@ export function TeamMembersTab() {
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const fetchMembers = async () => {
     setLoading(true);
