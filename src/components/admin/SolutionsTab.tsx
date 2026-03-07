@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { supabase } from '@/integrations/supabase/client';
-import { Plus, Pencil, Trash2, Upload, X } from 'lucide-react';
+import { Plus, Pencil, Trash2, Upload, X, ArrowUp, ArrowDown } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface SolutionRow {
@@ -224,6 +224,23 @@ export function SolutionsTab() {
     }
   };
 
+  const moveSolution = async (index: number, direction: 'up' | 'down') => {
+    const swapIndex = direction === 'up' ? index - 1 : index + 1;
+    if (swapIndex < 0 || swapIndex >= solutions.length) return;
+
+    const current = solutions[index];
+    const swap = solutions[swapIndex];
+
+    const { error: e1 } = await supabase.from('solutions' as any).update({ sort_order: swap.sort_order }).eq('id', current.id);
+    const { error: e2 } = await supabase.from('solutions' as any).update({ sort_order: current.sort_order }).eq('id', swap.id);
+
+    if (e1 || e2) {
+      toast.error('Failed to reorder');
+    } else {
+      fetchSolutions();
+    }
+  };
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
@@ -414,22 +431,28 @@ export function SolutionsTab() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Order</TableHead>
+                  <TableHead className="w-20">Order</TableHead>
                   <TableHead>Title</TableHead>
                   <TableHead>Payment Link</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {solutions.map(s => (
+                {solutions.map((s, index) => (
                   <TableRow key={s.id}>
-                    <TableCell>{s.sort_order}</TableCell>
+                    <TableCell className="font-mono text-sm">{s.sort_order}</TableCell>
                     <TableCell className="font-medium">{s.title}</TableCell>
                     <TableCell className="text-sm text-muted-foreground truncate max-w-[200px]">{s.payment_link || '—'}</TableCell>
                     <TableCell>
-                      <div className="flex gap-2">
-                        <Button variant="ghost" size="sm" onClick={() => openEdit(s)}><Pencil className="w-4 h-4" /></Button>
-                        <Button variant="ghost" size="sm" onClick={() => deleteSolution(s.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button>
+                      <div className="flex gap-1">
+                        <Button variant="ghost" size="icon" onClick={() => moveSolution(index, 'up')} disabled={index === 0}>
+                          <ArrowUp className="w-4 h-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon" onClick={() => moveSolution(index, 'down')} disabled={index === solutions.length - 1}>
+                          <ArrowDown className="w-4 h-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon" onClick={() => openEdit(s)}><Pencil className="w-4 h-4" /></Button>
+                        <Button variant="ghost" size="icon" onClick={() => deleteSolution(s.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button>
                       </div>
                     </TableCell>
                   </TableRow>
