@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import logo from '@/assets/logo.png';
 
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
