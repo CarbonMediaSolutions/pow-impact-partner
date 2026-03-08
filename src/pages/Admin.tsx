@@ -657,10 +657,6 @@ export default function Admin() {
       return;
     }
     
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error('Image must be less than 5MB');
-      return;
-    }
     
     setImageUploading(true);
     
