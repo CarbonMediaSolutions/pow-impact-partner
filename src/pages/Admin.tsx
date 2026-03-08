@@ -14,7 +14,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
-import { Lock, Users, FileText, Mail, Eye, Plus, Pencil, Trash2, BookOpen, BarChart3, Copy, Calendar, ExternalLink, LogOut, Download, Settings } from 'lucide-react';
+import { Lock, Users, FileText, Mail, Eye, Plus, Pencil, Trash2, BookOpen, BarChart3, Copy, Calendar, ExternalLink, LogOut, Download, Settings, ArrowUp, ArrowDown } from 'lucide-react';
  import { Sparkles, Upload, X, Check, ChevronsUpDown } from 'lucide-react';
 import { SiteContentEditor } from '@/components/admin/SiteContentEditor';
 import { TeamMembersTab } from '@/components/admin/TeamMembersTab';
@@ -69,6 +69,7 @@ interface Perspective {
   image: string | null;
   content: string[];
   tags: string[] | null;
+  sort_order: number;
   created_at: string;
   updated_at: string;
 }
@@ -314,7 +315,7 @@ export default function Admin() {
         supabase.from('consultation_leads').select('*').order('created_at', { ascending: false }),
         supabase.from('perspective_submissions').select('*').order('created_at', { ascending: false }),
         supabase.from('email_captures').select('*').order('created_at', { ascending: false }),
-        supabase.from('perspectives').select('*').order('created_at', { ascending: false }),
+        supabase.from('perspectives').select('*').order('sort_order', { ascending: true }).order('created_at', { ascending: false }),
         supabase.from('analyses').select('*').order('created_at', { ascending: false }),
         supabase.from('newsletter_subscribers' as any).select('*').order('subscribed_at', { ascending: false })
       ]);
@@ -1425,6 +1426,63 @@ export default function Admin() {
                       <p className="text-muted-foreground">No perspectives yet</p>
                     ) : (
                       <div className="overflow-x-auto">
+                        {/* Featured Perspectives Reorder Section */}
+                        {perspectives.filter(p => p.featured).length > 1 && (
+                          <div className="mb-6 p-4 border rounded-lg bg-muted/30">
+                            <h4 className="font-medium text-sm mb-3">Featured Order (drag to reorder)</h4>
+                            <div className="space-y-2">
+                              {perspectives
+                                .filter(p => p.featured)
+                                .sort((a, b) => a.sort_order - b.sort_order)
+                                .map((perspective, index, arr) => (
+                                  <div key={perspective.id} className="flex items-center gap-2 p-2 bg-background rounded border">
+                                    <div className="flex flex-col gap-0.5">
+                                      <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-6 w-6"
+                                        disabled={index === 0}
+                                        onClick={async () => {
+                                          const prev = arr[index - 1];
+                                          try {
+                                            await Promise.all([
+                                              supabase.from('perspectives').update({ sort_order: prev.sort_order } as any).eq('id', perspective.id),
+                                              supabase.from('perspectives').update({ sort_order: perspective.sort_order } as any).eq('id', prev.id),
+                                            ]);
+                                            fetchData();
+                                          } catch { toast.error('Failed to reorder'); }
+                                        }}
+                                      >
+                                        <ArrowUp className="w-3.5 h-3.5" />
+                                      </Button>
+                                      <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-6 w-6"
+                                        disabled={index === arr.length - 1}
+                                        onClick={async () => {
+                                          const next = arr[index + 1];
+                                          try {
+                                            await Promise.all([
+                                              supabase.from('perspectives').update({ sort_order: next.sort_order } as any).eq('id', perspective.id),
+                                              supabase.from('perspectives').update({ sort_order: perspective.sort_order } as any).eq('id', next.id),
+                                            ]);
+                                            fetchData();
+                                          } catch { toast.error('Failed to reorder'); }
+                                        }}
+                                      >
+                                        <ArrowDown className="w-3.5 h-3.5" />
+                                      </Button>
+                                    </div>
+                                    <span className="text-sm font-medium">{index + 1}.</span>
+                                    <span className="text-sm flex-1">{perspective.title}</span>
+                                    <Badge variant="secondary" className="text-xs">{index === 0 ? 'Hero' : 'Side'}</Badge>
+                                  </div>
+                                ))}
+                            </div>
+                            <p className="text-xs text-muted-foreground mt-2">The first item appears as the main hero; items 2–5 appear as side tiles.</p>
+                          </div>
+                        )}
                         <Table>
                           <TableHeader>
                             <TableRow>

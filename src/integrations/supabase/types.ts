@@ -215,6 +215,7 @@ export type Database = {
           featured: boolean | null
           id: string
           image: string | null
+          sort_order: number
           summary: string
           summary_zh: string | null
           summary_zh_hans: string | null
@@ -233,6 +234,7 @@ export type Database = {
           featured?: boolean | null
           id?: string
           image?: string | null
+          sort_order?: number
           summary: string
           summary_zh?: string | null
           summary_zh_hans?: string | null
@@ -251,6 +253,7 @@ export type Database = {
           featured?: boolean | null
           id?: string
           image?: string | null
+          sort_order?: number
           summary?: string
           summary_zh?: string | null
           summary_zh_hans?: string | null
