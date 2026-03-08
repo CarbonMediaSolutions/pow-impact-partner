@@ -27,9 +27,9 @@ export const FeaturedPerspectives = () => {
     const fetchFeaturedPerspectives = async () => {
       const { data } = await supabase
         .from('perspectives')
-        .select('id, title, title_zh, title_zh_hans, image')
+        .select('id, title, title_zh, title_zh_hans, image, sort_order')
         .eq('featured', true)
-        .order('created_at', { ascending: false })
+        .order('sort_order', { ascending: true })
         .limit(5);
       
       if (data) {
