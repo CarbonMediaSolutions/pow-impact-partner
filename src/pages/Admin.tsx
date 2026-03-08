@@ -69,6 +69,7 @@ interface Perspective {
   image: string | null;
   content: string[];
   tags: string[] | null;
+  sort_order: number;
   created_at: string;
   updated_at: string;
 }
