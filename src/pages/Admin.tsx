@@ -1463,10 +1463,11 @@ export default function Admin() {
                                         disabled={index === arr.length - 1}
                                         onClick={async () => {
                                           const next = arr[index + 1];
+                                          // Use index-based values to ensure unique sort orders
                                           try {
                                             await Promise.all([
-                                              supabase.from('perspectives').update({ sort_order: next.sort_order } as any).eq('id', perspective.id),
-                                              supabase.from('perspectives').update({ sort_order: perspective.sort_order } as any).eq('id', next.id),
+                                              supabase.from('perspectives').update({ sort_order: index + 1 } as any).eq('id', perspective.id),
+                                              supabase.from('perspectives').update({ sort_order: index } as any).eq('id', next.id),
                                             ]);
                                             fetchData();
                                           } catch { toast.error('Failed to reorder'); }
