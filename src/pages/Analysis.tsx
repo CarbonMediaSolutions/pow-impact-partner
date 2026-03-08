@@ -46,6 +46,9 @@ const Analysis = () => {
     'Performance': 'performance',
     'Operations': 'operations',
     'Impact': 'impact',
+    'Growth': 'growth',
+    'Risk': 'risk',
+    'Strategy': 'strategy',
   };
   const getCategoryLabel = (cat: string) =>
     t(`analysis:categories.${categoryKeyMap[cat] || cat.toLowerCase()}`);
