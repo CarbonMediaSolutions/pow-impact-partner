@@ -14,7 +14,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
-import { Lock, Users, FileText, Mail, Eye, Plus, Pencil, Trash2, BookOpen, BarChart3, Copy, Calendar, ExternalLink, LogOut, Download, Settings } from 'lucide-react';
+import { Lock, Users, FileText, Mail, Eye, Plus, Pencil, Trash2, BookOpen, BarChart3, Copy, Calendar, ExternalLink, LogOut, Download, Settings, ArrowUp, ArrowDown } from 'lucide-react';
  import { Sparkles, Upload, X, Check, ChevronsUpDown } from 'lucide-react';
 import { SiteContentEditor } from '@/components/admin/SiteContentEditor';
 import { TeamMembersTab } from '@/components/admin/TeamMembersTab';
