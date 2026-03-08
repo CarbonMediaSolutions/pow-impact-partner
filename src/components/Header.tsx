@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import logo from '@/assets/logo.png';
 
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -49,7 +50,8 @@ export const Header = () => {
       }`}
     >
       <div className="container flex items-center justify-between">
-        <Link to="/" className="flex items-center">
+        <Link to="/" className="flex items-center gap-2">
+          <img src={logo} alt={t('brand.name')} className="h-8 w-auto" />
           <span className="font-serif text-xl font-medium text-foreground tracking-tight">
             {t('brand.name')}
           </span>
