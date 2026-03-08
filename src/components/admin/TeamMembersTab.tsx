@@ -88,7 +88,7 @@ export function TeamMembersTab() {
     const file = e.target.files?.[0];
     if (!file) return;
     if (!file.type.startsWith('image/')) { toast.error('Please upload an image file'); return; }
-    if (file.size > 5 * 1024 * 1024) { toast.error('Image must be less than 5MB'); return; }
+    
 
     setUploading(true);
     try {
