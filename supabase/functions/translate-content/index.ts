@@ -105,7 +105,7 @@ ${Array.isArray(content) ? content.map((p: string, i: number) => `${i + 1}. ${p}
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "google/gemini-2.5-pro",
+          model: "google/gemini-2.5-flash",
           max_tokens: 8192,
           messages: [
             { role: "system", content: systemPrompt },
