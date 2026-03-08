@@ -220,6 +220,9 @@ const Analysis = () => {
                 'Performance': 'performance',
                 'Operations': 'operations',
                 'Impact': 'impact',
+                'Growth': 'growth',
+                'Risk': 'risk',
+                'Strategy': 'strategy',
               };
               return (
                 <button
