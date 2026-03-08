@@ -108,7 +108,7 @@ const Perspectives = () => {
     : perspectives.filter(p => p.topic.toLowerCase() === activeTopic.toLowerCase());
 
   const featuredPerspective = filteredPerspectives.find((p) => p.featured);
-  const otherPerspectives = filteredPerspectives.filter((p) => !p.featured);
+  const otherPerspectives = filteredPerspectives.filter((p) => p.id !== featuredPerspective?.id);
 
   if (loading) {
     return (
