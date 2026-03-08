@@ -18,7 +18,9 @@
     "linkedin": "LinkedIn",
     "privacy": "Privacy",
     "terms": "Terms",
-    "copyright": "© 2025 Plexa Partners"
+    "copyright": "© 2025 Plexa Partners",
+    "email": "hello@plexapartners.com",
+    "linkedinUrl": "https://linkedin.com"
   },
   "cta": {
     "bookConsultation": "Book a Consultation",

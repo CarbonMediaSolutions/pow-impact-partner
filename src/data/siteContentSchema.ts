@@ -207,6 +207,8 @@ export const siteContentSchema: SiteContentSchema = {
           { key: 'footer.statement', label: 'Statement', type: 'textarea' },
           { key: 'footer.location', label: 'Location', type: 'input' },
           { key: 'footer.copyright', label: 'Copyright', type: 'input' },
+          { key: 'footer.email', label: 'Email Address', type: 'input' },
+          { key: 'footer.linkedinUrl', label: 'LinkedIn URL', type: 'input' },
         ],
       },
       cta: {

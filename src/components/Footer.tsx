@@ -39,14 +39,14 @@ export const Footer = () => {
           {/* Contact */}
           <div className="lg:col-span-3 space-y-3">
             <a
-              href="mailto:hello@plexapartners.com"
+              href={`mailto:${t('footer.email', { defaultValue: 'hello@plexapartners.com' })}`}
               className="flex items-center gap-2 font-body text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               <Mail className="w-4 h-4" />
-              hello@plexapartners.com
+              {t('footer.email', { defaultValue: 'hello@plexapartners.com' })}
             </a>
             <a
-              href="https://linkedin.com"
+              href={t('footer.linkedinUrl', { defaultValue: 'https://linkedin.com' })}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 font-body text-sm text-muted-foreground hover:text-foreground transition-colors"
