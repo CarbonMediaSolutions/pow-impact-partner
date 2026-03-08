@@ -315,7 +315,7 @@ export default function Admin() {
         supabase.from('consultation_leads').select('*').order('created_at', { ascending: false }),
         supabase.from('perspective_submissions').select('*').order('created_at', { ascending: false }),
         supabase.from('email_captures').select('*').order('created_at', { ascending: false }),
-        supabase.from('perspectives').select('*').order('created_at', { ascending: false }),
+        supabase.from('perspectives').select('*').order('sort_order', { ascending: true }).order('created_at', { ascending: false }),
         supabase.from('analyses').select('*').order('created_at', { ascending: false }),
         supabase.from('newsletter_subscribers' as any).select('*').order('subscribed_at', { ascending: false })
       ]);
