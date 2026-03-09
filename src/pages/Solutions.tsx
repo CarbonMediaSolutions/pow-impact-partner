@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Check, Clock, MessageSquare, Users, ShoppingCart } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -41,6 +41,11 @@ export default function Solutions() {
   const { t, i18n } = useTranslation(['solutions', 'common']);
   const [solutions, setSolutions] = useState<SolutionData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({});
+
+  const toggleCard = useCallback((id: string) => {
+    setExpandedCards(prev => ({ ...prev, [id]: !prev[id] }));
+  }, []);
 
   const resolvedLang = i18n.resolvedLanguage || i18n.language;
 
@@ -181,16 +186,21 @@ export default function Solutions() {
                       </p>
 
                       <div className="space-y-2 mb-6 flex-grow">
-                        {services.slice(0, 4).map((service, i) => (
+                        {(expandedCards[solution.id] ? services : services.slice(0, 4)).map((service, i) => (
                           <div key={i} className="flex items-start gap-2">
                             <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
                             <span className="font-body text-sm text-muted-foreground">{service}</span>
                           </div>
                         ))}
                         {services.length > 4 && (
-                          <p className="font-body text-xs text-muted-foreground/70 pl-6">
-                            {t('solutions:moreServices', { count: services.length - 4 })}
-                          </p>
+                          <button
+                            onClick={() => toggleCard(solution.id)}
+                            className="font-body text-xs text-primary hover:text-primary/80 pl-6 cursor-pointer transition-colors"
+                          >
+                            {expandedCards[solution.id]
+                              ? t('solutions:showLess', { defaultValue: 'Show less' })
+                              : t('solutions:moreServices', { count: services.length - 4 })}
+                          </button>
                         )}
                       </div>
 
