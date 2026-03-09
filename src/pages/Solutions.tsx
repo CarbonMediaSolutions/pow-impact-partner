@@ -41,6 +41,11 @@ export default function Solutions() {
   const { t, i18n } = useTranslation(['solutions', 'common']);
   const [solutions, setSolutions] = useState<SolutionData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({});
+
+  const toggleCard = useCallback((id: string) => {
+    setExpandedCards(prev => ({ ...prev, [id]: !prev[id] }));
+  }, []);
 
   const resolvedLang = i18n.resolvedLanguage || i18n.language;
 
