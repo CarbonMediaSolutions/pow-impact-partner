@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Check, Clock, MessageSquare, Users, ShoppingCart } from 'lucide-react';
 import { Link } from 'react-router-dom';
