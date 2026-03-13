@@ -59,5 +59,15 @@
     "contactPrompt": "Please provide your contact details to download the full report.",
     "processing": "Processing...",
     "getReport": "Get Report"
+  },
+  "cookie": {
+    "title": "We value your privacy",
+    "description": "We use cookies to enhance your browsing experience and analyse site traffic.",
+    "acceptAll": "Accept All",
+    "rejectAll": "Reject All",
+    "customise": "Customise",
+    "essential": "Essential",
+    "analytics": "Analytics",
+    "save": "Save Preferences"
   }
 }

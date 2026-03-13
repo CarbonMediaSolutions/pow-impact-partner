@@ -59,5 +59,15 @@
     "contactPrompt": "請提供您的聯繫方式以下載完整報告。",
     "processing": "處理中...",
     "getReport": "獲取報告"
+  },
+  "cookie": {
+    "title": "我們重視您的隱私",
+    "description": "我們使用Cookie來提升您的瀏覽體驗並分析網站流量。",
+    "acceptAll": "全部接受",
+    "rejectAll": "全部拒絕",
+    "customise": "自訂",
+    "essential": "必要",
+    "analytics": "分析",
+    "save": "儲存偏好設定"
   }
 }

@@ -46,5 +46,15 @@
     "placeholder": "您的電子郵件地址",
     "subscribe": "訂閱",
     "success": "感謝您的訂閱。"
+  },
+  "cookie": {
+    "title": "我們重視您的隱私",
+    "description": "我們使用Cookie來提升您的瀏覽體驗並分析網站流量。",
+    "acceptAll": "全部接受",
+    "rejectAll": "全部拒絕",
+    "customise": "自訂",
+    "essential": "必要",
+    "analytics": "分析",
+    "save": "儲存偏好設定"
   }
 }

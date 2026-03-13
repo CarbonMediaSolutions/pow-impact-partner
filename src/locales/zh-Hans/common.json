@@ -59,5 +59,15 @@
     "contactPrompt": "请提供您的联系方式以下载完整报告。",
     "processing": "处理中...",
     "getReport": "获取报告"
+  },
+  "cookie": {
+    "title": "我们重视您的隐私",
+    "description": "我们使用Cookie来提升您的浏览体验并分析网站流量。",
+    "acceptAll": "全部接受",
+    "rejectAll": "全部拒绝",
+    "customise": "自定义",
+    "essential": "必要",
+    "analytics": "分析",
+    "save": "保存偏好设置"
   }
 }
