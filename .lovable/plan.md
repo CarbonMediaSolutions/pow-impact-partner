@@ -1,41 +1,23 @@
 
 
-## Add Vincit-Lee Lloyd and Nishopan Karunanithy to the Leadership Team
+## Fix: Add Chinese translations for the "Digital Experience" solution card
 
-### 1. Copy portrait images to project assets
-- Copy `user-uploads://image-2.png` to `src/assets/vincit-portrait.png`
-- Copy `user-uploads://image-3.png` to `src/assets/nishopan-portrait.png`
+The `digital-experience` solution has all Chinese translation fields empty in the database, and there's no fallback in the locale JSON files either. This is why it stays in English.
 
-### 2. Database migration: Insert two new team members
+### Approach
 
-Insert into `team_members` table with the following data:
+**Update the database** — populate all Chinese fields for the `digital-experience` row via a migration:
 
-**Vincit-Lee Lloyd**
-- name: "Vincit-Lee Lloyd"
-- role: "Director"
-- focus: "Digital Architecture · UX Systems · Conversion Strategy"
-- bio: Full bio text (two paragraphs about UI/UX architecture, MBA, front-end systems, conversion optimisation)
-- sort_order: 8 (after Mandy Wong)
+| Field | Traditional (zh_hant) | Simplified (zh_hans) |
+|---|---|---|
+| title | 數位體驗與轉化架構 | 数字体验与转化架构 |
+| perspective | 每一次互動都是決策點 | 每一次互动都是决策点 |
+| description | 用戶體驗策略、前端架構和轉化系統設計，使數位平台與機構目標和可衡量成果保持一致。 | 用户体验策略、前端架构和转化系统设计，使数字平台与机构目标和可衡量成果保持一致。 |
+| services | 用戶旅程優化, 轉化架構, 前端系統設計, 平台用戶體驗審計, 數位策略諮詢 | 用户旅程优化, 转化架构, 前端系统设计, 平台用户体验审计, 数字策略咨询 |
+| price | 按項目定價 | 按项目定价 |
+| price_note | 視範圍而定 | 视范围而定 |
 
-**Nishopan Karunanithy**
-- name: "Nishopan Karunanithy"
-- role: "Tax Advisory Partner"
-- focus: "Tax Strategy · Structuring · International Tax"
-- bio: Full bio text (two paragraphs about tax advisory, CTA/ATT credentials, Big 4 experience)
-- sort_order: 9
+**Also add locale file fallbacks** in `zh-Hant/solutions.json`, `zh-Hans/solutions.json`, and `zh/solutions.json` under `cards.digital-experience` for resilience.
 
-Chinese translation fields left empty (fallback to English).
-
-### 3. Update `src/pages/AboutPage.tsx`
-- Import the two new portrait images
-- Add fallback portrait entries for both names
-
-### Files changed
-
-| File | Change |
-|------|--------|
-| `src/assets/vincit-portrait.png` | New (copied from upload) |
-| `src/assets/nishopan-portrait.png` | New (copied from upload) |
-| New migration | INSERT 2 team members |
-| `src/pages/AboutPage.tsx` | Add fallback portrait imports and mappings |
+This is a single database migration + three locale file edits. No component code changes needed.
 
