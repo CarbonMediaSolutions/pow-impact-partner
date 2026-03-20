@@ -17,5 +17,15 @@
     }
   },
   "enquire": "諮詢",
-  "moreServices": "+ {{count}} 項更多服務"
+  "moreServices": "+ {{count}} 項更多服務",
+  "cards": {
+    "digital-experience": {
+      "title": "數位體驗與轉化架構",
+      "perspective": "每一次互動都是決策點",
+      "description": "用戶體驗策略、前端架構和轉化系統設計，使數位平台與機構目標和可衡量成果保持一致。",
+      "services": ["用戶旅程優化", "轉化架構", "前端系統設計", "平台用戶體驗審計", "數位策略諮詢"],
+      "price": "按項目定價",
+      "priceNote": "視範圍而定"
+    }
+  }
 }
