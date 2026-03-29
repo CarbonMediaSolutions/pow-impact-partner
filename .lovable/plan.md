@@ -1,23 +1,66 @@
 
 
-## Fix: Add Chinese translations for the "Digital Experience" solution card
+## Plan: Social Sharing Fixes + Homepage Performance Optimisation
 
-The `digital-experience` solution has all Chinese translation fields empty in the database, and there's no fallback in the locale JSON files either. This is why it stays in English.
+This covers two areas: (A) fixing social sharing for perspectives/analyses, and (B) a comprehensive homepage performance pass. No visual changes.
 
-### Approach
+---
 
-**Update the database** — populate all Chinese fields for the `digital-experience` row via a migration:
+### A. Social Sharing Fixes
 
-| Field | Traditional (zh_hant) | Simplified (zh_hans) |
-|---|---|---|
-| title | 數位體驗與轉化架構 | 数字体验与转化架构 |
-| perspective | 每一次互動都是決策點 | 每一次互动都是决策点 |
-| description | 用戶體驗策略、前端架構和轉化系統設計，使數位平台與機構目標和可衡量成果保持一致。 | 用户体验策略、前端架构和转化系统设计，使数字平台与机构目标和可衡量成果保持一致。 |
-| services | 用戶旅程優化, 轉化架構, 前端系統設計, 平台用戶體驗審計, 數位策略諮詢 | 用户旅程优化, 转化架构, 前端系统设计, 平台用户体验审计, 数字策略咨询 |
-| price | 按項目定價 | 按项目定价 |
-| price_note | 視範圍而定 | 视范围而定 |
+**Problem**: When sharing a perspective or analysis on LinkedIn/Twitter/Facebook, the shared link shows the generic site og:image and metadata instead of the post's own image and title. This is because Open Graph meta tags are set statically in `index.html` and never updated per-page. Also, the Twitter share URL currently points to the `pow-impact-partner.lovable.app` domain (Lovable branding).
 
-**Also add locale file fallbacks** in `zh-Hant/solutions.json`, `zh-Hans/solutions.json`, and `zh/solutions.json` under `cards.digital-experience` for resilience.
+**Solution**: Since this is a client-side SPA, social crawlers (LinkedIn, Facebook, Twitter) do not execute JavaScript — they only read the initial HTML. The only reliable way to get per-page OG tags is server-side rendering. We will use a **backend function** that acts as an OG metadata proxy:
 
-This is a single database migration + three locale file edits. No component code changes needed.
+1. **Create a backend function `og-meta`** — When called with a path like `/perspectives/:id` or `/analysis/:id`, it queries the database for the post's title, summary, and image, then returns an HTML page with the correct `og:title`, `og:description`, `og:image`, and `og:url` meta tags plus a JavaScript redirect to the real SPA page.
+
+2. **Update `SocialShare.tsx`** — Change share URLs to use `https://plexapartners.com` (not `pow-impact-partner.lovable.app`). Pass the post's image URL as a new prop so it can be included in the share URL parameters. Remove any Lovable branding from the Twitter/X share text.
+
+3. **Update `PerspectiveDetail.tsx` and `AnalysisDetail.tsx`** — Pass the post's `image` to `SocialShare` as a new prop.
+
+---
+
+### B. Homepage Performance Optimisation
+
+**1. Vite build config** — `vite.config.ts`
+- Add `build.rollupOptions.output.manualChunks` to split `react`, `react-dom`, `framer-motion`, `@tanstack/react-query`, `react-router-dom` into a `vendor` chunk
+- Set `build.cssCodeSplit: true` and `build.chunkSizeWarningLimit: 1000`
+
+**2. Lazy load all routes** — `src/App.tsx`
+- Convert every page import except `Index` to `React.lazy()`
+- Wrap `<Routes>` in `<Suspense fallback={...}>`
+
+**3. Lazy load below-fold homepage sections** — `src/pages/Index.tsx`
+- The Hero is above the fold — keep eagerly loaded
+- Lazy-load: `ThreePillars`, `FeaturedPerspectives`, `InsightLed`, `CaseStudies`, `ClientLogos`, `FinalCTA` using `React.lazy` + `Suspense`
+
+**4. Image optimisation** — `src/components/ClientLogos.tsx`, `FeaturedPerspectives.tsx`
+- Add `loading="lazy"`, `width`, and `height` attributes to all `<img>` tags in below-fold components
+
+**5. No loading spinner delay found** — The codebase has no artificial splash screen or setTimeout delay on the homepage. No changes needed.
+
+**6. Font preloading** — `index.html`
+- Fonts are loaded via `@fontsource` (bundled, not Google Fonts), so no preconnect needed. No changes required here — Vite handles these as local imports.
+
+**7. Preload hero assets** — The hero section is text-only (no background image). The logo in the Header (`logo.png`) is the only critical image. Add `<link rel="preload" as="image">` for it in `index.html` if the Vite asset hash is stable, otherwise skip (Vite hashes asset filenames).
+
+**8. Audit unused imports** — `src/pages/Index.tsx` and its components
+- All current imports in `Index.tsx` are used. Will check each component for dead imports and remove any found.
+
+---
+
+### Files to create/edit
+
+| File | Change |
+|---|---|
+| `supabase/functions/og-meta/index.ts` | New backend function for OG meta tags |
+| `src/components/SocialShare.tsx` | Use `plexapartners.com` domain, accept `image` prop, remove Lovable branding from Twitter text |
+| `src/pages/PerspectiveDetail.tsx` | Pass `image` to SocialShare |
+| `src/pages/AnalysisDetail.tsx` | Pass `image` to SocialShare |
+| `vite.config.ts` | Add build optimisation config |
+| `src/App.tsx` | Lazy load all routes except Index |
+| `src/pages/Index.tsx` | Lazy load below-fold sections |
+| `src/components/ClientLogos.tsx` | Add `loading="lazy"` + dimensions to img |
+| `src/components/FeaturedPerspectives.tsx` | Add `loading="lazy"` + dimensions to img |
+| `index.html` | Add font preload hints if applicable |
 
