@@ -114,6 +114,59 @@ export function TeamMembersTab() {
     }
   };
 
+  const autoTranslate = async (memberId: string, englishData: typeof form) => {
+    try {
+      const textsToTranslate = `Name: ${englishData.name}\nRole: ${englishData.role}\nFocus: ${englishData.focus}\nBio: ${englishData.bio}`;
+      
+      const { data, error } = await supabase.functions.invoke('translate-content', {
+        body: {
+          title: englishData.name,
+          summary: `Role: ${englishData.role}\nFocus: ${englishData.focus}`,
+          content: [englishData.bio],
+          type: 'perspective',
+        },
+      });
+
+      if (error || !data) {
+        console.error('Translation error:', error);
+        return;
+      }
+
+      const hant = data['zh-Hant'];
+      const hans = data['zh-Hans'];
+
+      if (!hant && !hans) return;
+
+      const parseRole = (summary: string) => {
+        const roleMatch = summary.match(/^Role:\s*(.+?)(?:\n|$)/m);
+        const focusMatch = summary.match(/^Focus:\s*(.+?)(?:\n|$)/m);
+        return { role: roleMatch?.[1]?.trim() || '', focus: focusMatch?.[1]?.trim() || '' };
+      };
+
+      const updates: Record<string, string> = {};
+      if (hant) {
+        const parsed = parseRole(hant.summary_zh || '');
+        if (hant.title_zh) updates.name_zh_hant = hant.title_zh;
+        if (parsed.role) updates.role_zh_hant = parsed.role;
+        if (parsed.focus) updates.focus_zh_hant = parsed.focus;
+        if (hant.content_zh?.[0]) updates.bio_zh_hant = hant.content_zh[0];
+      }
+      if (hans) {
+        const parsed = parseRole(hans.summary_zh || '');
+        if (hans.title_zh) updates.name_zh_hans = hans.title_zh;
+        if (parsed.role) updates.role_zh_hans = parsed.role;
+        if (parsed.focus) updates.focus_zh_hans = parsed.focus;
+        if (hans.content_zh?.[0]) updates.bio_zh_hans = hans.content_zh[0];
+      }
+
+      if (Object.keys(updates).length > 0) {
+        await (supabase.from('team_members' as any) as any).update(updates).eq('id', memberId);
+      }
+    } catch (err) {
+      console.error('Auto-translate failed:', err);
+    }
+  };
+
   const save = async () => {
     if (!form.name.trim() || !form.role.trim()) {
       toast.error('Name and role are required');
@@ -130,15 +183,29 @@ export function TeamMembersTab() {
         sort_order: form.sort_order,
       };
 
+      let memberId = editing?.id;
+
       if (editing) {
         const { error } = await (supabase.from('team_members' as any) as any).update(payload).eq('id', editing.id);
         if (error) throw error;
         toast.success('Team member updated');
       } else {
-        const { error } = await (supabase.from('team_members' as any) as any).insert(payload);
+        const { data: inserted, error } = await (supabase.from('team_members' as any) as any).insert(payload).select('id').single();
         if (error) throw error;
+        memberId = inserted?.id;
         toast.success('Team member added');
       }
+
+      // Auto-translate if Chinese fields are empty
+      const needsTranslation = !form.name_zh_hant && !form.name_zh_hans && !form.role_zh_hant && !form.role_zh_hans;
+      if (needsTranslation && memberId && form.name.trim()) {
+        toast.info('Auto-translating to Chinese...');
+        autoTranslate(memberId, form).then(() => {
+          toast.success('Chinese translations saved');
+          fetchMembers();
+        });
+      }
+
       setDialogOpen(false);
       resetForm();
       fetchMembers();
