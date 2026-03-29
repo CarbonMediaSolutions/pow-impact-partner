@@ -165,8 +165,9 @@ const PerspectiveDetail = () => {
            
            {/* Social Share */}
            <SocialShare 
-             url={`https://pow-impact-partner.lovable.app/perspectives/${perspective.id}`}
+             url={`https://plexapartners.com/perspectives/${perspective.id}`}
              title={getTitle(perspective)}
+             image={perspective.image || undefined}
            />
           </motion.div>
         </div>

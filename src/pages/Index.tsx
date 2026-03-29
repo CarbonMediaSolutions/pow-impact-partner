@@ -1,12 +1,16 @@
+import { lazy, Suspense } from 'react';
 import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
-import { ThreePillars } from '@/components/ThreePillars';
-import { FeaturedPerspectives } from '@/components/FeaturedPerspectives';
-import { InsightLed } from '@/components/InsightLed';
-import { CaseStudies } from '@/components/CaseStudies';
-import { ClientLogos } from '@/components/ClientLogos';
-import { FinalCTA } from '@/components/FinalCTA';
 import { Footer } from '@/components/Footer';
+
+const ThreePillars = lazy(() => import('@/components/ThreePillars').then(m => ({ default: m.ThreePillars })));
+const FeaturedPerspectives = lazy(() => import('@/components/FeaturedPerspectives').then(m => ({ default: m.FeaturedPerspectives })));
+const InsightLed = lazy(() => import('@/components/InsightLed').then(m => ({ default: m.InsightLed })));
+const CaseStudies = lazy(() => import('@/components/CaseStudies').then(m => ({ default: m.CaseStudies })));
+const ClientLogos = lazy(() => import('@/components/ClientLogos').then(m => ({ default: m.ClientLogos })));
+const FinalCTA = lazy(() => import('@/components/FinalCTA').then(m => ({ default: m.FinalCTA })));
+
+const SectionFallback = () => <div className="py-20" />;
 
 const Index = () => {
   return (
@@ -14,12 +18,24 @@ const Index = () => {
       <Header />
       <main>
         <Hero />
-        <ThreePillars />
-        <FeaturedPerspectives />
-        <InsightLed />
-        <CaseStudies />
-        <ClientLogos />
-        <FinalCTA />
+        <Suspense fallback={<SectionFallback />}>
+          <ThreePillars />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <FeaturedPerspectives />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <InsightLed />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <CaseStudies />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <ClientLogos />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <FinalCTA />
+        </Suspense>
       </main>
       <Footer />
     </div>
