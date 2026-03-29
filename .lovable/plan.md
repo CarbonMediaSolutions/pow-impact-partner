@@ -1,66 +1,44 @@
 
 
-## Plan: Social Sharing Fixes + Homepage Performance Optimisation
+## Plan: Three Fixes
 
-This covers two areas: (A) fixing social sharing for perspectives/analyses, and (B) a comprehensive homepage performance pass. No visual changes.
+### 1. Rich text support for Analysis admin fields (methodology, introduction, keyFindings, implications)
 
----
+**Problem**: The methodology, introduction, key findings, and implications fields use plain `<Textarea>` elements. When content is pasted (e.g. from LinkedIn or Word), spacing and line breaks are preserved in the textarea but lost on the frontend because:
+- `methodology` and `introduction` are stored as single strings
+- `FormattedContent` receives them as `[singleString]`, rendering everything as one paragraph
+- Line breaks within the pasted text are not split into separate paragraphs
 
-### A. Social Sharing Fixes
+**Fix**: Split these strings by newlines before passing to `FormattedContent`. This is a rendering fix, not an editor change — the textarea already preserves line breaks, but the detail page collapses them.
 
-**Problem**: When sharing a perspective or analysis on LinkedIn/Twitter/Facebook, the shared link shows the generic site og:image and metadata instead of the post's own image and title. This is because Open Graph meta tags are set statically in `index.html` and never updated per-page. Also, the Twitter share URL currently points to the `pow-impact-partner.lovable.app` domain (Lovable branding).
+**Files**:
+- `src/pages/AnalysisDetail.tsx` — Change `[getContent(analysis).introduction!]` to `getContent(analysis).introduction!.split('\n').filter(l => l.trim())`, and same for `methodology`. This lets `FormattedContent` treat each line as a separate element (paragraph, bullet, etc.)
 
-**Solution**: Since this is a client-side SPA, social crawlers (LinkedIn, Facebook, Twitter) do not execute JavaScript — they only read the initial HTML. The only reliable way to get per-page OG tags is server-side rendering. We will use a **backend function** that acts as an OG metadata proxy:
+### 2. LinkedIn URL in footer
 
-1. **Create a backend function `og-meta`** — When called with a path like `/perspectives/:id` or `/analysis/:id`, it queries the database for the post's title, summary, and image, then returns an HTML page with the correct `og:title`, `og:description`, `og:image`, and `og:url` meta tags plus a JavaScript redirect to the real SPA page.
+**Problem**: The footer's LinkedIn link defaults to `https://linkedin.com` (generic). Need to point to `https://www.linkedin.com/company/plexapartners/`.
 
-2. **Update `SocialShare.tsx`** — Change share URLs to use `https://plexapartners.com` (not `pow-impact-partner.lovable.app`). Pass the post's image URL as a new prop so it can be included in the share URL parameters. Remove any Lovable branding from the Twitter/X share text.
+**Fix**: Update the default value in all four `common.json` locale files.
 
-3. **Update `PerspectiveDetail.tsx` and `AnalysisDetail.tsx`** — Pass the post's `image` to `SocialShare` as a new prop.
+**Files**:
+- `src/locales/en/common.json` — Change `footer.linkedinUrl` to `https://www.linkedin.com/company/plexapartners/`
+- `src/locales/zh/common.json` — Add `footer.linkedinUrl`
+- `src/locales/zh-Hans/common.json` — Add `footer.linkedinUrl`
+- `src/locales/zh-Hant/common.json` — Add `footer.linkedinUrl`
 
----
+### 3. Team member translations not showing in Chinese
 
-### B. Homepage Performance Optimisation
+**Problem**: The `TeamMemberCard` uses `useLocalizedField` which falls back to English when `_zh_hant` or `_zh_hans` fields are empty strings (truthy in JS — wait, empty string is falsy). Let me re-check...
 
-**1. Vite build config** — `vite.config.ts`
-- Add `build.rollupOptions.output.manualChunks` to split `react`, `react-dom`, `framer-motion`, `@tanstack/react-query`, `react-router-dom` into a `vendor` chunk
-- Set `build.cssCodeSplit: true` and `build.chunkSizeWarningLimit: 1000`
+The fallback logic is: `(member as any)[\`${field}_zh_hant\`] || member[field]` — empty string `''` is falsy, so it correctly falls back to English. This means the database fields are empty for newer team members and possibly for older ones' titles.
 
-**2. Lazy load all routes** — `src/App.tsx`
-- Convert every page import except `Index` to `React.lazy()`
-- Wrap `<Routes>` in `<Suspense fallback={...}>`
+**Fix**: The translations need to be populated in the database. Two approaches:
+1. **Trigger auto-translation on save** — the admin save flow for team members should call the `translate-content` edge function (same as perspectives/analyses)
+2. **One-time data fix** — run an UPDATE to populate Chinese fields for all team members
 
-**3. Lazy load below-fold homepage sections** — `src/pages/Index.tsx`
-- The Hero is above the fold — keep eagerly loaded
-- Lazy-load: `ThreePillars`, `FeaturedPerspectives`, `InsightLed`, `CaseStudies`, `ClientLogos`, `FinalCTA` using `React.lazy` + `Suspense`
+Since the admin already has auto-translate for perspectives and solutions, the cleanest fix is to add auto-translation to the Team Members save flow in `src/components/admin/TeamMembersTab.tsx`.
 
-**4. Image optimisation** — `src/components/ClientLogos.tsx`, `FeaturedPerspectives.tsx`
-- Add `loading="lazy"`, `width`, and `height` attributes to all `<img>` tags in below-fold components
-
-**5. No loading spinner delay found** — The codebase has no artificial splash screen or setTimeout delay on the homepage. No changes needed.
-
-**6. Font preloading** — `index.html`
-- Fonts are loaded via `@fontsource` (bundled, not Google Fonts), so no preconnect needed. No changes required here — Vite handles these as local imports.
-
-**7. Preload hero assets** — The hero section is text-only (no background image). The logo in the Header (`logo.png`) is the only critical image. Add `<link rel="preload" as="image">` for it in `index.html` if the Vite asset hash is stable, otherwise skip (Vite hashes asset filenames).
-
-**8. Audit unused imports** — `src/pages/Index.tsx` and its components
-- All current imports in `Index.tsx` are used. Will check each component for dead imports and remove any found.
-
----
-
-### Files to create/edit
-
-| File | Change |
-|---|---|
-| `supabase/functions/og-meta/index.ts` | New backend function for OG meta tags |
-| `src/components/SocialShare.tsx` | Use `plexapartners.com` domain, accept `image` prop, remove Lovable branding from Twitter text |
-| `src/pages/PerspectiveDetail.tsx` | Pass `image` to SocialShare |
-| `src/pages/AnalysisDetail.tsx` | Pass `image` to SocialShare |
-| `vite.config.ts` | Add build optimisation config |
-| `src/App.tsx` | Lazy load all routes except Index |
-| `src/pages/Index.tsx` | Lazy load below-fold sections |
-| `src/components/ClientLogos.tsx` | Add `loading="lazy"` + dimensions to img |
-| `src/components/FeaturedPerspectives.tsx` | Add `loading="lazy"` + dimensions to img |
-| `index.html` | Add font preload hints if applicable |
+**Files**:
+- `src/components/admin/TeamMembersTab.tsx` — After saving a team member, call the `translate-content` edge function to populate `name_zh_hant`, `name_zh_hans`, `role_zh_hant`, `role_zh_hans`, `focus_zh_hant`, `focus_zh_hans`, `bio_zh_hant`, `bio_zh_hans` fields, then update the database row
+- One-time database UPDATE (via insert tool) to translate existing team members' fields that are currently empty
 
