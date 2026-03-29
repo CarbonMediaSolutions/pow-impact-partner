@@ -38,6 +38,8 @@ export default function AboutPage() {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [teamMembers, setTeamMembers] = useState<any[]>([]);
 
+  const { i18n } = useTranslation();
+
   useEffect(() => {
     const fetchTeam = async () => {
       const { data } = await supabase
@@ -53,7 +55,7 @@ export default function AboutPage() {
       }
     };
     fetchTeam();
-  }, []);
+  }, [i18n.language]);
 
   const testimonials = [
     {
