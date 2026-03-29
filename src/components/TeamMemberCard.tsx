@@ -24,10 +24,14 @@ function useLocalizedField(member: TeamMemberData, field: 'name' | 'role' | 'foc
   const { i18n } = useTranslation();
   const lang = i18n.language;
   if (lang === 'zh-Hant' || lang === 'zh') {
-    return (member as any)[`${field}_zh_hant`] || member[field];
+    const val = (member as any)[`${field}_zh_hant`];
+    if (val != null && typeof val === 'string' && val.trim() !== '') return val;
+    return member[field];
   }
   if (lang === 'zh-Hans') {
-    return (member as any)[`${field}_zh_hans`] || member[field];
+    const val = (member as any)[`${field}_zh_hans`];
+    if (val != null && typeof val === 'string' && val.trim() !== '') return val;
+    return member[field];
   }
   return member[field];
 }
