@@ -5,18 +5,25 @@ import { useTranslation } from 'react-i18next';
 interface SocialShareProps {
   url: string;
   title: string;
+  image?: string;
 }
 
-export const SocialShare = ({ url, title }: SocialShareProps) => {
+const SITE_URL = 'https://plexapartners.com';
+
+export const SocialShare = ({ url, title, image }: SocialShareProps) => {
   const { t } = useTranslation('common');
+
+  // Build the OG proxy URL for social crawlers
+  const path = url.replace(SITE_URL, '');
+  const ogUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/og-meta?path=${encodeURIComponent(path)}`;
   
-  const encodedUrl = encodeURIComponent(url);
+  const encodedOgUrl = encodeURIComponent(ogUrl);
   const encodedTitle = encodeURIComponent(title);
   
   const shareLinks = {
-    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
-    twitter: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
-    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`
+    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedOgUrl}`,
+    twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodedTitle}`,
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedOgUrl}`
   };
   
   const openShare = (platform: keyof typeof shareLinks) => {

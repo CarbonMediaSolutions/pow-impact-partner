@@ -94,6 +94,9 @@ export const FeaturedPerspectives = () => {
                 <img
                 src={getMainImage()}
                   alt=""
+                  loading="lazy"
+                  width={700}
+                  height={525}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none rounded-2xl" />
@@ -122,6 +125,9 @@ export const FeaturedPerspectives = () => {
                     <img
                     src={item.image || tileImages[index] || tileImages[0]}
                       alt=""
+                      loading="lazy"
+                      width={112}
+                      height={112}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                   </div>

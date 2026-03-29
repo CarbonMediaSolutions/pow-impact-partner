@@ -167,7 +167,7 @@ const AnalysisDetail = () => {
          {/* Social Share */}
          <div className="mt-6">
            <SocialShare 
-             url={`https://pow-impact-partner.lovable.app/analysis/${analysis.id}`}
+             url={`https://plexapartners.com/analysis/${analysis.id}`}
              title={getTitle(analysis)}
            />
          </div>

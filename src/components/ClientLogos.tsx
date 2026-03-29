@@ -85,6 +85,9 @@ export const ClientLogos = () => {
                 <img
                   src={logo.image_url}
                   alt={logo.name}
+                  loading="lazy"
+                  width={200}
+                  height={96}
                   className="h-16 sm:h-24 lg:h-32 w-auto max-w-[200px] sm:max-w-[280px] object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
                 />
               </div>
