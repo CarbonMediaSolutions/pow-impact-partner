@@ -190,7 +190,7 @@ const AnalysisDetail = () => {
           {/* Introduction */}
           {getContent(analysis).introduction && (
             <FormattedContent 
-              content={[getContent(analysis).introduction!]} 
+              content={getContent(analysis).introduction!.split('\n').filter(l => l.trim())} 
               className="text-lg text-foreground/90 leading-relaxed font-light mb-12"
             />
           )}
@@ -219,7 +219,7 @@ const AnalysisDetail = () => {
                 {t('analysis:methodology')}
               </h2>
               <FormattedContent 
-                content={[getContent(analysis).methodology!]} 
+                content={getContent(analysis).methodology!.split('\n').filter(l => l.trim())} 
                 className="text-muted-foreground leading-relaxed"
               />
             </section>
