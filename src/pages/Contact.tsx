@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -29,15 +30,48 @@ export default function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    toast({
-      title: "Inquiry received",
-      description: "We will review and respond where appropriate.",
-    });
+    try {
+      // Save to database
+      const { error: dbError } = await supabase
+        .from('contact_submissions')
+        .insert([{
+          name: formData.name,
+          organisation: formData.organisation || null,
+          email: formData.email,
+          message: formData.message || null,
+        }]);
+
+      if (dbError) throw dbError;
+
+      // Send email notification (non-blocking)
+      try {
+        await supabase.functions.invoke('send-consultation-notification', {
+          body: {
+            name: formData.name,
+            email: formData.email,
+            organisation: formData.organisation || undefined,
+            problem_statement: `[Contact Form] ${formData.message || 'No message provided'}`,
+          },
+        });
+      } catch (emailError) {
+        console.error('Email notification failed:', emailError);
+      }
+
+      setIsSubmitted(true);
+      toast({
+        title: "Inquiry received",
+        description: "We will review and respond where appropriate.",
+      });
+    } catch (error: any) {
+      console.error('Contact form submission error:', error);
+      toast({
+        title: "Submission failed",
+        description: "Please try again or email us directly.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
